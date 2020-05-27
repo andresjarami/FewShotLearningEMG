@@ -1,0 +1,1504 @@
+Features:  31
+0.14395913993799417
+0.46011054467441515
+0.4801870281123869
+0.47153713028175837
+0.4613542799054565
+3
+Results: person=  48  shot set=  (1,)
+person                 48
+subset               (1,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.806365
+AccLDALiu        0.902915
+AccLDA10BB       0.889008
+AccLDA11BB        0.89088
+AccQDAInd        0.639208
+AccQDALiu        0.900241
+AccQDA10BB       0.861728
+AccQDA11BB       0.829099
+AccKNNInd        0.822412
+AccKNNIndGen     0.843274
+AccKNNLiu        0.892217
+AccKNN10BB       0.880182
+AccKNN11BB       0.884996
+AccSVMInd        0.792993
+AccSVMGIndGen    0.836052
+AccSVMLiu        0.887671
+AccSVM10BB       0.876972
+AccSVM11BB       0.876438
+Name: 0, dtype: object
+0.2140972740889857
+0.4621743274261208
+0.4074027770290536
+0.47730943764069933
+0.4222370482807282
+3
+Results: person=  48  shot set=  (2,)
+person                 48
+subset               (2,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.865205
+AccLDALiu          0.9318
+AccLDA10BB       0.925381
+AccLDA11BB       0.928056
+AccQDAInd        0.714362
+AccQDALiu        0.925381
+AccQDA10BB       0.915218
+AccQDA11BB       0.898636
+AccKNNInd        0.898903
+AccKNNIndGen     0.907194
+AccKNNLiu        0.922707
+AccKNN10BB       0.923776
+AccKNN11BB       0.924311
+AccSVMInd        0.799947
+AccSVMGIndGen    0.902915
+AccSVMLiu        0.925916
+AccSVM10BB       0.914951
+AccSVM11BB       0.918427
+Name: 1, dtype: object
+0.15094957071317386
+0.4668372122802004
+0.3649206906228519
+0.4508434663185473
+0.4519518949217155
+3
+Results: person=  48  shot set=  (3,)
+person                 48
+subset               (3,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.844343
+AccLDALiu        0.931532
+AccLDA10BB       0.915753
+AccLDA11BB       0.913078
+AccQDAInd        0.667826
+AccQDALiu        0.932335
+AccQDA10BB       0.884996
+AccQDA11BB        0.86039
+AccKNNInd        0.882321
+AccKNNIndGen     0.889543
+AccKNNLiu        0.931532
+AccKNN10BB       0.928323
+AccKNN11BB       0.929393
+AccSVMInd        0.789516
+AccSVMGIndGen    0.899171
+AccSVMLiu        0.924846
+AccSVM10BB       0.912009
+AccSVM11BB       0.908532
+Name: 2, dtype: object
+0.23794210625288803
+0.3810206779205854
+0.41350370660324604
+0.4417222746977625
+0.44254431758223395
+3
+Results: person=  48  shot set=  (4,)
+person                 48
+subset               (4,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.883926
+AccLDALiu        0.917358
+AccLDA10BB       0.905322
+AccLDA11BB       0.903985
+AccQDAInd        0.548007
+AccQDALiu        0.926451
+AccQDA10BB       0.905857
+AccQDA11BB       0.885263
+AccKNNInd         0.74084
+AccKNNIndGen     0.751003
+AccKNNLiu        0.901578
+AccKNN10BB       0.882321
+AccKNN11BB       0.889543
+AccSVMInd         0.64322
+AccSVMGIndGen    0.757957
+AccSVMLiu        0.882856
+AccSVM10BB       0.847285
+AccSVM11BB       0.853704
+Name: 3, dtype: object
+0.19206751616110893
+0.3756795515469657
+0.413283078555363
+0.46327984430509006
+0.4700001650735074
+3
+Results: person=  48  shot set=  (5,)
+person                 48
+subset               (5,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.875903
+AccLDALiu        0.917358
+AccLDA10BB       0.912543
+AccLDA11BB       0.913346
+AccQDAInd        0.652848
+AccQDALiu         0.93287
+AccQDA10BB       0.906125
+AccQDA11BB       0.882856
+AccKNNInd        0.872426
+AccKNNIndGen     0.892217
+AccKNNLiu        0.906125
+AccKNN10BB       0.912276
+AccKNN11BB        0.90238
+AccSVMInd        0.786841
+AccSVMGIndGen    0.887403
+AccSVMLiu         0.90238
+AccSVM10BB       0.899438
+AccSVM11BB       0.897566
+Name: 4, dtype: object
+0.15637198918009845
+0.4244210259622341
+0.3864795169726022
+0.45756375419016837
+0.4713516956973338
+3
+Results: person=  48  shot set=  (6,)
+person                 48
+subset               (6,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.845413
+AccLDALiu        0.904787
+AccLDA10BB       0.894357
+AccLDA11BB       0.893287
+AccQDAInd        0.690024
+AccQDALiu        0.924311
+AccQDA10BB       0.900508
+AccQDA11BB       0.872961
+AccKNNInd        0.816796
+AccKNNIndGen     0.869216
+AccKNNLiu        0.890612
+AccKNN10BB       0.875903
+AccKNN11BB       0.884194
+AccSVMInd        0.742177
+AccSVMGIndGen    0.873763
+AccSVMLiu        0.898369
+AccSVM10BB       0.894089
+AccSVM11BB       0.885798
+Name: 5, dtype: object
+0.21100527702275715
+0.367776326223028
+0.465586912725788
+0.44540353396272325
+0.39740768476077154
+3
+Results: person=  48  shot set=  (7,)
+person                 48
+subset               (7,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.656325
+AccLDALiu        0.895694
+AccLDA10BB       0.880984
+AccLDA11BB       0.884729
+AccQDAInd        0.535437
+AccQDALiu        0.914416
+AccQDA10BB       0.921102
+AccQDA11BB       0.914683
+AccKNNInd        0.725595
+AccKNNIndGen     0.743514
+AccKNNLiu        0.888473
+AccKNN10BB       0.841134
+AccKNN11BB       0.857983
+AccSVMInd        0.637604
+AccSVMGIndGen     0.75127
+AccSVMLiu        0.880717
+AccSVM10BB       0.807703
+AccSVM11BB       0.806365
+Name: 6, dtype: object
+0.15057480889204936
+0.4726243748767353
+0.4766492571481184
+0.48035428580835643
+0.3994364457496986
+3
+Results: person=  48  shot set=  (8,)
+person                 48
+subset               (8,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.784167
+AccLDALiu        0.879647
+AccLDA10BB       0.866274
+AccLDA11BB       0.867077
+AccQDAInd        0.644022
+AccQDALiu        0.892752
+AccQDA10BB       0.867879
+AccQDA11BB       0.850495
+AccKNNInd         0.81011
+AccKNNIndGen     0.838192
+AccKNNLiu        0.872961
+AccKNN10BB        0.86039
+AccKNN11BB       0.859588
+AccSVMInd        0.750735
+AccSVMGIndGen    0.831506
+AccSVMLiu        0.875903
+AccSVM10BB        0.86253
+AccSVM11BB       0.857716
+Name: 7, dtype: object
+0.1459670518945637
+0.463508302107301
+0.4417554192602335
+0.4768824189274897
+0.42710735817380974
+3
+Results: person=  48  shot set=  (9,)
+person                 48
+subset               (9,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.701524
+AccLDALiu        0.880984
+AccLDA10BB       0.861728
+AccLDA11BB       0.861193
+AccQDAInd        0.569671
+AccQDALiu        0.904252
+AccQDA10BB        0.87938
+AccQDA11BB       0.860925
+AccKNNInd         0.83525
+AccKNNIndGen     0.855041
+AccKNNLiu        0.892485
+AccKNN10BB       0.883124
+AccKNN11BB       0.882321
+AccSVMInd        0.797272
+AccSVMGIndGen    0.874298
+AccSVMLiu        0.904787
+AccSVM10BB       0.887403
+AccSVM11BB       0.887403
+Name: 8, dtype: object
+0.1863967555714361
+0.440660774690789
+0.4787479009074621
+0.45954115751957214
+0.37642654688873933
+3
+Results: person=  48  shot set=  (10,)
+person                 48
+subset              (10,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.721048
+AccLDALiu        0.870821
+AccLDA10BB       0.857983
+AccLDA11BB       0.859321
+AccQDAInd        0.650174
+AccQDALiu        0.883659
+AccQDA10BB       0.869216
+AccQDA11BB       0.857716
+AccKNNInd        0.822145
+AccKNNIndGen     0.835518
+AccKNNLiu         0.89088
+AccKNN10BB       0.872961
+AccKNN11BB       0.874565
+AccSVMInd        0.729607
+AccSVMGIndGen    0.832843
+AccSVMLiu        0.886868
+AccSVM10BB         0.8751
+AccSVM11BB       0.870821
+Name: 9, dtype: object
+0.1367002084798217
+0.4681055049312758
+0.474197589866952
+0.4737137777516324
+0.4590195175650798
+3
+Results: person=  48  shot set=  (11,)
+person                 48
+subset              (11,)
+# shots                 1
+Feature Set             3
+AccLDAInd         0.82054
+AccLDALiu        0.941963
+AccLDA10BB       0.933405
+AccLDA11BB       0.928591
+AccQDAInd        0.705001
+AccQDALiu        0.940091
+AccQDA10BB       0.913613
+AccQDA11BB       0.880717
+AccKNNInd        0.869751
+AccKNNIndGen     0.894892
+AccKNNLiu        0.934207
+AccKNN10BB       0.928056
+AccKNN11BB       0.929125
+AccSVMInd        0.774539
+AccSVMGIndGen    0.893287
+AccSVMLiu        0.924846
+AccSVM10BB         0.9203
+AccSVM11BB       0.918427
+Name: 10, dtype: object
+0.2620480362319229
+0.4244641709563623
+0.4228814580900149
+0.48378938913487674
+0.42784071361918125
+3
+Results: person=  48  shot set=  (12,)
+person                 48
+subset              (12,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.857181
+AccLDALiu         0.90345
+AccLDA10BB       0.898101
+AccLDA11BB       0.898903
+AccQDAInd        0.668093
+AccQDALiu        0.904252
+AccQDA10BB       0.895961
+AccQDA11BB       0.877507
+AccKNNInd        0.794865
+AccKNNIndGen     0.821075
+AccKNNLiu        0.881519
+AccKNN10BB       0.874833
+AccKNN11BB         0.8751
+AccSVMInd         0.79219
+AccSVMGIndGen    0.818936
+AccSVMLiu        0.886868
+AccSVM10BB       0.880717
+AccSVM11BB       0.875903
+Name: 11, dtype: object
+0.2789393778531381
+0.3640342568988177
+0.46970639713790974
+0.47344078400008605
+0.455243788704667
+3
+Results: person=  48  shot set=  (13,)
+person                 48
+subset              (13,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.839529
+AccLDALiu        0.924579
+AccLDA10BB       0.924579
+AccLDA11BB       0.924044
+AccQDAInd        0.745654
+AccQDALiu        0.913881
+AccQDA10BB       0.910939
+AccQDA11BB       0.900241
+AccKNNInd        0.886066
+AccKNNIndGen     0.895961
+AccKNNLiu        0.914951
+AccKNN10BB       0.911474
+AccKNN11BB       0.910939
+AccSVMInd        0.835785
+AccSVMGIndGen     0.88874
+AccSVMLiu        0.915218
+AccSVM10BB       0.912276
+AccSVM11BB       0.912009
+Name: 12, dtype: object
+0.19155974826311925
+0.46094613948041513
+0.47308563130360565
+0.47582800909731743
+0.4497907355913605
+3
+Results: person=  48  shot set=  (14,)
+person                 48
+subset              (14,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.844076
+AccLDALiu        0.890612
+AccLDA10BB        0.87831
+AccLDA11BB        0.87831
+AccQDAInd        0.748596
+AccQDALiu        0.900241
+AccQDA10BB       0.870821
+AccQDA11BB       0.845413
+AccKNNInd        0.786039
+AccKNNIndGen     0.812517
+AccKNNLiu        0.868949
+AccKNN10BB       0.856646
+AccKNN11BB       0.857716
+AccSVMInd        0.711955
+AccSVMGIndGen    0.810645
+AccSVMLiu        0.875635
+AccSVM10BB       0.861193
+AccSVM11BB       0.853972
+Name: 13, dtype: object
+0.1835624505759258
+0.3772131958200474
+0.4017722901707208
+0.47565317578599176
+0.4378650185885008
+3
+Results: person=  48  shot set=  (15,)
+person                 48
+subset              (15,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.778283
+AccLDALiu        0.856914
+AccLDA10BB       0.805563
+AccLDA11BB       0.809575
+AccQDAInd        0.661407
+AccQDALiu        0.888473
+AccQDA10BB       0.844611
+AccQDA11BB       0.826959
+AccKNNInd        0.750201
+AccKNNIndGen     0.761166
+AccKNNLiu        0.801284
+AccKNN10BB       0.783097
+AccKNN11BB       0.780155
+AccSVMInd        0.655523
+AccSVMGIndGen    0.765713
+AccSVMLiu        0.799947
+AccSVM10BB       0.775876
+AccSVM11BB        0.76705
+Name: 14, dtype: object
+0.2884613863681726
+0.3507289973720582
+0.45921791031463005
+0.4601296704828441
+0.4085804244912158
+3
+Results: person=  48  shot set=  (16,)
+person                 48
+subset              (16,)
+# shots                 1
+Feature Set             3
+AccLDAInd         0.68414
+AccLDALiu        0.877775
+AccLDA10BB       0.845146
+AccLDA11BB       0.852367
+AccQDAInd        0.608184
+AccQDALiu        0.891682
+AccQDA10BB        0.87617
+AccQDA11BB       0.867077
+AccKNNInd        0.697245
+AccKNNIndGen     0.722118
+AccKNNLiu        0.830436
+AccKNN10BB       0.765713
+AccKNN11BB       0.778818
+AccSVMInd        0.657395
+AccSVMGIndGen    0.715967
+AccSVMLiu        0.774539
+AccSVM10BB       0.742445
+AccSVM11BB       0.737363
+Name: 15, dtype: object
+0.34853397724299257
+0.46105097073201046
+0.47619875017339025
+0.4919778561770533
+0.4395045607468164
+3
+Results: person=  48  shot set=  (17,)
+person                 48
+subset              (17,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.863867
+AccLDALiu          0.9203
+AccLDA10BB       0.922974
+AccLDA11BB       0.924846
+AccQDAInd        0.727735
+AccQDALiu        0.910671
+AccQDA10BB       0.908264
+AccQDA11BB        0.90238
+AccKNNInd        0.817063
+AccKNNIndGen     0.847553
+AccKNNLiu        0.881787
+AccKNN10BB       0.882856
+AccKNN11BB       0.887671
+AccSVMInd        0.808772
+AccSVMGIndGen    0.841401
+AccSVMLiu        0.898369
+AccSVM10BB       0.895427
+AccSVM11BB        0.88874
+Name: 16, dtype: object
+0.25895312556957645
+0.34987166702876743
+0.4555601741785353
+0.4209776602863245
+0.4083024519196543
+3
+Results: person=  48  shot set=  (18,)
+person                 48
+subset              (18,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.785237
+AccLDALiu        0.889543
+AccLDA10BB       0.853169
+AccLDA11BB       0.859053
+AccQDAInd        0.661674
+AccQDALiu        0.909067
+AccQDA10BB       0.895427
+AccQDA11BB       0.896764
+AccKNNInd        0.762503
+AccKNNIndGen     0.774539
+AccKNNLiu        0.831506
+AccKNN10BB       0.780155
+AccKNN11BB       0.784702
+AccSVMInd        0.649104
+AccSVMGIndGen    0.761701
+AccSVMLiu        0.802621
+AccSVM10BB       0.784167
+AccSVM11BB       0.777748
+Name: 17, dtype: object
+0.24907232324464348
+0.38562524756594185
+0.4365146490246658
+0.4823601703526472
+0.4652542088537432
+3
+Results: person=  48  shot set=  (19,)
+person                 48
+subset              (19,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.852634
+AccLDALiu        0.920834
+AccLDA10BB       0.914951
+AccLDA11BB       0.914683
+AccQDAInd        0.585986
+AccQDALiu        0.922439
+AccQDA10BB       0.901845
+AccQDA11BB       0.886868
+AccKNNInd        0.863867
+AccKNNIndGen     0.887403
+AccKNNLiu        0.913881
+AccKNN10BB       0.910136
+AccKNN11BB       0.914148
+AccSVMInd        0.792458
+AccSVMGIndGen    0.889543
+AccSVMLiu        0.921904
+AccSVM10BB       0.913346
+AccSVM11BB       0.911206
+Name: 18, dtype: object
+0.21818366030004258
+0.31618706105133965
+0.4284400034608592
+0.4868583908803697
+0.4791259428434863
+3
+Results: person=  48  shot set=  (20,)
+person                 48
+subset              (20,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.899706
+AccLDALiu        0.923242
+AccLDA10BB       0.912276
+AccLDA11BB       0.910136
+AccQDAInd        0.665151
+AccQDALiu        0.915753
+AccQDA10BB       0.871623
+AccQDA11BB       0.843274
+AccKNNInd        0.862798
+AccKNNIndGen     0.903183
+AccKNNLiu        0.914416
+AccKNN10BB       0.901043
+AccKNN11BB       0.908532
+AccSVMInd        0.795667
+AccSVMGIndGen    0.895694
+AccSVMLiu        0.920032
+AccSVM10BB        0.90345
+AccSVM11BB       0.905055
+Name: 19, dtype: object
+0.2686662377073292
+0.40091416043107514
+0.4388916226762584
+0.4705714515755592
+0.46337037935605874
+3
+Results: person=  48  shot set=  (21,)
+person                 48
+subset              (21,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.809842
+AccLDALiu        0.907194
+AccLDA10BB       0.900241
+AccLDA11BB       0.899706
+AccQDAInd        0.662744
+AccQDALiu        0.898101
+AccQDA10BB        0.87938
+AccQDA11BB       0.862263
+AccKNNInd         0.84996
+AccKNNIndGen     0.865205
+AccKNNLiu         0.89302
+AccKNN10BB       0.887938
+AccKNN11BB       0.891415
+AccSVMInd        0.840332
+AccSVMGIndGen     0.86467
+AccSVMLiu        0.904252
+AccSVM10BB       0.889543
+AccSVM11BB       0.890078
+Name: 20, dtype: object
+0.16625214586605738
+0.4927726647264454
+0.42976876712328876
+0.48237819337828125
+0.45433487457383465
+3
+Results: person=  48  shot set=  (22,)
+person                 48
+subset              (22,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.717304
+AccLDALiu         0.84889
+AccLDA10BB       0.829366
+AccLDA11BB       0.832843
+AccQDAInd        0.713827
+AccQDALiu        0.897299
+AccQDA10BB       0.870019
+AccQDA11BB       0.841936
+AccKNNInd         0.75127
+AccKNNIndGen     0.814924
+AccKNNLiu        0.859856
+AccKNN10BB       0.860123
+AccKNN11BB       0.859588
+AccSVMInd        0.727735
+AccSVMGIndGen    0.823482
+AccSVMLiu        0.884194
+AccSVM10BB       0.861193
+AccSVM11BB       0.857716
+Name: 21, dtype: object
+0.19633545269562397
+0.3572985654124883
+0.41378225219189513
+0.46819518391504694
+0.4446234507940892
+3
+Results: person=  48  shot set=  (23,)
+person                 48
+subset              (23,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.717304
+AccLDALiu        0.817598
+AccLDA10BB       0.762236
+AccLDA11BB       0.763306
+AccQDAInd        0.664616
+AccQDALiu        0.883391
+AccQDA10BB       0.838727
+AccQDA11BB       0.820273
+AccKNNInd         0.71142
+AccKNNIndGen     0.753143
+AccKNNLiu        0.794063
+AccKNN10BB       0.764376
+AccKNN11BB       0.758759
+AccSVMInd        0.676919
+AccSVMGIndGen    0.751538
+AccSVMLiu        0.776678
+AccSVM10BB       0.763573
+AccSVM11BB       0.759561
+Name: 22, dtype: object
+0.26198261600369765
+0.35488398326960807
+0.4814428670701475
+0.48546177256801476
+0.4298630806409486
+3
+Results: person=  48  shot set=  (24,)
+person                 48
+subset              (24,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.831238
+AccLDALiu        0.913346
+AccLDA10BB       0.911741
+AccLDA11BB       0.910671
+AccQDAInd        0.648302
+AccQDALiu        0.896496
+AccQDA10BB       0.891147
+AccQDA11BB       0.887671
+AccKNNInd        0.821343
+AccKNNIndGen     0.866007
+AccKNNLiu        0.887938
+AccKNN10BB       0.879647
+AccKNN11BB       0.885263
+AccSVMInd        0.775876
+AccSVMGIndGen    0.866809
+AccSVMLiu        0.891147
+AccSVM10BB       0.883391
+AccSVM11BB       0.889008
+Name: 23, dtype: object
+0.18075415876497417
+0.45929069234575615
+0.4331774808695072
+0.4574403758749265
+0.3765439358488439
+3
+Results: person=  48  shot set=  (25,)
+person                 48
+subset              (25,)
+# shots                 1
+Feature Set             3
+AccLDAInd        0.857983
+AccLDALiu        0.908799
+AccLDA10BB       0.900776
+AccLDA11BB        0.90666
+AccQDAInd        0.706873
+AccQDALiu        0.899438
+AccQDA10BB       0.898369
+AccQDA11BB       0.886601
+AccKNNInd        0.861193
+AccKNNIndGen      0.88981
+AccKNNLiu        0.893287
+AccKNN10BB       0.902648
+AccKNN11BB       0.905055
+AccSVMInd        0.778818
+AccSVMGIndGen    0.866542
+AccSVMLiu        0.896764
+AccSVM10BB       0.898101
+AccSVM11BB       0.898369
+Name: 24, dtype: object
+0.15741193590865388
+0.46243235946759403
+0.44585623962971793
+0.4689380732574336
+0.43571136182169135
+3
+Results: person=  48  shot set=  (1, 2)
+person                 48
+subset             (1, 2)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.900776
+AccLDALiu          0.9318
+AccLDA10BB       0.931532
+AccLDA11BB        0.93287
+AccQDAInd        0.885798
+AccQDALiu        0.927253
+AccQDA10BB       0.930463
+AccQDA11BB       0.910404
+AccKNNInd         0.89195
+AccKNNIndGen     0.898636
+AccKNNLiu        0.919497
+AccKNN10BB       0.912276
+AccKNN11BB       0.908532
+AccSVMInd        0.867612
+AccSVMGIndGen    0.904252
+AccSVMLiu        0.921369
+AccSVM10BB       0.917358
+AccSVM11BB       0.913346
+Name: 25, dtype: object
+0.14133139569694902
+0.4730791359948571
+0.41409035019554574
+0.4537872187869565
+0.45914466298231654
+3
+Results: person=  48  shot set=  (1, 3)
+person                 48
+subset             (1, 3)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.905322
+AccLDALiu        0.936882
+AccLDA10BB       0.931265
+AccLDA11BB       0.932335
+AccQDAInd        0.859053
+AccQDALiu        0.939556
+AccQDA10BB       0.910136
+AccQDA11BB       0.884194
+AccKNNInd        0.899706
+AccKNNIndGen       0.9203
+AccKNNLiu        0.924579
+AccKNN10BB       0.926183
+AccKNN11BB        0.92966
+AccSVMInd        0.819738
+AccSVMGIndGen    0.913881
+AccSVMLiu        0.927521
+AccSVM10BB       0.923242
+AccSVM11BB       0.921904
+Name: 26, dtype: object
+0.17471577052822512
+0.45039096874981466
+0.44436031259540887
+0.43627127740835164
+0.4179742415806534
+3
+Results: person=  48  shot set=  (1, 4)
+person                 48
+subset             (1, 4)
+# shots                 2
+Feature Set             3
+AccLDAInd         0.89195
+AccLDALiu        0.929928
+AccLDA10BB       0.929928
+AccLDA11BB       0.932067
+AccQDAInd        0.875368
+AccQDALiu        0.942231
+AccQDA10BB       0.927788
+AccQDA11BB       0.910939
+AccKNNInd         0.89195
+AccKNNIndGen     0.912811
+AccKNNLiu        0.937416
+AccKNN10BB       0.925381
+AccKNN11BB       0.926183
+AccSVMInd        0.809575
+AccSVMGIndGen    0.905857
+AccSVMLiu        0.928056
+AccSVM10BB       0.924044
+AccSVM11BB       0.914951
+Name: 27, dtype: object
+0.15387253300804607
+0.418620254039844
+0.440357497282257
+0.4699562150948959
+0.47394150857341477
+3
+Results: person=  48  shot set=  (1, 5)
+person                 48
+subset             (1, 5)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.884729
+AccLDALiu        0.920032
+AccLDA10BB       0.917892
+AccLDA11BB       0.916823
+AccQDAInd        0.897299
+AccQDALiu         0.93394
+AccQDA10BB       0.907997
+AccQDA11BB       0.888473
+AccKNNInd        0.882589
+AccKNNIndGen     0.902648
+AccKNNLiu        0.903183
+AccKNN10BB       0.905857
+AccKNN11BB       0.897031
+AccSVMInd        0.828029
+AccSVMGIndGen    0.898369
+AccSVMLiu        0.899706
+AccSVM10BB       0.889275
+AccSVM11BB        0.89302
+Name: 28, dtype: object
+0.16349817797635838
+0.46836950018341855
+0.39221591634451636
+0.4632226922737745
+0.4456785373059802
+3
+Results: person=  48  shot set=  (2, 3)
+person                 48
+subset             (2, 3)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.911741
+AccLDALiu        0.944638
+AccLDA10BB       0.947045
+AccLDA11BB        0.94651
+AccQDAInd        0.890078
+AccQDALiu        0.936079
+AccQDA10BB       0.916823
+AccQDA11BB       0.894357
+AccKNNInd        0.924579
+AccKNNIndGen     0.935277
+AccKNNLiu        0.949987
+AccKNN10BB       0.937951
+AccKNN11BB       0.945975
+AccSVMInd          0.8636
+AccSVMGIndGen    0.937149
+AccSVMLiu        0.947045
+AccSVM10BB       0.938486
+AccSVM11BB       0.939021
+Name: 29, dtype: object
+0.217961485066537
+0.42336735415323334
+0.4138187364914604
+0.4476098579069627
+0.3967405252411542
+3
+Results: person=  48  shot set=  (2, 4)
+person                 48
+subset             (2, 4)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.913881
+AccLDALiu        0.937951
+AccLDA10BB        0.94437
+AccLDA11BB       0.951591
+AccQDAInd        0.918695
+AccQDALiu        0.938486
+AccQDA10BB       0.937416
+AccQDA11BB       0.930463
+AccKNNInd        0.925381
+AccKNNIndGen     0.937149
+AccKNNLiu        0.947312
+AccKNN10BB       0.943568
+AccKNN11BB       0.947847
+AccSVMInd        0.840867
+AccSVMGIndGen    0.935812
+AccSVMLiu        0.940358
+AccSVM10BB       0.938219
+AccSVM11BB       0.938486
+Name: 30, dtype: object
+0.18719721927508104
+0.40392375937216723
+0.40882465851519695
+0.47094150499700344
+0.45816134849235035
+3
+Results: person=  48  shot set=  (2, 5)
+person                 48
+subset             (2, 5)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.929393
+AccLDALiu        0.936079
+AccLDA10BB       0.936079
+AccLDA11BB       0.934207
+AccQDAInd        0.930195
+AccQDALiu        0.940091
+AccQDA10BB       0.931265
+AccQDA11BB       0.917358
+AccKNNInd        0.915218
+AccKNNIndGen     0.929928
+AccKNNLiu        0.923776
+AccKNN10BB       0.922707
+AccKNN11BB       0.921637
+AccSVMInd        0.845681
+AccSVMGIndGen    0.925916
+AccSVMLiu        0.925916
+AccSVM10BB       0.913346
+AccSVM11BB       0.921904
+Name: 31, dtype: object
+0.20045301198879228
+0.39258134383166765
+0.3655201477632828
+0.43863406642830177
+0.4303352505120088
+3
+Results: person=  48  shot set=  (3, 4)
+person                 48
+subset             (3, 4)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.901578
+AccLDALiu        0.926986
+AccLDA10BB       0.921904
+AccLDA11BB       0.918695
+AccQDAInd        0.907729
+AccQDALiu         0.93073
+AccQDA10BB       0.903985
+AccQDA11BB       0.887671
+AccKNNInd        0.892485
+AccKNNIndGen     0.916555
+AccKNNLiu        0.931265
+AccKNN10BB        0.93287
+AccKNN11BB       0.939289
+AccSVMInd        0.813587
+AccSVMGIndGen    0.916288
+AccSVMLiu        0.923509
+AccSVM10BB       0.914951
+AccSVM11BB       0.922439
+Name: 32, dtype: object
+0.1662469466925328
+0.410070976214349
+0.38871560217922885
+0.45565843169220765
+0.4694723563548666
+3
+Results: person=  48  shot set=  (3, 5)
+person                 48
+subset             (3, 5)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.897834
+AccLDALiu        0.940626
+AccLDA10BB       0.943033
+AccLDA11BB       0.939556
+AccQDAInd        0.931532
+AccQDALiu        0.948114
+AccQDA10BB       0.925114
+AccQDA11BB       0.904252
+AccKNNInd        0.918962
+AccKNNIndGen     0.939556
+AccKNNLiu        0.939021
+AccKNN10BB       0.947847
+AccKNN11BB       0.940893
+AccSVMInd        0.843006
+AccSVMGIndGen     0.93394
+AccSVMLiu        0.942765
+AccSVM10BB       0.932602
+AccSVM11BB       0.928858
+Name: 33, dtype: object
+0.16873564397088664
+0.4714714964812981
+0.4038924693039958
+0.4495050832124797
+0.45099613196861155
+3
+Results: person=  48  shot set=  (4, 5)
+person                 48
+subset             (4, 5)
+# shots                 2
+Feature Set             3
+AccLDAInd        0.892752
+AccLDALiu        0.936347
+AccLDA10BB       0.932602
+AccLDA11BB       0.934474
+AccQDAInd         0.91709
+AccQDALiu        0.944638
+AccQDA10BB       0.923776
+AccQDA11BB        0.90452
+AccKNNInd        0.912009
+AccKNNIndGen     0.941963
+AccKNNLiu        0.934207
+AccKNN10BB       0.938219
+AccKNN11BB       0.942498
+AccSVMInd        0.817598
+AccSVMGIndGen    0.932335
+AccSVMLiu        0.928591
+AccSVM10BB       0.924311
+AccSVM11BB       0.926718
+Name: 34, dtype: object
+0.14966981524643874
+0.46883890757516294
+0.41769823882556817
+0.4598791765987406
+0.44773214340951056
+3
+Results: person=  48  shot set=  (1, 2, 3)
+person                  48
+subset           (1, 2, 3)
+# shots                  3
+Feature Set              3
+AccLDAInd         0.936614
+AccLDALiu         0.941963
+AccLDA10BB        0.946242
+AccLDA11BB        0.952126
+AccQDAInd         0.872158
+AccQDALiu         0.942498
+AccQDA10BB        0.927788
+AccQDA11BB        0.908532
+AccKNNInd         0.926986
+AccKNNIndGen      0.940893
+AccKNNLiu          0.94437
+AccKNN10BB        0.932602
+AccKNN11BB        0.939289
+AccSVMInd         0.886601
+AccSVMGIndGen     0.937416
+AccSVMLiu         0.944638
+AccSVM10BB        0.940626
+AccSVM11BB        0.940893
+Name: 35, dtype: object
+0.1721015251954983
+0.47704913000984495
+0.4380070259744726
+0.44906374057233606
+0.41356692050028426
+3
+Results: person=  48  shot set=  (1, 2, 4)
+person                  48
+subset           (1, 2, 4)
+# shots                  3
+Feature Set              3
+AccLDAInd         0.932602
+AccLDALiu         0.932335
+AccLDA10BB        0.939556
+AccLDA11BB        0.949452
+AccQDAInd         0.912276
+AccQDALiu         0.950789
+AccQDA10BB        0.945707
+AccQDA11BB        0.933672
+AccKNNInd         0.927788
+AccKNNIndGen      0.942765
+AccKNNLiu         0.949452
+AccKNN10BB        0.940358
+AccKNN11BB          0.9433
+AccSVMInd         0.858251
+AccSVMGIndGen     0.937149
+AccSVMLiu         0.941963
+AccSVM10BB        0.939556
+AccSVM11BB        0.938754
+Name: 36, dtype: object
+0.16012610919555123
+0.4278108571709168
+0.43140774882760813
+0.4706586051896624
+0.4608971362990229
+3
+Results: person=  48  shot set=  (1, 2, 5)
+person                  48
+subset           (1, 2, 5)
+# shots                  3
+Feature Set              3
+AccLDAInd         0.910939
+AccLDALiu          0.93287
+AccLDA10BB        0.932335
+AccLDA11BB        0.933137
+AccQDAInd         0.921637
+AccQDALiu         0.944103
+AccQDA10BB        0.938486
+AccQDA11BB        0.927788
+AccKNNInd         0.914416
+AccKNNIndGen      0.926986
+AccKNNLiu         0.913613
+AccKNN10BB        0.922172
+AccKNN11BB         0.91923
+AccSVMInd         0.885798
+AccSVMGIndGen     0.921369
+AccSVMLiu         0.922439
+AccSVM10BB        0.914416
+AccSVM11BB         0.91602
+Name: 37, dtype: object
+0.16593924324838613
+0.45668390004670895
+0.40845253969852835
+0.43643747412180695
+0.41913629442293393
+3
+Results: person=  48  shot set=  (1, 3, 4)
+person                  48
+subset           (1, 3, 4)
+# shots                  3
+Feature Set              3
+AccLDAInd           0.9203
+AccLDALiu         0.940358
+AccLDA10BB        0.936882
+AccLDA11BB        0.940358
+AccQDAInd         0.916288
+AccQDALiu         0.943033
+AccQDA10BB        0.922172
+AccQDA11BB        0.911474
+AccKNNInd         0.912009
+AccKNNIndGen      0.932335
+AccKNNLiu         0.937416
+AccKNN10BB         0.93287
+AccKNN11BB        0.939556
+AccSVMInd         0.832041
+AccSVMGIndGen     0.915753
+AccSVMLiu         0.926718
+AccSVM10BB        0.923509
+AccSVM11BB        0.921369
+Name: 38, dtype: object
+0.15166794363758546
+0.4273528304393848
+0.41278762527976914
+0.45972149425465486
+0.47036007084978904
+3
+Results: person=  48  shot set=  (1, 3, 5)
+person                  48
+subset           (1, 3, 5)
+# shots                  3
+Feature Set              3
+AccLDAInd         0.924311
+AccLDALiu         0.940358
+AccLDA10BB        0.937951
+AccLDA11BB        0.940893
+AccQDAInd         0.909334
+AccQDALiu         0.950254
+AccQDA10BB        0.930463
+AccQDA11BB        0.913346
+AccKNNInd         0.927788
+AccKNNIndGen      0.934742
+AccKNNLiu         0.928591
+AccKNN10BB        0.927521
+AccKNN11BB        0.941963
+AccSVMInd         0.859321
+AccSVMGIndGen     0.924044
+AccSVMLiu         0.934474
+AccSVM10BB        0.926718
+AccSVM11BB        0.926718
+Name: 39, dtype: object
+0.14967411878359274
+0.477853223840801
+0.43190909668078836
+0.45531164145107966
+0.4594596903438688
+3
+Results: person=  48  shot set=  (1, 4, 5)
+person                  48
+subset           (1, 4, 5)
+# shots                  3
+Feature Set              3
+AccLDAInd         0.936882
+AccLDALiu           0.9318
+AccLDA10BB        0.937416
+AccLDA11BB        0.938486
+AccQDAInd          0.93287
+AccQDALiu         0.948917
+AccQDA10BB        0.934207
+AccQDA11BB        0.913881
+AccKNNInd         0.921637
+AccKNNIndGen      0.937416
+AccKNNLiu         0.939289
+AccKNN10BB          0.9318
+AccKNN11BB        0.932335
+AccSVMInd         0.834983
+AccSVMGIndGen     0.924579
+AccSVMLiu         0.933405
+AccSVM10BB        0.928591
+AccSVM11BB        0.924846
+Name: 40, dtype: object
+0.18726170025092403
+0.44087856285687177
+0.3951973331400979
+0.4467193002566721
+0.4088667728012991
+3
+Results: person=  48  shot set=  (2, 3, 4)
+person                  48
+subset           (2, 3, 4)
+# shots                  3
+Feature Set              3
+AccLDAInd         0.932602
+AccLDALiu         0.948649
+AccLDA10BB        0.950789
+AccLDA11BB        0.955068
+AccQDAInd         0.896764
+AccQDALiu         0.937416
+AccQDA10BB        0.929125
+AccQDA11BB        0.919765
+AccKNNInd         0.929125
+AccKNNIndGen      0.945173
+AccKNNLiu         0.946242
+AccKNN10BB        0.948382
+AccKNN11BB        0.947847
+AccSVMInd         0.864402
+AccSVMGIndGen     0.944638
+AccSVMLiu         0.944103
+AccSVM10BB        0.939021
+AccSVM11BB        0.938754
+Name: 41, dtype: object
+0.16810718697875124
+0.422163986737041
+0.39672387470884407
+0.4633838169409299
+0.4621017335608176
+3
+Results: person=  48  shot set=  (2, 3, 5)
+person                  48
+subset           (2, 3, 5)
+# shots                  3
+Feature Set              3
+AccLDAInd         0.941428
+AccLDALiu         0.934207
+AccLDA10BB        0.948649
+AccLDA11BB        0.950789
+AccQDAInd         0.928056
+AccQDALiu         0.946777
+AccQDA10BB        0.936347
+AccQDA11BB        0.919497
+AccKNNInd         0.933405
+AccKNNIndGen      0.945975
+AccKNNLiu         0.943568
+AccKNN10BB        0.940091
+AccKNN11BB        0.953196
+AccSVMInd          0.88874
+AccSVMGIndGen     0.945173
+AccSVMLiu         0.942765
+AccSVM10BB        0.938754
+AccSVM11BB        0.942765
+Name: 42, dtype: object
+0.1734841140152598
+0.46299716386396284
+0.4097159398806194
+0.4577874764555657
+0.4472284286872998
+3
+Results: person=  48  shot set=  (2, 4, 5)
+person                  48
+subset           (2, 4, 5)
+# shots                  3
+Feature Set              3
+AccLDAInd          0.94544
+AccLDALiu          0.93287
+AccLDA10BB        0.940893
+AccLDA11BB        0.944905
+AccQDAInd         0.935544
+AccQDALiu          0.94437
+AccQDA10BB        0.934742
+AccQDA11BB        0.920032
+AccKNNInd          0.93394
+AccKNNIndGen      0.949719
+AccKNNLiu         0.939823
+AccKNN10BB        0.945173
+AccKNN11BB        0.948114
+AccSVMInd          0.86253
+AccSVMGIndGen     0.949452
+AccSVMLiu         0.938754
+AccSVM10BB        0.939556
+AccSVM11BB        0.940091
+Name: 43, dtype: object
+0.16044000570798653
+0.4707195534411767
+0.38785317576305894
+0.4470498294980525
+0.44931759015952283
+3
+Results: person=  48  shot set=  (3, 4, 5)
+person                  48
+subset           (3, 4, 5)
+# shots                  3
+Feature Set              3
+AccLDAInd          0.91602
+AccLDALiu         0.938754
+AccLDA10BB        0.940626
+AccLDA11BB        0.939289
+AccQDAInd          0.93073
+AccQDALiu         0.944638
+AccQDA10BB        0.926718
+AccQDA11BB        0.908799
+AccKNNInd         0.922707
+AccKNNIndGen      0.940091
+AccKNNLiu         0.944638
+AccKNN10BB        0.946777
+AccKNN11BB        0.938219
+AccSVMInd          0.84675
+AccSVMGIndGen     0.937149
+AccSVMLiu         0.936347
+AccSVM10BB        0.929393
+AccSVM11BB        0.928323
+Name: 44, dtype: object
+0.16246656720884792
+0.474587653456304
+0.415737768734903
+0.44724310969755016
+0.4242661432732345
+3
+Results: person=  48  shot set=  (1, 2, 3, 4)
+person                     48
+subset           (1, 2, 3, 4)
+# shots                     4
+Feature Set                 3
+AccLDAInd            0.938486
+AccLDALiu            0.946242
+AccLDA10BB           0.948649
+AccLDA11BB           0.952394
+AccQDAInd            0.902648
+AccQDALiu            0.950789
+AccQDA10BB           0.938754
+AccQDA11BB           0.927521
+AccKNNInd            0.933672
+AccKNNIndGen           0.9433
+AccKNNLiu            0.943835
+AccKNN10BB           0.938486
+AccKNN11BB           0.946777
+AccSVMInd            0.878577
+AccSVMGIndGen        0.941696
+AccSVMLiu            0.942498
+AccSVM10BB           0.939289
+AccSVM11BB           0.936614
+Name: 45, dtype: object
+0.15541346429197686
+0.4340214005080281
+0.41510835784545524
+0.46336101244137806
+0.46239184561786256
+3
+Results: person=  48  shot set=  (1, 2, 3, 5)
+person                     48
+subset           (1, 2, 3, 5)
+# shots                     4
+Feature Set                 3
+AccLDAInd            0.938486
+AccLDALiu              0.9318
+AccLDA10BB            0.94437
+AccLDA11BB           0.949452
+AccQDAInd            0.908264
+AccQDALiu            0.950254
+AccQDA10BB           0.942498
+AccQDA11BB           0.929125
+AccKNNInd            0.937416
+AccKNNIndGen          0.94651
+AccKNNLiu              0.9433
+AccKNN10BB           0.935544
+AccKNN11BB            0.94437
+AccSVMInd             0.90666
+AccSVMGIndGen        0.944638
+AccSVMLiu            0.945975
+AccSVM10BB           0.938219
+AccSVM11BB           0.941428
+Name: 46, dtype: object
+0.15706441681651187
+0.4678520152461356
+0.42800593109603396
+0.4586939776885979
+0.450891886593686
+3
+Results: person=  48  shot set=  (1, 2, 4, 5)
+person                     48
+subset           (1, 2, 4, 5)
+# shots                     4
+Feature Set                 3
+AccLDAInd            0.945975
+AccLDALiu            0.932335
+AccLDA10BB           0.938754
+AccLDA11BB           0.945707
+AccQDAInd            0.941161
+AccQDALiu            0.952394
+AccQDA10BB           0.945975
+AccQDA11BB           0.934742
+AccKNNInd            0.940893
+AccKNNIndGen         0.945707
+AccKNNLiu            0.940358
+AccKNN10BB           0.938219
+AccKNN11BB           0.949719
+AccSVMInd            0.879914
+AccSVMGIndGen        0.943033
+AccSVMLiu            0.938754
+AccSVM10BB           0.937951
+AccSVM11BB           0.934474
+Name: 47, dtype: object
+0.14820557195617945
+0.48180112504084555
+0.4103421306857505
+0.45040710556437485
+0.45630346428302815
+3
+Results: person=  48  shot set=  (1, 3, 4, 5)
+person                     48
+subset           (1, 3, 4, 5)
+# shots                     4
+Feature Set                 3
+AccLDAInd            0.952661
+AccLDALiu            0.941161
+AccLDA10BB           0.942231
+AccLDA11BB           0.942498
+AccQDAInd             0.93287
+AccQDALiu            0.949184
+AccQDA10BB           0.934207
+AccQDA11BB           0.915485
+AccKNNInd            0.932602
+AccKNNIndGen         0.944638
+AccKNNLiu             0.94437
+AccKNN10BB           0.941428
+AccKNN11BB           0.940358
+AccSVMInd            0.854239
+AccSVMGIndGen        0.935009
+AccSVMLiu             0.93394
+AccSVM10BB           0.933137
+AccSVM11BB           0.926451
+Name: 48, dtype: object
+0.16300708850391216
+0.4695290802150232
+0.39828264407360975
+0.4544601977799367
+0.4494330409977208
+3
+Results: person=  48  shot set=  (2, 3, 4, 5)
+person                     48
+subset           (2, 3, 4, 5)
+# shots                     4
+Feature Set                 3
+AccLDAInd            0.955871
+AccLDALiu            0.946242
+AccLDA10BB           0.949719
+AccLDA11BB           0.953196
+AccQDAInd            0.928591
+AccQDALiu            0.944638
+AccQDA10BB           0.936614
+AccQDA11BB             0.9203
+AccKNNInd            0.940358
+AccKNNIndGen         0.949987
+AccKNNLiu            0.949719
+AccKNN10BB           0.946777
+AccKNN11BB            0.94651
+AccSVMInd            0.886868
+AccSVMGIndGen        0.949452
+AccSVMLiu            0.945975
+AccSVM10BB           0.938754
+AccSVM11BB           0.942231
+Name: 49, dtype: object
+bject
+2
+Name: 49, dtype: object

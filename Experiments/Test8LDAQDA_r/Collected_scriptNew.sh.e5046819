@@ -1,0 +1,330 @@
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 807, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 807, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 807, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 807, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 807, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+CollectedData_Arg_SegTEST.py:431: RuntimeWarning: invalid value encountered in log
+  a = -.5 * np.log(det)
+CollectedData_Arg_SegTEST.py:276: RuntimeWarning: invalid value encountered in true_divide
+  precision = trueP / (trueP + falseP)
+CollectedData_Arg_SegTEST.py:172: RuntimeWarning: invalid value encountered in log
+  partC = np.log(np.linalg.det(cov_1) / np.linalg.det(cov_2))
+/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/linalg/linalg.py:2116: RuntimeWarning: invalid value encountered in det
+  r = _umath_linalg.det(a, signature=signature)
+Traceback (most recent call last):
+  File "CollectedData_Arg_SegTEST.py", line 862, in <module>
+    , nameFile, startPerson, endPerson,allFeatures)
+  File "CollectedData_Arg_SegTEST.py", line 635, in evaluation
+    xTrain11BBL, yTrain11BBL = SamplesFew_ShotTrainedModels(trainedModel10BBQDA, samples, classes)
+  File "CollectedData_Arg_SegTEST.py", line 509, in SamplesFew_ShotTrainedModels
+    xTrain.extend(np.random.multivariate_normal(meanDistribution, covDistribution, samples, check_valid='ignore'))
+  File "mtrand.pyx", line 4084, in numpy.random.mtrand.RandomState.multivariate_normal
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/linalg/decomp_svd.py", line 109, in svd
+    a1 = _asarray_validated(a, check_finite=check_finite)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/scipy/_lib/_util.py", line 246, in _asarray_validated
+    a = toarray(a)
+  File "/home/595/aj8223/.local/lib/python3.6/site-packages/numpy/lib/function_base.py", line 499, in asarray_chkfinite
+    "array must not contain infs or NaNs")
+ValueError: array must not contain infs or NaNs
+=>> PBS: job killed: walltime 36073 exceeded limit 36000
