@@ -1,0 +1,421 @@
+Samples:  2986  step:  17
+3
+Results: person=  6  shot set=  (1,)
+person                                                         6
+subset                                                      (1,)
+# shots                                                        1
+Feature Set                                                    3
+wLDA           [1.0, 0.9722222222222222, 0.891245253311105, 1...
+wQDA           [0.8991181657848324, 0.9629629629629631, 0.666...
+AccLDAInd                                               0.427581
+AccLDAGen                                               0.314719
+AccLDAProp                                              0.439221
+AccLDALiu                                               0.425162
+AccLDAPropQ                                             0.438763
+tPropL                                                   59.8125
+tIndL                                                  0.0073626
+tGenL                                                   0.797348
+wMeanLDA                                                0.914515
+AccQDAInd                                               0.369254
+AccQDAGen                                               0.198326
+AccQDAProp                                              0.375401
+AccQDALiu                                               0.343817
+AccQDAPropL                                             0.403714
+tPropQ                                                   110.953
+tIndQ                                                  0.0251627
+tGenQ                                                   0.209466
+wMeanQDA                                                0.803338
+Name: 0, dtype: object
+Samples:  3039  step:  17
+3
+Results: person=  6  shot set=  (2,)
+person                                                         6
+subset                                                      (2,)
+# shots                                                        1
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 1.0, 1.0, 0.9772727272727272, 0.933...
+wQDA           [0.9861111111111112, 1.0, 0.9127305443094917, ...
+AccLDAInd                                               0.550459
+AccLDAGen                                                0.32874
+AccLDAProp                                              0.558136
+AccLDALiu                                                0.52336
+AccLDAPropQ                                              0.55584
+tPropL                                                   45.6039
+tIndL                                                  0.0267301
+tGenL                                                   0.791842
+wMeanLDA                                                0.927754
+AccQDAInd                                               0.482283
+AccQDAGen                                               0.241732
+AccQDAProp                                              0.494357
+AccQDALiu                                               0.483596
+AccQDAPropL                                             0.446391
+tPropQ                                                   59.8538
+tIndQ                                                 0.00508428
+tGenQ                                                   0.204373
+wMeanQDA                                                0.836761
+Name: 1, dtype: object
+Samples:  3091  step:  18
+3
+Results: person=  6  shot set=  (3,)
+person                                                         6
+subset                                                      (3,)
+# shots                                                        1
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.8639222412807319, 0.9795918367346...
+wQDA           [0.9079218106995884, 1.0, 0.798966087675765, 0...
+AccLDAInd                                               0.533579
+AccLDAGen                                               0.310969
+AccLDAProp                                              0.531143
+AccLDALiu                                                0.49256
+AccLDAPropQ                                             0.520477
+tPropL                                                   58.7522
+tIndL                                                  0.0267265
+tGenL                                                   0.725052
+wMeanLDA                                                0.917596
+AccQDAInd                                               0.481301
+AccQDAGen                                               0.235317
+AccQDAProp                                              0.481696
+AccQDALiu                                               0.471556
+AccQDAPropL                                             0.439558
+tPropQ                                                   108.453
+tIndQ                                                 0.00506353
+tGenQ                                                   0.195327
+wMeanQDA                                                0.821731
+Name: 2, dtype: object
+Samples:  3157  step:  18
+3
+Results: person=  6  shot set=  (4,)
+person                                                         6
+subset                                                      (4,)
+# shots                                                        1
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.8605880179398006, 1.0, 0.96581196...
+wQDA           [0.9382716049382717, 0.9753086419753088, 0.809...
+AccLDAInd                                               0.529824
+AccLDAGen                                               0.300357
+AccLDAProp                                              0.530089
+AccLDALiu                                               0.478574
+AccLDAPropQ                                             0.522153
+tPropL                                                   59.9964
+tIndL                                                  0.0269122
+tGenL                                                    0.76535
+wMeanLDA                                                0.922922
+AccQDAInd                                               0.492594
+AccQDAGen                                               0.261539
+AccQDAProp                                              0.499206
+AccQDALiu                                               0.460653
+AccQDAPropL                                             0.450536
+tPropQ                                                   111.239
+tIndQ                                                 0.00512123
+tGenQ                                                   0.211042
+wMeanQDA                                                0.803844
+Name: 3, dtype: object
+Samples:  6025  step:  34
+3
+Results: person=  6  shot set=  (1, 2)
+person                                                         6
+subset                                                    (1, 2)
+# shots                                                        2
+Feature Set                                                    3
+wLDA           [1.0, 0.9771241830065358, 0.8702837195484254, ...
+wQDA           [1.0, 1.0, 0.8997427693079866, 0.9555555555555...
+AccLDAInd                                               0.552065
+AccLDAGen                                               0.355557
+AccLDAProp                                              0.564714
+AccLDALiu                                               0.519585
+AccLDAPropQ                                             0.563979
+tPropL                                                     60.76
+tIndL                                                  0.0121918
+tGenL                                                   0.797325
+wMeanLDA                                                0.904218
+AccQDAInd                                               0.540558
+AccQDAGen                                               0.279501
+AccQDAProp                                              0.558267
+AccQDALiu                                               0.496246
+AccQDAPropL                                             0.559083
+tPropQ                                                   111.909
+tIndQ                                                  0.0273504
+tGenQ                                                   0.203688
+wMeanQDA                                                0.891665
+Name: 4, dtype: object
+Samples:  6077  step:  34
+3
+Results: person=  6  shot set=  (1, 3)
+person                                                         6
+subset                                                    (1, 3)
+# shots                                                        2
+Feature Set                                                    3
+wLDA           [1.0, 0.974124809741248, 0.8829384268214056, 0...
+wQDA           [0.9693063228974831, 1.0, 0.880729103235497, 0...
+AccLDAInd                                               0.568267
+AccLDAGen                                               0.334617
+AccLDAProp                                              0.555155
+AccLDALiu                                               0.497377
+AccLDAPropQ                                             0.556548
+tPropL                                                   61.1402
+tIndL                                                  0.0324318
+tGenL                                                   0.749727
+wMeanLDA                                                0.900063
+AccQDAInd                                               0.543354
+AccQDAGen                                               0.276184
+AccQDAProp                                              0.555237
+AccQDALiu                                               0.497787
+AccQDAPropL                                             0.564498
+tPropQ                                                    112.03
+tIndQ                                                 0.00684619
+tGenQ                                                   0.176387
+wMeanQDA                                                0.903781
+Name: 5, dtype: object
+Samples:  6143  step:  35
+3
+Results: person=  6  shot set=  (1, 4)
+person                                                         6
+subset                                                    (1, 4)
+# shots                                                        2
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.8594865841842724, 1.0, 1.0, 0.882...
+wQDA           [1.0, 1.0, 0.8783068783068783, 0.9518518518518...
+AccLDAInd                                               0.567568
+AccLDAGen                                               0.322017
+AccLDAProp                                              0.545732
+AccLDALiu                                               0.478988
+AccLDAPropQ                                             0.545073
+tPropL                                                   38.3302
+tIndL                                                  0.0120072
+tGenL                                                   0.395575
+wMeanLDA                                                0.900704
+AccQDAInd                                               0.557927
+AccQDAGen                                               0.316332
+AccQDAProp                                              0.554219
+AccQDALiu                                                0.49761
+AccQDAPropL                                             0.557844
+tPropQ                                                   53.7842
+tIndQ                                                 0.00692463
+tGenQ                                                   0.112686
+wMeanQDA                                                 0.87739
+Name: 6, dtype: object
+Samples:  6130  step:  35
+3
+Results: person=  6  shot set=  (2, 3)
+person                                                         6
+subset                                                    (2, 3)
+# shots                                                        2
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.9016580903373357, 1.0, 1.0, 0.894...
+wQDA           [0.9846531614487416, 1.0, 0.9096494350617674, ...
+AccLDAInd                                               0.588032
+AccLDAGen                                               0.349658
+AccLDAProp                                              0.582435
+AccLDALiu                                               0.527122
+AccLDAPropQ                                             0.581447
+tPropL                                                   49.6375
+tIndL                                                   0.012181
+tGenL                                                   0.392827
+wMeanLDA                                                0.912004
+AccQDAInd                                               0.547123
+AccQDAGen                                               0.326776
+AccQDAProp                                              0.548769
+AccQDALiu                                               0.500617
+AccQDAPropL                                             0.540785
+tPropQ                                                   54.0677
+tIndQ                                                 0.00687933
+tGenQ                                                   0.100702
+wMeanQDA                                                0.894334
+Name: 7, dtype: object
+Samples:  6196  step:  35
+3
+Results: person=  6  shot set=  (2, 4)
+person                                                         6
+subset                                                    (2, 4)
+# shots                                                        2
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.8885091988540263, 0.9799054373522...
+wQDA           [1.0, 1.0, 0.9691808596918086, 0.9533817108032...
+AccLDAInd                                               0.571133
+AccLDAGen                                               0.335927
+AccLDAProp                                              0.565588
+AccLDALiu                                               0.510635
+AccLDAPropQ                                             0.565754
+tPropL                                                   60.8478
+tIndL                                                  0.0121241
+tGenL                                                   0.391795
+wMeanLDA                                                0.906863
+AccQDAInd                                                0.55905
+AccQDAGen                                               0.353141
+AccQDAProp                                              0.536704
+AccQDALiu                                               0.494579
+AccQDAPropL                                             0.536125
+tPropQ                                                   59.2645
+tIndQ                                                 0.00716734
+tGenQ                                                   0.103498
+wMeanQDA                                                0.890372
+Name: 8, dtype: object
+Samples:  6248  step:  35
+3
+Results: person=  6  shot set=  (3, 4)
+person                                                         6
+subset                                                    (3, 4)
+# shots                                                        2
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.8204990793469819, 1.0, 1.0, 0.844...
+wQDA           [1.0, 1.0, 0.8903202061096798, 0.9346822022778...
+AccLDAInd                                               0.558391
+AccLDAGen                                               0.313773
+AccLDAProp                                              0.553237
+AccLDALiu                                               0.487989
+AccLDAPropQ                                             0.547336
+tPropL                                                   30.2776
+tIndL                                                  0.0115771
+tGenL                                                   0.340047
+wMeanLDA                                                0.914519
+AccQDAInd                                               0.525725
+AccQDAGen                                                0.33289
+AccQDAProp                                              0.506109
+AccQDALiu                                               0.479927
+AccQDAPropL                                             0.507439
+tPropQ                                                   55.4072
+tIndQ                                                 0.00644851
+tGenQ                                                  0.0843754
+wMeanQDA                                                0.887857
+Name: 9, dtype: object
+Samples:  9116  step:  51
+3
+Results: person=  6  shot set=  (1, 2, 3)
+person                                                         6
+subset                                                 (1, 2, 3)
+# shots                                                        3
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.9102205653929791, 1.0, 0.95502645...
+wQDA           [0.9851851851851853, 1.0, 0.9368784099972007, ...
+AccLDAInd                                               0.595111
+AccLDAGen                                               0.378588
+AccLDAProp                                              0.597512
+AccLDALiu                                               0.539998
+AccLDAPropQ                                             0.598821
+tPropL                                                    30.198
+tIndL                                                  0.0166085
+tGenL                                                   0.381622
+wMeanLDA                                                  0.9093
+AccQDAInd                                               0.591618
+AccQDAGen                                               0.368438
+AccQDAProp                                               0.61159
+AccQDALiu                                               0.521227
+AccQDAPropL                                             0.614428
+tPropQ                                                    55.041
+tIndQ                                                 0.00794101
+tGenQ                                                   0.111264
+wMeanQDA                                                0.902695
+Name: 10, dtype: object
+Samples:  9182  step:  52
+3
+Results: person=  6  shot set=  (1, 2, 4)
+person                                                         6
+subset                                                 (1, 2, 4)
+# shots                                                        3
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.9350427350427348, 1.0, 0.95607235...
+wQDA           [0.9832970225127089, 1.0, 0.9383617193836172, ...
+AccLDAInd                                               0.589095
+AccLDAGen                                               0.365835
+AccLDAProp                                              0.589095
+AccLDALiu                                               0.518742
+AccLDAPropQ                                             0.586567
+tPropL                                                   29.8444
+tIndL                                                  0.0176857
+tGenL                                                   0.398112
+wMeanLDA                                                0.906504
+AccQDAInd                                               0.603166
+AccQDAGen                                               0.395295
+AccQDAProp                                              0.598659
+AccQDALiu                                               0.520062
+AccQDAPropL                                             0.600198
+tPropQ                                                   54.8895
+tIndQ                                                 0.00853372
+tGenQ                                                   0.104191
+wMeanQDA                                                0.902679
+Name: 11, dtype: object
+Samples:  9234  step:  52
+3
+Results: person=  6  shot set=  (1, 3, 4)
+person                                                         6
+subset                                                 (1, 3, 4)
+# shots                                                        3
+Feature Set                                                    3
+wLDA           [1.0, 1.0, 0.9269761838569178, 1.0, 1.0, 0.846...
+wQDA           [0.9826839826839827, 1.0, 0.9333333333333333, ...
+AccLDAInd                                                0.59414
+AccLDAGen                                               0.336318
+AccLDAProp                                              0.579768
+AccLDALiu                                               0.498397
+AccLDAPropQ                                             0.574903
+tPropL                                                   30.2003
+tIndL                                                  0.0176642
+tGenL                                                   0.403225
+wMeanLDA                                                0.916198
+AccQDAInd                                                0.58021
+AccQDAGen                                               0.379326
+AccQDAProp                                              0.577225
+AccQDALiu                                               0.512548
+AccQDAPropL                                             0.580873
+tPropQ                                                   55.4354
+tIndQ                                                 0.00955534
+tGenQ                                                   0.113517
+wMeanQDA                                                0.906745
+Name: 12, dtype: object
+Samples:  9287  step:  52
+3
+Results: person=  6  shot set=  (2, 3, 4)
+person                                                         6
+subset                                                 (2, 3, 4)
+# shots                                                        3
+Feature Set                                                    3
+wLDA           [1.0, 0.9735449735449736, 0.9181473361867974, ...
+wQDA           [1.0, 1.0, 0.9700374531835207, 0.9457107604389...
+AccLDAInd                                               0.583296
+AccLDAGen                                               0.354537
+AccLDAProp                                              0.580738
+AccLDALiu                                               0.515125
+AccLDAPropQ                                             0.574956
+tPropL                                                   30.6269
+tIndL                                                   0.018537
+tGenL                                                   0.403347
+wMeanLDA                                                0.912266
+AccQDAInd                                               0.557496
+AccQDAGen                                               0.390236
+AccQDAProp                                              0.536032
+AccQDALiu                                               0.501335
+AccQDAPropL                                             0.540036
+tPropQ                                                   55.8769
+tIndQ                                                 0.00866938
+tGenQ                                                   0.107989
+wMeanQDA                                                0.913184
+Name: 13, dtype: object
+Samples:  12273  step:  69
+3
+Results: person=  6  shot set=  (1, 2, 3, 4)
+person                                                         6
+subset                                              (1, 2, 3, 4)
+# shots                                                        4
+Feature Set                                                    3
+wLDA           [1.0, 0.9708561020036429, 0.8528091371228625, ...
+wQDA           [1.0, 1.0, 0.9487179487179487, 0.9802699896157...
+AccLDAInd                                               0.614552
+AccLDAGen                                               0.390776
+AccLDAProp                                              0.609391
+AccLDALiu                                               0.538961
+AccLDAPropQ                                             0.608558
+tPropL                                                   32.4742
+tIndL                                                  0.0236771
+tGenL                                                   0.402421
+wMeanLDA                                                0.900193
+AccQDAInd                                               0.614552
+AccQDAGen                                               0.440393
+AccQDAProp                                              0.614053
+AccQDALiu                                               0.536963
+AccQDAPropL                                             0.616384
+tPropQ                                                   57.4573
+tIndQ                                                   0.010349
+tGenQ                                                   0.113975
+wMeanQDA                                                 0.90749
+Name: 14, dtype: object
+ dtype: object

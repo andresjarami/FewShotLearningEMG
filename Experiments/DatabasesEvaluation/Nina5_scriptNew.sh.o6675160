@@ -1,0 +1,13 @@
+
+======================================================================================
+                  Resource Usage on 2020-06-09 00:47:53:
+   Job Id:             6675160.gadi-pbs
+   Project:            oj72
+   Exit Status:        0
+   Service Units:      57.31
+   NCPUs Requested:    25                     NCPUs Used: 25              
+                                           CPU Time Used: 21:47:19                                   
+   Memory Requested:   13.0GB                Memory Used: 11.74GB         
+   Walltime requested: 10:00:00            Walltime Used: 01:08:46        
+   JobFS requested:    100.0MB                JobFS used: 0B              
+======================================================================================
