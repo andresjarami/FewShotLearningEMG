@@ -274,9 +274,8 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
 
         ## CHANGES
         ## BATCH_SIZE FROM 128 TO None
-        ## shuffle=True to False
-        trainloader = torch.utils.data.DataLoader(train, batch_size=int(len(Y_fine_tune)), shuffle=True)
-        validationloader = torch.utils.data.DataLoader(validation, batch_size=int(len(labels_valid)), shuffle=True)
+        trainloader = torch.utils.data.DataLoader(train, batch_size=128, shuffle=True)
+        validationloader = torch.utils.data.DataLoader(validation, batch_size=128, shuffle=True)
 
         test_0 = TensorDataset(torch.from_numpy(np.array(X_test_0, dtype=np.float32)),
                                torch.from_numpy(np.array(Y_test_0, dtype=np.int32)))
@@ -543,7 +542,7 @@ if __name__ == '__main__':
 
     # CHANGES AJ
     classification_test = []
-    cycles = 3
+    cycles = 4
 
     for i in range(20):
         accuracy_test_0, accuracy_test_1, cl_accuracy_test = calculate_fitness(examples_training, labels_training,
