@@ -272,8 +272,7 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
         validation = TensorDataset(torch.from_numpy(np.array(valid_examples, dtype=np.float32)),
                                    torch.from_numpy(np.array(labels_valid, dtype=np.int32)))
 
-        ## CHANGES
-        ## BATCH_SIZE FROM 128 TO None
+        
         trainloader = torch.utils.data.DataLoader(train, batch_size=128, shuffle=True)
         validationloader = torch.utils.data.DataLoader(validation, batch_size=128, shuffle=True)
 
