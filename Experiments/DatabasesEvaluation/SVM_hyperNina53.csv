@@ -1,0 +1,11 @@
+,C,degree,kernel,gamma,person
+0,1,2,rbf,scale,1
+1,1,2,rbf,auto,2
+2,1,2,rbf,scale,3
+3,1,2,linear,scale,4
+4,10,2,rbf,scale,5
+5,1,2,rbf,scale,6
+6,1,2,rbf,auto,7
+7,1,2,rbf,scale,8
+8,1,2,rbf,auto,9
+9,1,2,rbf,scale,10

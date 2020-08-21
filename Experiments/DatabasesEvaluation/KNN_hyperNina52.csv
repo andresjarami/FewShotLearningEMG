@@ -1,0 +1,11 @@
+,p,n_neighbors,weights,person
+0,1,7,uniform,1
+1,1,7,distance,2
+2,1,7,distance,3
+3,1,7,uniform,4
+4,1,7,distance,5
+5,1,7,distance,6
+6,1,7,uniform,7
+7,1,7,distance,8
+8,1,7,uniform,9
+9,1,7,distance,10
