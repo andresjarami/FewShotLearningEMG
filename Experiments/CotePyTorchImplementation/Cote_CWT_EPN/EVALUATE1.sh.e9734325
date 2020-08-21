@@ -1,0 +1,8 @@
+/home/595/aj8223/Jupyter/Experiment1/CWT_EPN/Wavelet_CNN_Target_Network.py:100: UserWarning: nn.init.kaiming_normal is now deprecated in favor of nn.init.kaiming_normal_.
+  torch.nn.init.kaiming_normal(m.weight)
+/home/595/aj8223/Jupyter/Experiment1/CWT_EPN/Wavelet_CNN_Target_Network.py:103: UserWarning: nn.init.kaiming_normal is now deprecated in favor of nn.init.kaiming_normal_.
+  torch.nn.init.kaiming_normal(m.weight)
+/home/595/aj8223/.local/lib/python3.6/site-packages/torch/nn/_reduction.py:43: UserWarning: size_average and reduce args will be deprecated, please use reduction='sum' instead.
+  warnings.warn(warning.format(ret))
+/home/595/aj8223/Jupyter/Experiment1/CWT_EPN/Wavelet_CNN_Target_Network.py:136: UserWarning: Implicit dimension choice for log_softmax has been deprecated. Change the call to include dim=X as an argument.
+  return nn.functional.log_softmax(self._output(fc2_output))
