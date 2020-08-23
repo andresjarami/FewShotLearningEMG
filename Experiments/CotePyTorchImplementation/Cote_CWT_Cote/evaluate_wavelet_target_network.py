@@ -432,6 +432,7 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
                         loss = loss.data
                     except ValueError:
                         print('the batch size is incorrect')
+                        print(inputs.size())
                     except:
                         print("Something else went wrong")
 

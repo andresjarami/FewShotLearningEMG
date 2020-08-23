@@ -270,11 +270,8 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
         validation = TensorDataset(torch.from_numpy(np.array(valid_examples, dtype=np.float32)),
                                    torch.from_numpy(np.array(labels_valid, dtype=np.int32)))
 
-        ## CHANGES
-        ## BATCH_SIZE FROM 128 TO None
-        ## shuffle=True to False
-        trainloader = torch.utils.data.DataLoader(train, batch_size=int(len(Y_fine_tune)), shuffle=True)
-        validationloader = torch.utils.data.DataLoader(validation, batch_size=int(len(labels_valid)), shuffle=True)
+        trainloader = torch.utils.data.DataLoader(train, batch_size=128, shuffle=True)
+        validationloader = torch.utils.data.DataLoader(validation, batch_size=128, shuffle=True)
 
         test_0 = TensorDataset(torch.from_numpy(np.array(X_test_0, dtype=np.float32)),
                                torch.from_numpy(np.array(Y_test_0, dtype=np.int32)))
@@ -397,15 +394,25 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
                 # zero the parameter gradients
                 optimizer.zero_grad()
                 if phase == 'train':
-                    cnn.train()
-                    # forward
 
-                    outputs = cnn(inputs)
-                    _, predictions = torch.max(outputs.data, 1)
-                    loss = criterion(outputs, labels.long())
-                    loss.backward()
-                    optimizer.step()
-                    loss = loss.data
+                    # CHANGE
+                    # Add TRY, in some cases batch size is equal to 1
+                    # EX: ValueError: Expected more than 1 value per channel when training, got input size torch.Size([1, 48, 1, 1])
+                    try:
+                        cnn.train()
+                        # forward
+                        outputs = cnn(inputs)
+                        _, predictions = torch.max(outputs.data, 1)
+
+                        loss = criterion(outputs, labels.long())
+                        loss.backward()
+                        optimizer.step()
+                        loss = loss.data
+                    except ValueError:
+                        print('the batch size is incorrect')
+                        print(inputs.size())
+                    except:
+                        print("Something else went wrong")
 
 
 
@@ -516,11 +523,11 @@ if __name__ == '__main__':
 
     # CHANGES AJ
     classification_test = []
-    cycles = 3
+    cycles = 1
 
     for i in range(20):
         accuracy_test_0, cl_accuracy_test = calculate_fitness(examples_training, labels_training,
-                                                                examples_validation0, labels_validation0, cycles)
+                                                              examples_validation0, labels_validation0, cycles)
 
         test_0.append(accuracy_test_0)
         classification_test.append(cl_accuracy_test)
@@ -542,5 +549,3 @@ if __name__ == '__main__':
     with open('Pytorch_results_' + str(cycles) + '_cycles.csv', 'w', newline='') as myfile:
         writer = csv.writer(myfile)
         writer.writerows(save_results)
-
-
