@@ -1123,7 +1123,7 @@ def uploadDatabases(typeDatabase, featureSet=1):
     # Setting general variables
 
     CH = 8
-    nameFile = ''
+    nameFile = '295'
     if typeDatabase == 'EPN':
         carpet = 'ExtractedDataCollectedData'
         classes = 5
