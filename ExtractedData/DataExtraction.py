@@ -152,9 +152,9 @@ msrMatrix = []
 wampMatrix = []
 rmsMatrix = []
 
-database = 'Nina5'
+database = 'EPN'
 sampleRate = 200
-# wind 260 over 235
+# wind 260 over 235 Cote-Allard
 window = 295
 overlap = 290
 nameFile='295'
@@ -164,7 +164,7 @@ if database == 'Nina5':
     ## NINA PRO 5 DATABASE
     rpt = 6
     ch = 16
-    classes = 17
+    classes = 18
     people = 10
 
     windowSamples = int(window * sampleRate / 1000)
