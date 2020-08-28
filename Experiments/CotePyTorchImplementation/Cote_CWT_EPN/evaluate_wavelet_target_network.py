@@ -167,7 +167,7 @@ def pre_train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epoch
                     else:
                         cnn.eval()
 
-                        accumulated_predicted = Variable(torch.zeros(len(inputs), 7)).cuda()
+                        accumulated_predicted = Variable(torch.zeros(len(inputs), 5)).cuda()
                         loss_intermediary = 0.
                         total_sub_pass = 0
                         for repeat in range(20):
@@ -419,7 +419,7 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
                 else:
                     cnn.eval()
 
-                    accumulated_predicted = Variable(torch.zeros(len(inputs), 7)).cuda()
+                    accumulated_predicted = Variable(torch.zeros(len(inputs), 5)).cuda()
                     loss_intermediary = 0.
                     total_sub_pass = 0
                     for repeat in range(20):
