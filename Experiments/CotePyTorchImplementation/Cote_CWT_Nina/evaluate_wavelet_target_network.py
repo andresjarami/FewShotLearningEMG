@@ -31,52 +31,54 @@ def scramble(examples, labels, second_labels=[]):
         return new_examples, new_labels
 
 
-def calculate_pre_training(examples, labels):
+def calculate_pre_training(examples, labels, person):
     list_train_dataloader = []
     list_validation_dataloader = []
     human_number = 0
-    for j in range(19):
-        examples_personne_training = []
-        labels_gesture_personne_training = []
-        labels_human_personne_training = []
+    for j in range(10):
+        if j is not person:
+            examples_personne_training = []
+            labels_gesture_personne_training = []
+            labels_human_personne_training = []
 
-        examples_personne_valid = []
-        labels_gesture_personne_valid = []
-        labels_human_personne_valid = []
+            examples_personne_valid = []
+            labels_gesture_personne_valid = []
+            labels_human_personne_valid = []
 
-        for k in range(len(examples[j])):
-            if k < 21:
-                examples_personne_training.extend(examples[j][k])
-                labels_gesture_personne_training.extend(labels[j][k])
-                labels_human_personne_training.extend(human_number * np.ones(len(labels[j][k])))
-            else:
-                examples_personne_valid.extend(examples[j][k])
-                labels_gesture_personne_valid.extend(labels[j][k])
-                labels_human_personne_valid.extend(human_number * np.ones(len(labels[j][k])))
+            for k in range(len(examples[j])):
+                if (k % 6) < 4:
+                    examples_personne_training.extend(examples[j][k])
+                    labels_gesture_personne_training.extend(labels[j][k])
+                    labels_human_personne_training.extend(human_number * np.ones(len(labels[j][k])))
+                else:
+                    examples_personne_valid.extend(examples[j][k])
+                    labels_gesture_personne_valid.extend(labels[j][k])
+                    labels_human_personne_valid.extend(human_number * np.ones(len(labels[j][k])))
 
-        print(np.shape(examples_personne_training))
-        examples_personne_scrambled, labels_gesture_personne_scrambled, labels_human_personne_scrambled = scramble(
-            examples_personne_training, labels_gesture_personne_training, labels_human_personne_training)
+            print(np.shape(examples_personne_training))
+            examples_personne_scrambled, labels_gesture_personne_scrambled, labels_human_personne_scrambled = scramble(
+                examples_personne_training, labels_gesture_personne_training, labels_human_personne_training)
 
-        examples_personne_scrambled_valid, labels_gesture_personne_scrambled_valid, labels_human_personne_scrambled_valid = scramble(
-            examples_personne_valid, labels_gesture_personne_valid, labels_human_personne_valid)
+            examples_personne_scrambled_valid, labels_gesture_personne_scrambled_valid, labels_human_personne_scrambled_valid = scramble(
+                examples_personne_valid, labels_gesture_personne_valid, labels_human_personne_valid)
 
-        train = TensorDataset(torch.from_numpy(np.array(examples_personne_scrambled, dtype=np.float32)),
-                              torch.from_numpy(np.array(labels_gesture_personne_scrambled, dtype=np.int32)))
-        validation = TensorDataset(torch.from_numpy(np.array(examples_personne_scrambled_valid, dtype=np.float32)),
-                                   torch.from_numpy(np.array(labels_gesture_personne_scrambled_valid, dtype=np.int32)))
+            train = TensorDataset(torch.from_numpy(np.array(examples_personne_scrambled, dtype=np.float32)),
+                                  torch.from_numpy(np.array(labels_gesture_personne_scrambled, dtype=np.int32)))
+            validation = TensorDataset(torch.from_numpy(np.array(examples_personne_scrambled_valid, dtype=np.float32)),
+                                       torch.from_numpy(
+                                           np.array(labels_gesture_personne_scrambled_valid, dtype=np.int32)))
 
-        trainLoader = torch.utils.data.DataLoader(train, batch_size=3315, shuffle=True, drop_last=True)
-        validationLoader = torch.utils.data.DataLoader(validation, batch_size=1312, shuffle=True, drop_last=True)
+            trainLoader = torch.utils.data.DataLoader(train, batch_size=3315, shuffle=True, drop_last=True)
+            validationLoader = torch.utils.data.DataLoader(validation, batch_size=1312, shuffle=True, drop_last=True)
 
-        list_train_dataloader.append(trainLoader)
-        list_validation_dataloader.append(validationLoader)
+            list_train_dataloader.append(trainLoader)
+            list_validation_dataloader.append(validationLoader)
 
-        human_number += 1
-        print("Shape training : ", np.shape(examples_personne_scrambled))
-        print("Shape valid : ", np.shape(examples_personne_scrambled_valid))
+            human_number += 1
+            print("Shape training : ", np.shape(examples_personne_scrambled))
+            print("Shape valid : ", np.shape(examples_personne_scrambled_valid))
 
-    cnn = Wavelet_CNN_Target_Network.SourceNetwork(number_of_class=17, dropout_rate=.35).cuda()
+    cnn = Wavelet_CNN_Target_Network.SourceNetwork(number_of_class=18, dropout_rate=.35).cuda()
 
     criterion = nn.NLLLoss(size_average=False)
     optimizer = optim.Adam(cnn.parameters(), lr=0.0404709)
@@ -158,7 +160,7 @@ def pre_train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epoch
                     else:
                         cnn.eval()
 
-                        accumulated_predicted = Variable(torch.zeros(len(inputs), 7)).cuda()
+                        accumulated_predicted = Variable(torch.zeros(len(inputs), 18)).cuda()
                         loss_intermediary = 0.
                         total_sub_pass = 0
                         for repeat in range(20):
@@ -220,165 +222,121 @@ def pre_train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epoch
     torch.save(best_weights, 'best_pre_train_weights_target_wavelet.pt')
 
 
-def calculate_fitness(examples_training, labels_training, examples_test_0, labels_test_0, examples_test_1,
-                      labels_test_1, cycles):
+def calculate_fitness(examples_training, labels_training, examples_test_0, labels_test_0, cycles, person):
     accuracy_test0 = []
-    accuracy_test1 = []
+
     # AJ
     CLaccuracy_test = []
 
     # initialized_weights = np.load("initialized_weights.npy")
-    for dataset_index in range(9):
-        # for dataset_index in [11, 15]:
-        X_fine_tune_train, Y_fine_tune_train = [], []
-        for label_index in range(len(labels_training)):
-            if label_index == dataset_index:
-                print("Current dataset test : ", dataset_index)
-                for example_index in range(len(examples_training[label_index])):
-                    if (example_index < (cycles * 7)):
-                        X_fine_tune_train.extend(examples_training[label_index][example_index])
-                        Y_fine_tune_train.extend(labels_training[label_index][example_index])
+    # for dataset_index in range(10):
+    dataset_index = person
+    # for dataset_index in [11, 15]:
+    X_fine_tune_train, Y_fine_tune_train = [], []
+    for label_index in range(len(labels_training)):
+        if label_index == dataset_index:
+            print("Current dataset test : ", dataset_index)
+            for example_index in range(len(examples_training[label_index])):
+                if (example_index % 6) < cycles:
+                    X_fine_tune_train.extend(examples_training[label_index][example_index])
+                    Y_fine_tune_train.extend(labels_training[label_index][example_index])
 
-        X_test_0, Y_test_0, repetitions = [], [], []
-        for label_index in range(len(labels_test_0)):
-            if label_index == dataset_index:
-                for example_index in range(len(examples_test_0[label_index])):
+    X_test_0, Y_test_0, repetitions = [], [], []
+    for label_index in range(len(labels_test_0)):
+        if label_index == dataset_index:
+            for example_index in range(len(examples_test_0[label_index])):
+                if (example_index % 6) > 3:
                     X_test_0.extend(examples_test_0[label_index][example_index])
                     Y_test_0.extend(labels_test_0[label_index][example_index])
                     # AJ
                     repetitions.append(len(labels_test_0[label_index][example_index]))
 
-        X_test_1, Y_test_1 = [], []
-        for label_index in range(len(labels_test_1)):
-            if label_index == dataset_index:
-                for example_index in range(len(examples_test_1[label_index])):
-                    X_test_1.extend(examples_test_1[label_index][example_index])
-                    Y_test_1.extend(labels_test_1[label_index][example_index])
-                    # AJ
-                    repetitions.append(len(labels_test_1[label_index][example_index]))
+    X_fine_tune, Y_fine_tune = scramble(X_fine_tune_train, Y_fine_tune_train)
+    valid_examples = X_fine_tune[0:int(len(X_fine_tune) * 0.1)]
+    labels_valid = Y_fine_tune[0:int(len(Y_fine_tune) * 0.1)]
 
-        X_fine_tune, Y_fine_tune = scramble(X_fine_tune_train, Y_fine_tune_train)
-        valid_examples = X_fine_tune[0:int(len(X_fine_tune) * 0.1)]
-        labels_valid = Y_fine_tune[0:int(len(Y_fine_tune) * 0.1)]
+    X_fine_tune = X_fine_tune[int(len(X_fine_tune) * 0.1):]
+    Y_fine_tune = Y_fine_tune[int(len(Y_fine_tune) * 0.1):]
 
-        X_fine_tune = X_fine_tune[int(len(X_fine_tune) * 0.1):]
-        Y_fine_tune = Y_fine_tune[int(len(Y_fine_tune) * 0.1):]
+    print(torch.from_numpy(np.array(Y_fine_tune, dtype=np.int32)).size(0))
+    print(np.shape(np.array(X_fine_tune, dtype=np.float32)))
+    train = TensorDataset(torch.from_numpy(np.array(X_fine_tune, dtype=np.float32)),
+                          torch.from_numpy(np.array(Y_fine_tune, dtype=np.int32)))
+    validation = TensorDataset(torch.from_numpy(np.array(valid_examples, dtype=np.float32)),
+                               torch.from_numpy(np.array(labels_valid, dtype=np.int32)))
 
-        print(torch.from_numpy(np.array(Y_fine_tune, dtype=np.int32)).size(0))
-        print(np.shape(np.array(X_fine_tune, dtype=np.float32)))
-        train = TensorDataset(torch.from_numpy(np.array(X_fine_tune, dtype=np.float32)),
-                              torch.from_numpy(np.array(Y_fine_tune, dtype=np.int32)))
-        validation = TensorDataset(torch.from_numpy(np.array(valid_examples, dtype=np.float32)),
-                                   torch.from_numpy(np.array(labels_valid, dtype=np.int32)))
+    trainloader = torch.utils.data.DataLoader(train, batch_size=128, shuffle=True)
+    validationloader = torch.utils.data.DataLoader(validation, batch_size=128, shuffle=True)
 
-        trainloader = torch.utils.data.DataLoader(train, batch_size=128, shuffle=True)
-        validationloader = torch.utils.data.DataLoader(validation, batch_size=128, shuffle=True)
+    test_0 = TensorDataset(torch.from_numpy(np.array(X_test_0, dtype=np.float32)),
+                           torch.from_numpy(np.array(Y_test_0, dtype=np.int32)))
+    # test_1 = TensorDataset(torch.from_numpy(np.array(X_test_1, dtype=np.float32)),
+    #                        torch.from_numpy(np.array(Y_test_1, dtype=np.int32)))
 
-        test_0 = TensorDataset(torch.from_numpy(np.array(X_test_0, dtype=np.float32)),
-                               torch.from_numpy(np.array(Y_test_0, dtype=np.int32)))
-        test_1 = TensorDataset(torch.from_numpy(np.array(X_test_1, dtype=np.float32)),
-                               torch.from_numpy(np.array(Y_test_1, dtype=np.int32)))
+    test_0_loader = torch.utils.data.DataLoader(test_0, batch_size=1, shuffle=False)
+    # test_1_loader = torch.utils.data.DataLoader(test_1, batch_size=1, shuffle=False)
 
-        test_0_loader = torch.utils.data.DataLoader(test_0, batch_size=1, shuffle=False)
-        test_1_loader = torch.utils.data.DataLoader(test_1, batch_size=1, shuffle=False)
+    pre_trained_weights = torch.load('best_pre_train_weights_target_wavelet.pt')
 
-        pre_trained_weights = torch.load('best_pre_train_weights_target_wavelet.pt')
+    cnn = Wavelet_CNN_Target_Network.TargetNetwork(number_of_class=18,
+                                                   weights_pre_trained_cnn=pre_trained_weights).cuda()
 
-        cnn = Wavelet_CNN_Target_Network.TargetNetwork(number_of_class=17,
-                                                       weights_pre_trained_cnn=pre_trained_weights).cuda()
+    criterion = nn.NLLLoss(size_average=False)
+    optimizer = optim.Adam(filter(lambda p: p.requires_grad, cnn.parameters()), lr=0.0404709)
 
-        criterion = nn.NLLLoss(size_average=False)
-        optimizer = optim.Adam(filter(lambda p: p.requires_grad, cnn.parameters()), lr=0.0404709)
+    precision = 1e-8
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, mode='min', factor=.2, patience=5,
+                                                     verbose=True, eps=precision)
 
-        precision = 1e-8
-        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, mode='min', factor=.2, patience=5,
-                                                         verbose=True, eps=precision)
+    cnn = train_model(cnn, criterion, optimizer, scheduler,
+                      dataloaders={"train": trainloader, "val": validationloader}, precision=precision)
 
-        cnn = train_model(cnn, criterion, optimizer, scheduler,
-                          dataloaders={"train": trainloader, "val": validationloader}, precision=precision)
+    cnn.eval()
+    total = 0
+    correct_prediction_test_0 = 0
 
-        cnn.eval()
-        total = 0
-        correct_prediction_test_0 = 0
+    # CHANGES AJ
+    idx = 0
+    rp = 0
+    auxVect = []
+    correct_prediction_CL_test = 0
+    total_prediction = 0
 
-        # CHANGES AJ
-        idx = 0
-        rp = 0
-        auxVect = []
-        correct_prediction_CL_test = 0
-        total_prediction = 0
+    for k, data_test_0 in enumerate(test_0_loader, 0):
+        # get the inputs
+        inputs_test_0, ground_truth_test_0 = data_test_0
+        inputs_test_0, ground_truth_test_0 = Variable(inputs_test_0.cuda()), Variable(ground_truth_test_0.cuda())
 
-        for k, data_test_0 in enumerate(test_0_loader, 0):
-            # get the inputs
-            inputs_test_0, ground_truth_test_0 = data_test_0
-            inputs_test_0, ground_truth_test_0 = Variable(inputs_test_0.cuda()), Variable(ground_truth_test_0.cuda())
-
-            concat_input = inputs_test_0
-            for i in range(20):
-                concat_input = torch.cat([concat_input, inputs_test_0])
-            outputs_test_0 = cnn(concat_input)
-            _, predicted = torch.max(outputs_test_0.data, 1)
-            correct_prediction_test_0 += (mode(predicted.cpu().numpy())[0][0] ==
-                                          ground_truth_test_0.data.cpu().numpy()).sum()
-            total += ground_truth_test_0.size(0)
-
-            # CHANGES AJ
-            rp += 1
-            auxVect.append(mode(predicted.cpu().numpy())[0][0])
-            if rp == repetitions[idx]:
-                total_prediction += 1
-                if mode(auxVect)[0][0] == ground_truth_test_0.data.cpu().numpy()[0]:
-                    correct_prediction_CL_test += 1
-                auxVect = []
-                rp = 0
-                idx += 1
-
-        print("ACCURACY TEST_0 FINAL : %.3f %%" % (100 * float(correct_prediction_test_0) / float(total)))
-        accuracy_test0.append(100 * float(correct_prediction_test_0) / float(total))
-
-        total = 0
-        correct_prediction_test_1 = 0
+        concat_input = inputs_test_0
+        for i in range(20):
+            concat_input = torch.cat([concat_input, inputs_test_0])
+        outputs_test_0 = cnn(concat_input)
+        _, predicted = torch.max(outputs_test_0.data, 1)
+        correct_prediction_test_0 += (mode(predicted.cpu().numpy())[0][0] ==
+                                      ground_truth_test_0.data.cpu().numpy()).sum()
+        total += ground_truth_test_0.size(0)
 
         # CHANGES AJ
-        idx = 0
-        rp = 0
-        auxVect = []
+        rp += 1
+        auxVect.append(mode(predicted.cpu().numpy())[0][0])
+        if rp == repetitions[idx]:
+            total_prediction += 1
+            if mode(auxVect)[0][0] == ground_truth_test_0.data.cpu().numpy()[0]:
+                correct_prediction_CL_test += 1
+            auxVect = []
+            rp = 0
+            idx += 1
 
-        for k, data_test_1 in enumerate(test_1_loader, 0):
-            # get the inputs
-            inputs_test_1, ground_truth_test_1 = data_test_1
-            inputs_test_1, ground_truth_test_1 = Variable(inputs_test_1.cuda()), Variable(ground_truth_test_1.cuda())
+    print("ACCURACY TEST_0 FINAL : %.3f %%" % (100 * float(correct_prediction_test_0) / float(total)))
+    accuracy_test0.append(100 * float(correct_prediction_test_0) / float(total))
 
-            concat_input = inputs_test_1
-            for i in range(20):
-                concat_input = torch.cat([concat_input, inputs_test_1])
-            outputs_test_1 = cnn(concat_input)
-            _, predicted = torch.max(outputs_test_1.data, 1)
-            correct_prediction_test_1 += (mode(predicted.cpu().numpy())[0][0] ==
-                                          ground_truth_test_1.data.cpu().numpy()).sum()
-            total += ground_truth_test_1.size(0)
-
-            # CHANGES AJ
-            rp += 1
-            auxVect.append(mode(predicted.cpu().numpy())[0][0])
-            if rp == repetitions[idx]:
-                total_prediction += 1
-                if mode(auxVect)[0][0] == ground_truth_test_1.data.cpu().numpy()[0]:
-                    correct_prediction_CL_test += 1
-                auxVect = []
-                rp = 0
-                idx += 1
-
-        print("ACCURACY TEST_1 FINAL : %.3f %%" % (100 * float(correct_prediction_test_1) / float(total)))
-        accuracy_test1.append(100 * float(correct_prediction_test_1) / float(total))
-
-        # CHANGES AJ
-        print('Classification Accuracy: ', 100 * correct_prediction_CL_test / total_prediction)
-        CLaccuracy_test.append(100 * correct_prediction_CL_test / total_prediction)
+    # CHANGES AJ
+    print('Classification Accuracy: ', 100 * correct_prediction_CL_test / total_prediction)
+    CLaccuracy_test.append(100 * correct_prediction_CL_test / total_prediction)
 
     print("AVERAGE ACCURACY TEST 0 %.3f" % np.array(accuracy_test0).mean())
-    print("AVERAGE ACCURACY TEST 1 %.3f" % np.array(accuracy_test1).mean())
-    return accuracy_test0, accuracy_test1, CLaccuracy_test
+    # print("AVERAGE ACCURACY TEST 1 %.3f" % np.array(accuracy_test1).mean())
+    return accuracy_test0, CLaccuracy_test
 
 
 def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=500, precision=1e-8):
@@ -416,20 +374,30 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
                 # zero the parameter gradients
                 optimizer.zero_grad()
                 if phase == 'train':
-                    cnn.train()
-                    # forward
-                    outputs = cnn(inputs)
-                    _, predictions = torch.max(outputs.data, 1)
 
-                    loss = criterion(outputs, labels.long())
-                    loss.backward()
-                    optimizer.step()
-                    loss = loss.data
+                    # CHANGE
+                    # Add TRY, in some cases batch size is equal to 1
+                    # EX: ValueError: Expected more than 1 value per channel when training, got input size torch.Size([1, 48, 1, 1])
+                    try:
+                        cnn.train()
+                        # forward
+                        outputs = cnn(inputs)
+                        _, predictions = torch.max(outputs.data, 1)
+
+                        loss = criterion(outputs, labels.long())
+                        loss.backward()
+                        optimizer.step()
+                        loss = loss.data
+                    except ValueError:
+                        print('the batch size is incorrect')
+                        print(inputs.size())
+                    except:
+                        print("Something else went wrong")
 
                 else:
                     cnn.eval()
 
-                    accumulated_predicted = Variable(torch.zeros(len(inputs), 7)).cuda()
+                    accumulated_predicted = Variable(torch.zeros(len(inputs), 18)).cuda()
                     loss_intermediary = 0.
                     total_sub_pass = 0
                     for repeat in range(20):
@@ -453,7 +421,7 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
 
             epoch_loss = running_loss / total
             epoch_acc = running_corrects / total
-            print('{} Loss: {:.8f} Acc: {:.8}'.format(
+            print('{} Loss: {:.8f} Acc: {:.8f}'.format(
                 phase, epoch_loss, epoch_acc))
 
             # deep copy the model
@@ -484,79 +452,53 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
 
 
 if __name__ == '__main__':
-
+    '''
     examples, labels = load_evaluation_Nina5_dataset.read_data('../../../data/ninaDB5/')
 
     datasets = [examples, labels]
     np.save("saved_dataset.npy", datasets)
+    '''
 
+    for person in range(10):
 
+        datasets_training = np.load("saved_dataset.npy", encoding="bytes", allow_pickle=True)
+        examples_training, labels_training = datasets_training
 
+        calculate_pre_training(examples_training, labels_training, person)
 
-    # Comment between here
+        accuracy_one_by_one = []
+        array_training_error = []
+        array_validation_error = []
 
-    datasets_pre_training = np.load("saved_pre_training_dataset.npy", encoding="bytes", allow_pickle=True)
-    examples_pre_training, labels_pre_training = datasets_pre_training
+        test_0 = []
+        # test_1 = []
 
-    calculate_pre_training(examples_pre_training, labels_pre_training)
+        # CHANGES AJ
+        classification_test = []
+        cycles = 1
 
-    # And here if the pre-training of the network was already completed.
+        for i in range(20):
+            accuracy_test_0, cl_accuracy_test = calculate_fitness(examples_training, labels_training,
+                                                                  examples_training, labels_training,
+                                                                  cycles, person)
+            print(accuracy_test_0)
 
-    datasets_training = np.load("saved_dataset_training.npy", encoding="bytes", allow_pickle=True)
-    examples_training, labels_training = datasets_training
+            test_0.append(accuracy_test_0)
+            # test_1.append(accuracy_test_1)
+            classification_test.append(cl_accuracy_test)
+            print("TEST 0 SO FAR: ", test_0)
+            # print("TEST 1 SO FAR: ", test_1)
+            print("TEST 0 SO FAR CL accuracy: ", classification_test)
+            print("CURRENT AVERAGE : ", np.mean(test_0))
 
-    datasets_validation0 = np.load("saved_dataset_test0.npy", encoding="bytes", allow_pickle=True)
-    examples_validation0, labels_validation0 = datasets_validation0
+        print("ACCURACY FINAL TEST 0: ", test_0)
+        print("ACCURACY FINAL TEST 0: ", np.mean(test_0))
+        # print("ACCURACY FINAL TEST 1: ", test_1)
+        # print("ACCURACY FINAL TEST 1: ", np.mean(test_1))
+        print("CL ACCURACY FINAL TEST 0: ", classification_test)
+        print("CL ACCURACY FINAL TEST 0: ", np.mean(classification_test))
 
-    datasets_validation1 = np.load("saved_dataset_test1.npy", encoding="bytes", allow_pickle=True)
-    examples_validation1, labels_validation1 = datasets_validation1
-    print("SHAPE", np.shape(examples_training))
-
-    accuracy_one_by_one = []
-    array_training_error = []
-    array_validation_error = []
-
-    test_0 = []
-    test_1 = []
-
-    # CHANGES AJ
-    classification_test = []
-    cycles = 1
-
-    for i in range(20):
-        accuracy_test_0, accuracy_test_1, cl_accuracy_test = calculate_fitness(examples_training, labels_training,
-                                                                               examples_validation0, labels_validation0,
-                                                                               examples_validation1, labels_validation1,
-                                                                               cycles)
-        print(accuracy_test_0)
-
-        test_0.append(accuracy_test_0)
-        test_1.append(accuracy_test_1)
-        classification_test.append(cl_accuracy_test)
-        print("TEST 0 SO FAR: ", test_0)
-        print("TEST 1 SO FAR: ", test_1)
-        print("TEST 0 SO FAR CL accuracy: ", classification_test)
-        print("CURRENT AVERAGE : ", (np.mean(test_0) + np.mean(test_1)) / 2.)
-
-    print("ACCURACY FINAL TEST 0: ", test_0)
-    print("ACCURACY FINAL TEST 0: ", np.mean(test_0))
-    print("ACCURACY FINAL TEST 1: ", test_1)
-    print("ACCURACY FINAL TEST 1: ", np.mean(test_1))
-    print("CL ACCURACY FINAL TEST 0: ", classification_test)
-    print("CL ACCURACY FINAL TEST 0: ", np.mean(classification_test))
-
-    save_results = [test_0, test_1, classification_test]
-    with open('Pytorch_results_' + str(cycles) + '_cycles.csv', 'w', newline='') as myfile:
-        writer = csv.writer(myfile)
-        writer.writerows(save_results)
-
-# with open("Pytorch_results_4_cycles.txt", "a") as myfile:
-#         myfile.write("CNN STFT: \n\n")
-#         myfile.write("Test 0: \n")
-#         myfile.write(str(np.mean(test_0, axis=0)) + '\n')
-#         myfile.write(str(np.mean(test_0)) + '\n')
-#
-#         myfile.write("Test 1: \n")
-#         myfile.write(str(np.mean(test_1, axis=0)) + '\n')
-#         myfile.write(str(np.mean(test_1)) + '\n')
-#         myfile.write("\n\n\n")
+        save_results = [test_0, classification_test]
+        with open('Pytorch_results_' + str(cycles) + '_cycles.csv', 'w', newline='') as myfile:
+            writer = csv.writer(myfile)
+            writer.writerows(save_results)
