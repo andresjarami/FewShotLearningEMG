@@ -5,6 +5,8 @@ from McDropout import McDropout
 import numpy as np
 from ScaleLayer import ScaleLayer
 
+# Changes AJ
+# ScaleLayer.ScaleLayer to ScaleLayer
 
 class SourceNetwork(nn.Module):
     def __init__(self, number_of_class, dropout_rate=.5):
@@ -187,7 +189,7 @@ class TargetNetwork(nn.Module):
             self._first_part_target_batch_norm1.append(nn.BatchNorm2d(8, eps=1e-4))
             self._first_part_target_batch_norm2.append(nn.BatchNorm2d(12, eps=1e-4))
 
-            self._source_weight_learnable.append(ScaleLayer.ScaleLayer((1, 8, 1, 1)))
+            self._source_weight_learnable.append(ScaleLayer((1, 8, 1, 1)))
 
         self._list_target_conv1_first_part = nn.ModuleList(self._list_target_conv1_first_part)
         self._list_target_conv2_first_part = nn.ModuleList(self._list_target_conv2_first_part)
@@ -240,12 +242,12 @@ class TargetNetwork(nn.Module):
 
         # Define the learnable scalar that are employed to hand the importance of the source network for the target
         # network
-        self._source_weight_merge_1 = ScaleLayer.ScaleLayer((1, 12, 1, 1))
-        self._source_weight_merge_2 = ScaleLayer.ScaleLayer((1, 12, 1, 1))
-        self._source_weight_merge_3 = ScaleLayer.ScaleLayer((1, 24, 1, 1))
-        self._source_weight_merge_4 = ScaleLayer.ScaleLayer((1, 48, 1, 1))
-        self._source_weight_merge_5 = ScaleLayer.ScaleLayer((1, 100))
-        self._source_weight_merge_6 = ScaleLayer.ScaleLayer((1, 100))
+        self._source_weight_merge_1 = ScaleLayer((1, 12, 1, 1))
+        self._source_weight_merge_2 = ScaleLayer((1, 12, 1, 1))
+        self._source_weight_merge_3 = ScaleLayer((1, 24, 1, 1))
+        self._source_weight_merge_4 = ScaleLayer((1, 48, 1, 1))
+        self._source_weight_merge_5 = ScaleLayer((1, 100))
+        self._source_weight_merge_6 = ScaleLayer((1, 100))
 
         self.initialize_weights()
 
