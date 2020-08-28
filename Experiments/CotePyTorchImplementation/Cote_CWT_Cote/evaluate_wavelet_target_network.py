@@ -531,7 +531,7 @@ if __name__ == '__main__':
     '''
     # And here if the pre-training of the network was already completed.
 
-    datasets_training = np.load("saved_dataset_training.npy", encoding="bytes", allow_pickle=True)
+    datasets_training = np.load("data/saved_dataset_training.npy", encoding="bytes", allow_pickle=True)
     examples_training, labels_training = datasets_training
 
     datasets_validation0 = np.load("saved_dataset_test0.npy", encoding="bytes", allow_pickle=True)
