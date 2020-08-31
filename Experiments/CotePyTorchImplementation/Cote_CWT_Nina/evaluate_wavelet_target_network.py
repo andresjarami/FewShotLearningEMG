@@ -88,10 +88,10 @@ def calculate_pre_training(examples, labels, person):
 
     pre_train_model(cnn, criterion=criterion, optimizer=optimizer, scheduler=scheduler,
                     dataloaders={"train": list_train_dataloader, "val": list_validation_dataloader},
-                    precision=precision)
+                    precision=precision, person=person)
 
 
-def pre_train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=500, precision=1e-8):
+def pre_train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=500, precision=1e-8, person=1):
     since = time.time()
 
     # Create a list of dictionaries that will hold the weights of the batch normalisation layers for each dataset
@@ -219,7 +219,7 @@ def pre_train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epoch
     print('Best val loss: {:4f}'.format(best_loss))
 
     # Save the best weights found to file
-    torch.save(best_weights, 'best_pre_train_weights_target_wavelet.pt')
+    torch.save(best_weights, str(person) + 'best_pre_train_weights_target_wavelet.pt')
 
 
 def calculate_fitness(examples_training, labels_training, examples_test_0, labels_test_0, cycles, person):
@@ -276,7 +276,7 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
     test_0_loader = torch.utils.data.DataLoader(test_0, batch_size=1, shuffle=False)
     # test_1_loader = torch.utils.data.DataLoader(test_1, batch_size=1, shuffle=False)
 
-    pre_trained_weights = torch.load('best_pre_train_weights_target_wavelet.pt')
+    pre_trained_weights = torch.load(str(person) + 'best_pre_train_weights_target_wavelet.pt')
 
     cnn = Wavelet_CNN_Target_Network.TargetNetwork(number_of_class=18,
                                                    weights_pre_trained_cnn=pre_trained_weights).cuda()
@@ -457,39 +457,44 @@ if __name__ == '__main__':
 
     datasets = [examples, labels]
     np.save("saved_dataset.npy", datasets)
-    '''
+    
 
     for person in range(10):
-
         datasets_training = np.load("saved_dataset.npy", encoding="bytes", allow_pickle=True)
         examples_training, labels_training = datasets_training
 
         calculate_pre_training(examples_training, labels_training, person)
+    '''
 
-        accuracy_one_by_one = []
-        array_training_error = []
-        array_validation_error = []
+    datasets_training = np.load("saved_dataset.npy", encoding="bytes", allow_pickle=True)
+    examples_training, labels_training = datasets_training
+    test_0 = []
 
-        test_0 = []
-        # test_1 = []
+    # CHANGES AJ
+    classification_test = []
+    cycles = 2
 
-        # CHANGES AJ
-        classification_test = []
-        cycles = 1
+    for person in range(10):
 
+        aux_test_0 = []
+        aux_classification = []
         for i in range(20):
             accuracy_test_0, cl_accuracy_test = calculate_fitness(examples_training, labels_training,
                                                                   examples_training, labels_training,
                                                                   cycles, person)
             print(accuracy_test_0)
 
-            test_0.append(accuracy_test_0)
+            aux_test_0.append(accuracy_test_0)
             # test_1.append(accuracy_test_1)
-            classification_test.append(cl_accuracy_test)
-            print("TEST 0 SO FAR: ", test_0)
+            aux_classification.append(cl_accuracy_test)
+            print("TEST 0 SO FAR: ", aux_test_0)
             # print("TEST 1 SO FAR: ", test_1)
-            print("TEST 0 SO FAR CL accuracy: ", classification_test)
-            print("CURRENT AVERAGE : ", np.mean(test_0))
+            print("TEST 0 SO FAR CL accuracy: ", aux_classification)
+            print("CURRENT AVERAGE : ", np.mean(aux_test_0))
+
+        test_0.append(aux_test_0)
+        # test_1.append(accuracy_test_1)
+        classification_test.append(aux_classification)
 
         print("ACCURACY FINAL TEST 0: ", test_0)
         print("ACCURACY FINAL TEST 0: ", np.mean(test_0))
