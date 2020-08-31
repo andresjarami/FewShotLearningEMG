@@ -351,19 +351,21 @@ def predictedModelLDA_pseudo(sample, model, classes, LDACov):
 
 
 def scoreModelLDA(testFeatures, testLabels, model, classes):
-    t = time.time()
+    t = 0
     true = 0
     count = 0
     LDACov = LDA_Cov(model, classes)
     for i in range(0, np.size(testLabels)):
+        auxt = time.time()
         currentPredictor = predictedModelLDA(testFeatures[i, :], model, classes, LDACov)
+        t += (time.time() - auxt)
         if currentPredictor == testLabels[i]:
             true += 1
             count += 1
         else:
             count += 1
 
-    return true / count, (time.time() - t) / np.size(testLabels)
+    return true / count, t / np.size(testLabels)
 
 
 # QDA Classifier
@@ -397,18 +399,20 @@ def predictedModelQDA_pseudo(sample, model, classes):
 
 
 def scoreModelQDA(testFeatures, testLabels, model, classes):
-    t = time.time()
+    t = 0
     true = 0
     count = 0
     for i in range(0, np.size(testLabels)):
+        auxt = time.time()
         actualPredictor = predictedModelQDA(testFeatures[i, :], model, classes)
+        t += (time.time() - auxt)
         if actualPredictor == testLabels[i]:
             true += 1
             count += 1
         else:
             count += 1
     # print('QDA', (time.time() - t) / np.size(testLabels))
-    return true / count, (time.time() - t) / np.size(testLabels)
+    return true / count, t / np.size(testLabels)
 
 
 # Accuracy LDA and QDA
@@ -543,7 +547,7 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'AccClLDAPropQ'] = scoreModelLDA_Classification(testFeatures, testLabels, propModelQDA, classes,
                                                                     testRep)
     results.at[idx, 'AccClLDALiu'] = scoreModelLDA_Classification(testFeatures, testLabels, liuModel, classes,
-                                                                    testRep)
+                                                                  testRep)
     results.at[idx, 'tPropL'] = tPropL
     results.at[idx, 'tIndL'] = tIndL
     results.at[idx, 'tGenL'] = tGenL
@@ -551,7 +555,7 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'wTargetMeanLDAm'] = wTargetMeanLDAm
     results.at[idx, 'wTargetCovLDA'] = wTargetCovLDA
     results.at[idx, 'wTargetCovLDAm'] = wTargetCovLDAm
-    # QDA results
+    ## QDA results
     results.at[idx, 'AccQDAInd'] = clfQDAInd.score(testFeatures, testLabels)
     results.at[idx, 'AccQDAMulti'] = clfQDAMulti.score(testFeatures, testLabels)
     results.at[idx, 'AccQDAProp'], results.at[idx, 'tCLPropQ'] = scoreModelQDA(testFeatures, testLabels, propModelQDA,
@@ -565,7 +569,7 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'AccClQDAPropL'] = scoreModelQDA_Classification(testFeatures, testLabels, propModelLDA, classes,
                                                                     testRep)
     results.at[idx, 'AccClQDALiu'] = scoreModelQDA_Classification(testFeatures, testLabels, liuModel, classes,
-                                                                    testRep)
+                                                                  testRep)
     results.at[idx, 'tPropQ'] = tPropQ
     results.at[idx, 'tIndQ'] = tIndQ
     results.at[idx, 'tGenQ'] = tGenQ
@@ -581,7 +585,7 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'AccKNNInd'] = clfKNNInd.score(testFeatures, testLabels)
 
     results.at[idx, 'AccClSVMInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfSVMInd, testRep)
-    results.at[idx, 'AccClKNNInd'] =scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfKNNInd, testRep)
+    results.at[idx, 'AccClKNNInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfKNNInd, testRep)
 
     # x, y = SamplesProposedModel(propModelLDA, int(len(trainLabels)), classes)
     # clfSVMInd.fit(x, y)
@@ -731,27 +735,26 @@ def evaluation(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, number
     clfQDAMulti = QDA()
 
     scaler = preprocessing.MinMaxScaler()
-    pcaComp = 0.90
-    pca = PCA(n_components=pcaComp)
+
 
     if typeDatabase == 'EPN':
         evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
                       startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
-                      clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler, pca)
+                      clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler)
     elif typeDatabase == 'Nina5':
         evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet,
                         nameFile, startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM,
-                        clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler, pca)
+                        clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler)
     elif typeDatabase == 'Cote':
         evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet,
                        nameFile, startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM,
-                       clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler, pca)
+                       clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler)
 
 
 ### EPN
 def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
                   startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
-                  clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler, pca):
+                  clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
     results = pd.DataFrame(
         columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanLDA', 'wTargetCovLDA', 'wTargetMeanQDA',
                  'wTargetCovQDA'])
@@ -838,7 +841,7 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, num
                 trainFeatures = scaler.transform(trainFeatures)
                 testFeaturesTransform = scaler.transform(testFeatures)
 
-                dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca)
+                dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
 
                 preTrainedDataMatrix = preTrainedDataEPN(dataPK, classes, peoplePriorK, allFeaturesPK)
                 currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -884,7 +887,7 @@ def preTrainedDataEPN(dataMatrix, classes, peoplePriorK, allFeatures):
 
 def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet,
                    nameFile, startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM,
-                   clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler, pca):
+                   clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
     # Creating Variables
     results = pd.DataFrame(
         columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanLDA', 'wTargetCovLDA', 'wTargetMeanQDA',
@@ -963,20 +966,9 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
             trainFeatures = scaler.transform(trainFeatures)
             testFeaturesTransform = scaler.transform(testFeatures)
 
-            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca)
+            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
 
-            # if featureSet != 1:
-            #
-            #     trainFeaturesGen = pca.fit_transform(scaler.fit_transform(trainFeaturesGen))
-            #     print('features', np.size(trainFeaturesGen, axis=1))
-            #     trainFeatures = pca.transform(scaler.transform(trainFeatures))
-            #     testFeaturesTransform = pca.transform(scaler.transform(testFeatures))
-            #     dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca)
-            #
-            # else:
-            #     dataPK = dataMatrix.copy()
-            #     allFeaturesPK = allFeatures
-            #     testFeaturesTransform = testFeatures
+
 
             preTrainedDataMatrix = preTrainedDataCote(dataPK, classes, peoplePriorK, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -1014,7 +1006,7 @@ def preTrainedDataCote(dataMatrix, classes, peoplePriorK, allFeatures):
 
 def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
                     startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
-                    clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler, pca):
+                    clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
     # Creating Variables
 
     results = pd.DataFrame(
@@ -1082,7 +1074,7 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
             trainFeatures = scaler.transform(trainFeatures)
             testFeaturesTransform = scaler.transform(testFeatures)
 
-            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca)
+            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
 
             preTrainedDataMatrix = preTrainedDataNina5(dataPK, classes, peopleTest, person, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -1123,7 +1115,7 @@ def uploadDatabases(typeDatabase, featureSet=1):
     # Setting general variables
 
     CH = 8
-    nameFile = '295'
+    windowFile = '295'
     if typeDatabase == 'EPN':
         carpet = 'ExtractedDataCollectedData'
         classes = 5
@@ -1148,7 +1140,7 @@ def uploadDatabases(typeDatabase, featureSet=1):
 
     if featureSet == 1:
         # Setting variables
-        Feature1 = 'mavMatrix' + nameFile
+        Feature1 = 'mavMatrix' + windowFile
         segment = ''
         numberFeatures = 1
         allFeatures = numberFeatures * CH
@@ -1170,10 +1162,10 @@ def uploadDatabases(typeDatabase, featureSet=1):
 
     elif featureSet == 2:
         # Setting variables
-        Feature1 = 'mavMatrix' + nameFile
-        Feature2 = 'wlMatrix' + nameFile
-        Feature3 = 'zcMatrix' + nameFile
-        Feature4 = 'sscMatrix' + nameFile
+        Feature1 = 'mavMatrix' + windowFile
+        Feature2 = 'wlMatrix' + windowFile
+        Feature3 = 'zcMatrix' + windowFile
+        Feature4 = 'sscMatrix' + windowFile
         segment = ''
         numberFeatures = 4
         allFeatures = numberFeatures * CH
@@ -1199,10 +1191,10 @@ def uploadDatabases(typeDatabase, featureSet=1):
 
     elif featureSet == 3:
         # Setting variables
-        Feature1 = 'lscaleMatrix' + nameFile
-        Feature2 = 'mflMatrix' + nameFile
-        Feature3 = 'msrMatrix' + nameFile
-        Feature4 = 'wampMatrix' + nameFile
+        Feature1 = 'lscaleMatrix' + windowFile
+        Feature2 = 'mflMatrix' + windowFile
+        Feature3 = 'msrMatrix' + windowFile
+        Feature4 = 'wampMatrix' + windowFile
         segment = ''
         numberFeatures = 4
         allFeatures = numberFeatures * CH
@@ -1831,6 +1823,6 @@ def pcaData(dataMatrix, allFeatures):
     return dataMatrix, allFeatures
 
 
-def preprocessingPK(dataMatrix, allFeatures, scaler, pca):
+def preprocessingPK(dataMatrix, allFeatures, scaler):
     dataMatrixFeatures = scaler.transform(dataMatrix[:, 0:allFeatures])
     return np.hstack((dataMatrixFeatures, dataMatrix[:, allFeatures:])), np.size(dataMatrixFeatures, axis=1)
