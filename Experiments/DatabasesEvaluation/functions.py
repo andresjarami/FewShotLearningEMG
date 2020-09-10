@@ -82,6 +82,35 @@ def LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
     return trainedModel
 
 
+def VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
+    trainedModelL = pd.DataFrame(columns=['cov', 'mean', 'class'])
+    trainedModelQ = pd.DataFrame(columns=['cov', 'mean', 'class'])
+
+    preTrainedCov = np.zeros((allFeatures, allFeatures))
+    preTrainedMean = np.zeros((1, allFeatures))
+
+    for cla in range(0, classes):
+        preTrainedMatrix_Class = pd.DataFrame(
+            preTrainedDataMatrix[['cov', 'mean']].loc[(preTrainedDataMatrix['class'] == cla + 1)])
+        preTrainedMatrix_Class = preTrainedMatrix_Class.reset_index(drop=True)
+        for i in range(len(preTrainedMatrix_Class.index)):
+            preTrainedCov += preTrainedDataMatrix['cov'][i]
+            preTrainedMean += preTrainedDataMatrix['mean'][i]
+        preTrainedCov = preTrainedCov / len(preTrainedMatrix_Class.index)
+        preTrainedMean = preTrainedMean / len(preTrainedMatrix_Class.index)
+        currentCov = currentValues['cov'].loc[cla]
+        currentMean = currentValues['mean'].loc[cla]
+        trainedModelL.at[cla, 'cov'] = (1 - 0.8) * preTrainedCov + 0.8 * currentCov
+        trainedModelL.at[cla, 'mean'] = (1 - 0.8) * preTrainedMean[0] + 0.8 * currentMean
+        trainedModelQ.at[cla, 'cov'] = (1 - 0.9) * preTrainedCov + 0.9 * currentCov
+        trainedModelQ.at[cla, 'mean'] = (1 - 0.7) * preTrainedMean[0] + 0.7 * currentMean
+
+        trainedModelL.at[cla, 'class'] = cla + 1
+        trainedModelQ.at[cla, 'class'] = cla + 1
+
+    return trainedModelL,trainedModelQ
+
+
 # Matthews correlation coefficient
 def MCC(TP, TN, FP, FN):
     mcc = (TP * TN - FP * FN) / np.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
@@ -502,13 +531,14 @@ def SamplesProposedModel(model, samples, classes):
 def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels, classes, allFeatures,
                      trainFeaturesGen, trainLabelsGen, results, testFeatures, testLabels, idx, person, subset,
                      featureSet, nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti, clfLDAInd, clfQDAInd,
-                     clfLDAMulti, clfQDAMulti, k, testRep):
+                     clfLDAMulti, clfQDAMulti, k, testRep, tPre):
     # Amount of Training data
     minSamplesClass = 20
     step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
     print('step: ', np.shape(trainLabels)[0], step)
 
     liuModel = LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
+    vidovicModelL,vidovicModelQ = VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
 
     propModelLDA, wTargetMeanLDA, wTargetMeanLDAm, wTargetCovLDA, wTargetCovLDAm, tPropL = ProposedModel(
         currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step, 'LDA', k)
@@ -536,74 +566,65 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     # LDA results
     results.at[idx, 'AccLDAInd'] = clfLDAInd.score(testFeatures, testLabels)
     results.at[idx, 'AccLDAMulti'] = clfLDAMulti.score(testFeatures, testLabels)
-    results.at[idx, 'AccLDAProp'], results.at[idx, 'tCLPropL'] = scoreModelLDA(testFeatures, testLabels, propModelLDA,
-                                                                               classes)
+    # results.at[idx, 'AccLDAProp'], _ = scoreModelLDA(testFeatures, testLabels, propModelLDA,
+    #                                                  classes)
+    results.at[idx, 'AccLDAPropQ'], results.at[idx, 'tCLPropL'] = scoreModelLDA(testFeatures, testLabels, propModelQDA,
+                                                                                classes)
     results.at[idx, 'AccLDALiu'], _ = scoreModelLDA(testFeatures, testLabels, liuModel, classes)
-    results.at[idx, 'AccLDAPropQ'], _ = scoreModelLDA(testFeatures, testLabels, propModelQDA, classes)
+    results.at[idx, 'AccLDAVidovic'], _ = scoreModelLDA(testFeatures, testLabels, vidovicModelL, classes)
+
     results.at[idx, 'AccClLDAInd'] = scoreModelLDA_Classification(testFeatures, testLabels, currentValues, classes,
                                                                   testRep)
-    results.at[idx, 'AccClLDAProp'] = scoreModelLDA_Classification(testFeatures, testLabels, propModelLDA, classes,
-                                                                   testRep)
+    # results.at[idx, 'AccClLDAProp'] = scoreModelLDA_Classification(testFeatures, testLabels, propModelLDA, classes,
+    #                                                                testRep)
     results.at[idx, 'AccClLDAPropQ'] = scoreModelLDA_Classification(testFeatures, testLabels, propModelQDA, classes,
                                                                     testRep)
     results.at[idx, 'AccClLDALiu'] = scoreModelLDA_Classification(testFeatures, testLabels, liuModel, classes,
                                                                   testRep)
-    results.at[idx, 'tPropL'] = tPropL
+    results.at[idx, 'AccClLDAVidovic'] = scoreModelLDA_Classification(testFeatures, testLabels, vidovicModelL, classes,
+                                                                  testRep)
+    # results.at[idx, 'tPropL'] = tPropL
     results.at[idx, 'tIndL'] = tIndL
     results.at[idx, 'tGenL'] = tGenL
-    results.at[idx, 'wTargetMeanLDA'] = wTargetMeanLDA
-    results.at[idx, 'wTargetMeanLDAm'] = wTargetMeanLDAm
-    results.at[idx, 'wTargetCovLDA'] = wTargetCovLDA
-    results.at[idx, 'wTargetCovLDAm'] = wTargetCovLDAm
+    # results.at[idx, 'wTargetMeanLDA'] = wTargetMeanLDA
+    # results.at[idx, 'wTargetMeanLDAm'] = wTargetMeanLDAm
+    # results.at[idx, 'wTargetCovLDA'] = wTargetCovLDA
+    # results.at[idx, 'wTargetCovLDAm'] = wTargetCovLDAm
     ## QDA results
     results.at[idx, 'AccQDAInd'] = clfQDAInd.score(testFeatures, testLabels)
     results.at[idx, 'AccQDAMulti'] = clfQDAMulti.score(testFeatures, testLabels)
     results.at[idx, 'AccQDAProp'], results.at[idx, 'tCLPropQ'] = scoreModelQDA(testFeatures, testLabels, propModelQDA,
                                                                                classes)
     results.at[idx, 'AccQDALiu'], _ = scoreModelQDA(testFeatures, testLabels, liuModel, classes)
-    results.at[idx, 'AccQDAPropL'], _ = scoreModelQDA(testFeatures, testLabels, propModelLDA, classes)
+    results.at[idx, 'AccQDAVidovic'], _ = scoreModelQDA(testFeatures, testLabels, vidovicModelQ, classes)
+    # results.at[idx, 'AccQDAPropL'], _ = scoreModelQDA(testFeatures, testLabels, propModelLDA, classes)
     results.at[idx, 'AccClQDAInd'] = scoreModelQDA_Classification(testFeatures, testLabels, currentValues, classes,
                                                                   testRep)
     results.at[idx, 'AccClQDAProp'] = scoreModelQDA_Classification(testFeatures, testLabels, propModelQDA, classes,
                                                                    testRep)
-    results.at[idx, 'AccClQDAPropL'] = scoreModelQDA_Classification(testFeatures, testLabels, propModelLDA, classes,
-                                                                    testRep)
+    # results.at[idx, 'AccClQDAPropL'] = scoreModelQDA_Classification(testFeatures, testLabels, propModelLDA, classes,
+    #                                                                 testRep)
     results.at[idx, 'AccClQDALiu'] = scoreModelQDA_Classification(testFeatures, testLabels, liuModel, classes,
+                                                                  testRep)
+    results.at[idx, 'AccClQDAVidovic'] = scoreModelQDA_Classification(testFeatures, testLabels, vidovicModelQ, classes,
                                                                   testRep)
     results.at[idx, 'tPropQ'] = tPropQ
     results.at[idx, 'tIndQ'] = tIndQ
     results.at[idx, 'tGenQ'] = tGenQ
+    results.at[idx, 'tPre'] = tPre
     results.at[idx, 'wTargetMeanQDA'] = wTargetMeanQDA
     results.at[idx, 'wTargetMeanQDAm'] = wTargetMeanQDAm
     results.at[idx, 'wTargetCovQDA'] = wTargetCovQDA
     results.at[idx, 'wTargetCovQDAm'] = wTargetCovQDAm
     # SVM KNN
 
-    clfSVMInd.fit(trainFeatures, trainLabels)
-    results.at[idx, 'AccSVMInd'] = clfSVMInd.score(testFeatures, testLabels)
-    clfKNNInd.fit(trainFeatures, trainLabels)
-    results.at[idx, 'AccKNNInd'] = clfKNNInd.score(testFeatures, testLabels)
-
-    results.at[idx, 'AccClSVMInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfSVMInd, testRep)
-    results.at[idx, 'AccClKNNInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfKNNInd, testRep)
-
-    # x, y = SamplesProposedModel(propModelLDA, int(len(trainLabels)), classes)
-    # clfSVMInd.fit(x, y)
-    # results.at[idx, 'AccSVMPropL'] = clfSVMInd.score(testFeatures, testLabels)
-    # clfKNNInd.fit(x, y)
-    # results.at[idx, 'AccKNNPropL'] = clfKNNInd.score(testFeatures, testLabels)
-    # x, y = SamplesProposedModel(propModelQDA, int(len(trainLabels)), classes)
-    # clfSVMInd.fit(x, y)
-    # results.at[idx, 'AccSVMPropQ'] = clfSVMInd.score(testFeatures, testLabels)
-    # x.extend(trainFeatures)
-    # y.extend(trainLabels)
-    # clfSVMInd.fit(x, y)
-    # results.at[idx, 'AccSVMPropQ_ind'] = clfSVMInd.score(testFeatures, testLabels)
-    # x, y = SamplesProposedModel(currentValues, int(len(trainLabels)), classes)
-    # clfSVMInd.fit(x, y)
-    # results.at[idx, 'AccSVMIndG'] = clfSVMInd.score(testFeatures, testLabels)
-    # clfKNNInd.fit(x, y)
-    # results.at[idx, 'AccKNNPropQ'] = clfKNNInd.score(testFeatures, testLabels)
+    # clfSVMInd.fit(trainFeatures, trainLabels)
+    # results.at[idx, 'AccSVMInd'] = clfSVMInd.score(testFeatures, testLabels)
+    # clfKNNInd.fit(trainFeatures, trainLabels)
+    # results.at[idx, 'AccKNNInd'] = clfKNNInd.score(testFeatures, testLabels)
+    #
+    # results.at[idx, 'AccClSVMInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfSVMInd, testRep)
+    # results.at[idx, 'AccClKNNInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfKNNInd, testRep)
 
     if nameFile is not None:
         results.to_csv(nameFile)
@@ -616,87 +637,6 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     idx += 1
 
     return results, idx
-
-
-# def resultsDataframeNoPCA(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels, classes, allFeatures,
-#                           trainFeaturesGen, trainLabelsGen, results, testFeatures, testLabels, idx, person, subset,
-#                           featureSet, nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti, clfLDAInd,
-#                           clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep):
-#     # Amount of Training data
-#     minSamplesClass = 20
-#     step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
-#
-#     liuModel = LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
-#
-#     propModelLDA, wTargetMeanLDA, wTargetMeanLDAm, wTargetCovLDA, wTargetCovLDAm, tPropL = \
-#         ProposedModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step,
-#                       'LDA', k)
-#
-#     t = time.time()
-#     clfLDAInd.fit(trainFeatures, trainLabels)
-#     tIndL = time.time() - t
-#     t = time.time()
-#     clfQDAInd.fit(trainFeatures, trainLabels)
-#     tIndQ = time.time() - t
-#     t = time.time()
-#     clfLDAMulti.fit(trainFeaturesGen, trainLabelsGen)
-#     tGenL = time.time() - t
-#     t = time.time()
-#     clfQDAMulti.fit(trainFeaturesGen, trainLabelsGen)
-#     tGenQ = time.time() - t
-#
-#     results.at[idx, 'person'] = person
-#     results.at[idx, 'subset'] = subset
-#     results.at[idx, '# shots'] = np.size(subset)
-#     results.at[idx, 'Feature Set'] = featureSet
-#     # LDA results
-#     results.at[idx, 'AccLDAInd'] = clfLDAInd.score(testFeatures, testLabels)
-#     results.at[idx, 'AccLDAMulti'] = clfLDAMulti.score(testFeatures, testLabels)
-#     results.at[idx, 'AccLDAProp'], results.at[idx, 'tCLPropL'] = scoreModelLDA(testFeatures, testLabels, propModelLDA,
-#                                                                                classes)
-#     results.at[idx, 'AccLDALiu'], _ = scoreModelLDA(testFeatures, testLabels, liuModel, classes)
-#     results.at[idx, 'AccClLDAInd'] = scoreModelLDA_Classification(testFeatures, testLabels, currentValues, classes,
-#                                                                   testRep)
-#     results.at[idx, 'AccClLDAProp'] = scoreModelLDA_Classification(testFeatures, testLabels, propModelLDA, classes,
-#                                                                    testRep)
-#     results.at[idx, 'tPropL'] = tPropL
-#     results.at[idx, 'tIndL'] = tIndL
-#     results.at[idx, 'tGenL'] = tGenL
-#     results.at[idx, 'wTargetMeanLDA'] = wTargetMeanLDA
-#     results.at[idx, 'wTargetMeanLDAm'] = wTargetMeanLDAm
-#     results.at[idx, 'wTargetCovLDA'] = wTargetCovLDA
-#     results.at[idx, 'wTargetCovLDAm'] = wTargetCovLDAm
-#
-#     ## QDA results
-#     results.at[idx, 'AccQDAInd'] = clfQDAInd.score(testFeatures, testLabels)
-#     results.at[idx, 'AccQDAMulti'] = clfQDAMulti.score(testFeatures, testLabels)
-#     results.at[idx, 'tIndQ'] = tIndQ
-#     results.at[idx, 'tGenQ'] = tGenQ
-#
-#     # SVM KNN
-#
-#     clfSVMInd.fit(trainFeatures, trainLabels)
-#     results.at[idx, 'AccSVMInd'] = clfSVMInd.score(testFeatures, testLabels)
-#     clfKNNInd.fit(trainFeatures, trainLabels)
-#     results.at[idx, 'AccKNNInd'] = clfKNNInd.score(testFeatures, testLabels)
-#
-#     x, y = SamplesProposedModel(propModelLDA, int(len(trainLabels)), classes)
-#     clfSVMInd.fit(x, y)
-#     results.at[idx, 'AccSVMPropL'] = clfSVMInd.score(testFeatures, testLabels)
-#     clfKNNInd.fit(x, y)
-#     results.at[idx, 'AccKNNPropL'] = clfKNNInd.score(testFeatures, testLabels)
-#
-#     if nameFile is not None:
-#         results.to_csv(nameFile)
-#     if printR:
-#         print(featureSet)
-#         print('Results: person= ', person, ' shot set= ', subset)
-#         print(results.loc[idx])
-#         print('Samples: ', np.shape(trainLabels)[0], ' step: ', step)
-#
-#     idx += 1
-#
-#     return results, idx
 
 
 def currentDistributionValues(trainFeatures, trainLabels, classes, allFeatures):
@@ -736,7 +676,6 @@ def evaluation(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, number
 
     scaler = preprocessing.MinMaxScaler()
 
-
     if typeDatabase == 'EPN':
         evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
                       startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
@@ -756,8 +695,7 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, num
                   startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
                   clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
     results = pd.DataFrame(
-        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanLDA', 'wTargetCovLDA', 'wTargetMeanQDA',
-                 'wTargetCovQDA'])
+        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
 
     trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures + 1] <= peoplePriorK)), 0:allFeatures][0]
     trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures + 1] <= peoplePriorK)), allFeatures + 2][0]
@@ -834,11 +772,12 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, num
                 k = 1 - (np.log(shot) / np.log(numberShots + 1))
                 print(k)
 
-                n = scaler.fit_transform(trainFeatures)
-                print('features', np.size(n, axis=1))
+                scaler.fit(trainFeatures)
+                t = time.time()
+                trainFeatures = scaler.transform(trainFeatures)
+                tPre = (time.time() - t) / len(trainFeatures)
 
                 trainFeaturesGen = scaler.transform(trainFeaturesGen)
-                trainFeatures = scaler.transform(trainFeatures)
                 testFeaturesTransform = scaler.transform(testFeatures)
 
                 dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
@@ -849,16 +788,7 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, num
                                                 classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                                 testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                                 nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                                clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep)
-
-                # preTrainedDataMatrix = preTrainedDataEPN(dataMatrix, classes, peoplePriorK, allFeatures)
-                # currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeatures)
-                #
-                # results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
-                #                                 classes, allFeatures, trainFeaturesGen, trainLabelsGen, results,
-                #                                 testFeatures, testLabels, idx, person, subset, featureSet,
-                #                                 nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                #                                 clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep)
+                                                clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre)
 
     return results
 
@@ -890,8 +820,7 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
                    clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
     # Creating Variables
     results = pd.DataFrame(
-        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanLDA', 'wTargetCovLDA', 'wTargetMeanQDA',
-                 'wTargetCovQDA'])
+        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
 
     idx = 0
 
@@ -959,16 +888,15 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
             k = 1 - (np.log(shot) / np.log(numberShots + 1))
             print(k)
 
-            n = scaler.fit_transform(trainFeatures)
-            print('features', np.size(n, axis=1))
+            scaler.fit(trainFeatures)
+            t = time.time()
+            trainFeatures = scaler.transform(trainFeatures)
+            tPre = (time.time() - t) / len(trainFeatures)
 
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
-            trainFeatures = scaler.transform(trainFeatures)
             testFeaturesTransform = scaler.transform(testFeatures)
 
             dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
-
-
 
             preTrainedDataMatrix = preTrainedDataCote(dataPK, classes, peoplePriorK, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -977,7 +905,7 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
                                             classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                             testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                             nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep)
+                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre)
 
     return results
 
@@ -1010,8 +938,7 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
     # Creating Variables
 
     results = pd.DataFrame(
-        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanLDA', 'wTargetCovLDA', 'wTargetMeanQDA',
-                 'wTargetCovQDA'])
+        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
 
     idx = 0
 
@@ -1067,11 +994,12 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
             # k = 1
             print(k)
 
-            n = scaler.fit_transform(trainFeatures)
-            print('features', np.size(n, axis=1))
+            scaler.fit(trainFeatures)
+            t = time.time()
+            trainFeatures = scaler.transform(trainFeatures)
+            tPre = (time.time() - t) / len(trainFeatures)
 
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
-            trainFeatures = scaler.transform(trainFeatures)
             testFeaturesTransform = scaler.transform(testFeatures)
 
             dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
@@ -1083,7 +1011,7 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
                                             classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                             testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                             nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep)
+                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre)
 
     return results
 
@@ -1140,20 +1068,20 @@ def uploadDatabases(typeDatabase, featureSet=1):
 
     if featureSet == 1:
         # Setting variables
-        Feature1 = 'mavMatrix' + windowFile
+        Feature1 = 'logvarMatrix' + windowFile
         segment = ''
         numberFeatures = 1
         allFeatures = numberFeatures * CH
         # Getting Data
-        mavMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv', delimiter=',')
+        logvarMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv', delimiter=',')
         if typeDatabase == 'EPN':
-            dataMatrix = mavMatrix[:, 0:]
+            dataMatrix = logvarMatrix[:, 0:]
             labelsDataMatrix = dataMatrix[:, allFeatures + 2]
         elif typeDatabase == 'Nina5':
-            dataMatrix = mavMatrix[:, 8:]
+            dataMatrix = logvarMatrix[:, 8:]
             labelsDataMatrix = dataMatrix[:, allFeatures + 1]
         elif typeDatabase == 'Cote':
-            dataMatrix = mavMatrix[:, 0:]
+            dataMatrix = logvarMatrix[:, 0:]
             dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
             dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
             labelsDataMatrix = dataMatrix[:, allFeatures + 3]

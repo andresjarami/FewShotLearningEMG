@@ -137,11 +137,20 @@ def VARch(EMG, ch):
         varVector = np.zeros((1, ch))
     else:
         varVector = np.zeros([1, ch])
-        for i in range(0, ch):
-            varVector[0, i] = np.sum((EMG[:, i]) ** 2) / (np.size(EMG[:, i], 0) - 1)
+        for i in range(ch):
+            varVector[0, i] = np.sum((EMG[:, i]-np.mean(EMG[:, i])) ** 2) / (np.size(EMG[:, i], 0) - 1)
     return varVector
 
+def logVARch(EMG, ch):
+    if len(EMG) == 1:
+        logVarVector = np.zeros((1, ch))
+    else:
+        logVarVector = np.zeros([1, ch])
+        for i in range(ch):
+            logVarVector[0, i] = np.log(np.sum((EMG[:, i]-np.mean(EMG[:, i])) ** 2) / (np.size(EMG[:, i], 0) - 1))
+    return logVarVector
 
+logvarMatrix = []
 mavMatrix = []
 wlMatrix = []
 zcMatrix = []
@@ -152,12 +161,12 @@ msrMatrix = []
 wampMatrix = []
 rmsMatrix = []
 
-database = 'EPN'
+database = 'Nina5'
 sampleRate = 200
 # wind 260 over 235 Cote-Allard
 window = 295
 overlap = 290
-nameFile='295'
+windowFile='295'
 
 if database == 'Nina5':
 
@@ -199,14 +208,14 @@ if database == 'Nina5':
                     wf = wi + windowSamples
 
                     t = time.time()
-                    mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([person, cl, rp]))))
-                    auxt = time.time() - t
-                    t1.append(auxt)
+                    logvarMatrix.append(np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
+                    t1.append(time.time() - t)
                     t = time.time()
+                    mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([person, cl, rp]))))
                     wlMatrix.append(np.hstack((WLch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                     zcMatrix.append(np.hstack((ZCch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                     sscMatrix.append(np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                    t2.append(time.time() - t + auxt)
+                    t2.append(time.time() - t )
                     t = time.time()
                     lscaleMatrix.append(np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                     mflMatrix.append(np.hstack((MFLch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
@@ -236,14 +245,14 @@ if database == 'Nina5':
                             wfR = wiR + windowSamples
 
                             t = time.time()
-                            mavMatrix.append(np.hstack((MAVch(auxEMG[wiR:wfR], ch), np.array([person, clR, rpR]))))
-                            auxt = time.time() - t
-                            t1.append(auxt)
+                            logvarMatrix.append(np.hstack((logVARch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
+                            t1.append(time.time() - t)
                             t = time.time()
+                            mavMatrix.append(np.hstack((MAVch(auxEMG[wiR:wfR], ch), np.array([person, clR, rpR]))))
                             wlMatrix.append(np.hstack((WLch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
                             zcMatrix.append(np.hstack((ZCch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
                             sscMatrix.append(np.hstack((SSCch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                            t2.append(time.time() - t + auxt)
+                            t2.append(time.time() - t)
                             t = time.time()
                             lscaleMatrix.append(
                                 np.hstack((Lscalech(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
@@ -256,50 +265,55 @@ if database == 'Nina5':
                     rpR += 1
 
     timesFeatures = np.vstack((t1, t2, t3))
-    auxName = 'timesFeatures'+nameFile
+    auxName = 'timesFeatures'+windowFile
     myFile = 'ExtractedDataNinaDB5/' + auxName + '.csv'
     np.savetxt(myFile, timesFeatures, delimiter=',')
 
-    auxName = 'mavMatrix'+nameFile
+    auxName = 'mavMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(mavMatrix)
-    auxName = 'wlMatrix'+nameFile
+    auxName = 'wlMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(wlMatrix)
-    auxName = 'zcMatrix'+nameFile
+    auxName = 'zcMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(zcMatrix)
-    auxName = 'sscMatrix'+nameFile
+    auxName = 'sscMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(sscMatrix)
-    auxName = 'lscaleMatrix'+nameFile
+    auxName = 'lscaleMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(lscaleMatrix)
-    auxName = 'mflMatrix'+nameFile
+    auxName = 'mflMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(mflMatrix)
-    auxName = 'msrMatrix'+nameFile
+    auxName = 'msrMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(msrMatrix)
-    auxName = 'wampMatrix'+nameFile
+    auxName = 'wampMatrix'+windowFile
     myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(wampMatrix)
+    auxName = 'logvarMatrix' + windowFile
+    myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(logvarMatrix)
 
 elif database == 'Cote':
     # COTE ALLARD DATABASE
@@ -378,18 +392,19 @@ elif database == 'Cote':
                             wf = wi + windowSamples
 
                             t = time.time()
+                            logvarMatrix.append(
+                                np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
+                            t1.append(time.time() - t)
+                            t = time.time()
                             mavMatrix.append(
                                 np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([tyi, per, carp, cl, rp]))))
-                            auxt = time.time() - t
-                            t1.append(auxt)
-                            t = time.time()
                             wlMatrix.append(
                                 np.hstack((WLch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
                             zcMatrix.append(
                                 np.hstack((ZCch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
                             sscMatrix.append(
                                 np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
-                            t2.append(time.time() - t + auxt)
+                            t2.append(time.time() - t)
                             t = time.time()
                             lscaleMatrix.append(
                                 np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
@@ -408,50 +423,55 @@ elif database == 'Cote':
                 per += 1
 
     timesFeatures = np.vstack((t1, t2, t3))
-    auxName = 'timesFeatures'+nameFile
+    auxName = 'timesFeatures'+windowFile
     myFile = 'ExtractedDataCoteAllard/' + auxName + '.csv'
     np.savetxt(myFile, timesFeatures, delimiter=',')
 
-    auxName = 'mavMatrix'+nameFile
+    auxName = 'mavMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(mavMatrix)
-    auxName = 'wlMatrix'+nameFile
+    auxName = 'wlMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(wlMatrix)
-    auxName = 'zcMatrix'+nameFile
+    auxName = 'zcMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(zcMatrix)
-    auxName = 'sscMatrix'+nameFile
+    auxName = 'sscMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(sscMatrix)
-    auxName = 'lscaleMatrix'+nameFile
+    auxName = 'lscaleMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(lscaleMatrix)
-    auxName = 'mflMatrix'+nameFile
+    auxName = 'mflMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(mflMatrix)
-    auxName = 'msrMatrix'+nameFile
+    auxName = 'msrMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(msrMatrix)
-    auxName = 'wampMatrix'+nameFile
+    auxName = 'wampMatrix'+windowFile
     myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(wampMatrix)
+    auxName = 'logvarMatrix' + windowFile
+    myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(logvarMatrix)
 
 
 elif database == 'EPN':
@@ -485,14 +505,14 @@ elif database == 'EPN':
                         wf = wi + windowSamples
 
                         t = time.time()
-                        mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([ty, person, cl, rp]))))
-                        auxt = time.time() - t
-                        t1.append(auxt)
+                        logvarMatrix.append(np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
+                        t1.append(time.time() - t)
                         t = time.time()
+                        mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([ty, person, cl, rp]))))
                         wlMatrix.append(np.hstack((WLch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
                         zcMatrix.append(np.hstack((ZCch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
                         sscMatrix.append(np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
-                        t2.append(time.time() - t + auxt)
+                        t2.append(time.time() - t)
                         t = time.time()
                         lscaleMatrix.append(np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
                         mflMatrix.append(np.hstack((MFLch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
@@ -503,47 +523,52 @@ elif database == 'EPN':
                         wi += incrmentSamples
 
     timesFeatures = np.vstack((t1, t2, t3))
-    auxName = 'timesFeatures'+nameFile
+    auxName = 'timesFeatures'+windowFile
     myFile = 'ExtractedDataCollectedData/' + auxName + '.csv'
     np.savetxt(myFile, timesFeatures, delimiter=',')
 
-    auxName = 'mavMatrix'+nameFile
+    auxName = 'mavMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(mavMatrix)
-    auxName = 'wlMatrix'+nameFile
+    auxName = 'wlMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(wlMatrix)
-    auxName = 'zcMatrix'+nameFile
+    auxName = 'zcMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(zcMatrix)
-    auxName = 'sscMatrix'+nameFile
+    auxName = 'sscMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(sscMatrix)
-    auxName = 'lscaleMatrix'+nameFile
+    auxName = 'lscaleMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(lscaleMatrix)
-    auxName = 'mflMatrix'+nameFile
+    auxName = 'mflMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(mflMatrix)
-    auxName = 'msrMatrix'+nameFile
+    auxName = 'msrMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(msrMatrix)
-    auxName = 'wampMatrix'+nameFile
+    auxName = 'wampMatrix'+windowFile
     myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(wampMatrix)
+    auxName = 'logvarMatrix' + windowFile
+    myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(logvarMatrix)
