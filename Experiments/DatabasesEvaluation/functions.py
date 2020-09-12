@@ -108,7 +108,7 @@ def VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
         trainedModelL.at[cla, 'class'] = cla + 1
         trainedModelQ.at[cla, 'class'] = cla + 1
 
-    return trainedModelL,trainedModelQ
+    return trainedModelL, trainedModelQ
 
 
 # Matthews correlation coefficient
@@ -305,7 +305,7 @@ def ProposedModel(currentValues, preTrainedDataMatrix, classes, allFeatures, tra
             wPeopleCov[i] = wPeopleProposedModelCov(currentValues, personCov, cla, classes
                                                     , trainFeatures, trainLabels, step, typeModel)
 
-        # print('antes', cla, k, wTargetMean[cla], wPeopleMean)
+        # print('before', cla, k, wTargetMean[cla], wPeopleMean)
         sumWMean = np.sum(wPeopleMean)
 
         if (sumWMean != 0) and (sumWMean + wTargetMean[cla] != 0):
@@ -316,7 +316,7 @@ def ProposedModel(currentValues, preTrainedDataMatrix, classes, allFeatures, tra
             wTargetMean[cla] = 1
             wPeopleMean = np.zeros(peopleClass)
 
-        # print('despues', cla, k, wTargetMean[cla], wPeopleMean)
+        # print('after', cla, k, wTargetMean[cla], wPeopleMean)
 
         sumWCov = np.sum(wPeopleCov)
         if (sumWCov != 0) and (sumWCov + wTargetCov[cla] != 0):
@@ -531,41 +531,41 @@ def SamplesProposedModel(model, samples, classes):
 def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels, classes, allFeatures,
                      trainFeaturesGen, trainLabelsGen, results, testFeatures, testLabels, idx, person, subset,
                      featureSet, nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti, clfLDAInd, clfQDAInd,
-                     clfLDAMulti, clfQDAMulti, k, testRep, tPre):
+                     clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues):
     # Amount of Training data
     minSamplesClass = 20
     step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
     print('step: ', np.shape(trainLabels)[0], step)
 
     liuModel = LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
-    vidovicModelL,vidovicModelQ = VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
+    vidovicModelL, vidovicModelQ = VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
 
-    propModelLDA, wTargetMeanLDA, wTargetMeanLDAm, wTargetCovLDA, wTargetCovLDAm, tPropL = ProposedModel(
-        currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step, 'LDA', k)
+    # propModelLDA, wTargetMeanLDA, wTargetMeanLDAm, wTargetCovLDA, wTargetCovLDAm, tPropL = ProposedModel(
+    #     currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step, 'LDA', k)
 
     propModelQDA, wTargetMeanQDA, wTargetMeanQDAm, wTargetCovQDA, wTargetCovQDAm, tPropQ = ProposedModel(
         currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step, 'QDA', k)
 
-    t = time.time()
-    clfLDAInd.fit(trainFeatures, trainLabels)
-    tIndL = time.time() - t
-    t = time.time()
-    clfQDAInd.fit(trainFeatures, trainLabels)
-    tIndQ = time.time() - t
-    t = time.time()
-    clfLDAMulti.fit(trainFeaturesGen, trainLabelsGen)
-    tGenL = time.time() - t
-    t = time.time()
-    clfQDAMulti.fit(trainFeaturesGen, trainLabelsGen)
-    tGenQ = time.time() - t
+    # t = time.time()
+    # clfLDAInd.fit(trainFeatures, trainLabels)
+    # tIndL = time.time() - t
+    # t = time.time()
+    # clfQDAInd.fit(trainFeatures, trainLabels)
+    # tIndQ = time.time() - t
+    # t = time.time()
+    # clfLDAMulti.fit(trainFeaturesGen, trainLabelsGen)
+    # tGenL = time.time() - t
+    # t = time.time()
+    # clfQDAMulti.fit(trainFeaturesGen, trainLabelsGen)
+    # tGenQ = time.time() - t
 
     results.at[idx, 'person'] = person
     results.at[idx, 'subset'] = subset
     results.at[idx, '# shots'] = np.size(subset)
     results.at[idx, 'Feature Set'] = featureSet
     # LDA results
-    results.at[idx, 'AccLDAInd'] = clfLDAInd.score(testFeatures, testLabels)
-    results.at[idx, 'AccLDAMulti'] = clfLDAMulti.score(testFeatures, testLabels)
+    results.at[idx, 'AccLDAInd'], tIndL = scoreModelLDA(testFeatures, testLabels, currentValues, classes)
+    results.at[idx, 'AccLDAMulti'] , tGenL = scoreModelLDA(testFeatures, testLabels, pkValues, classes)
     # results.at[idx, 'AccLDAProp'], _ = scoreModelLDA(testFeatures, testLabels, propModelLDA,
     #                                                  classes)
     results.at[idx, 'AccLDAPropQ'], results.at[idx, 'tCLPropL'] = scoreModelLDA(testFeatures, testLabels, propModelQDA,
@@ -582,7 +582,7 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'AccClLDALiu'] = scoreModelLDA_Classification(testFeatures, testLabels, liuModel, classes,
                                                                   testRep)
     results.at[idx, 'AccClLDAVidovic'] = scoreModelLDA_Classification(testFeatures, testLabels, vidovicModelL, classes,
-                                                                  testRep)
+                                                                      testRep)
     # results.at[idx, 'tPropL'] = tPropL
     results.at[idx, 'tIndL'] = tIndL
     results.at[idx, 'tGenL'] = tGenL
@@ -591,8 +591,8 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     # results.at[idx, 'wTargetCovLDA'] = wTargetCovLDA
     # results.at[idx, 'wTargetCovLDAm'] = wTargetCovLDAm
     ## QDA results
-    results.at[idx, 'AccQDAInd'] = clfQDAInd.score(testFeatures, testLabels)
-    results.at[idx, 'AccQDAMulti'] = clfQDAMulti.score(testFeatures, testLabels)
+    results.at[idx, 'AccQDAInd'], tIndQ = scoreModelQDA(testFeatures, testLabels, currentValues, classes)
+    results.at[idx, 'AccQDAMulti'] , tGenQ = scoreModelQDA(testFeatures, testLabels, pkValues, classes)
     results.at[idx, 'AccQDAProp'], results.at[idx, 'tCLPropQ'] = scoreModelQDA(testFeatures, testLabels, propModelQDA,
                                                                                classes)
     results.at[idx, 'AccQDALiu'], _ = scoreModelQDA(testFeatures, testLabels, liuModel, classes)
@@ -607,7 +607,7 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'AccClQDALiu'] = scoreModelQDA_Classification(testFeatures, testLabels, liuModel, classes,
                                                                   testRep)
     results.at[idx, 'AccClQDAVidovic'] = scoreModelQDA_Classification(testFeatures, testLabels, vidovicModelQ, classes,
-                                                                  testRep)
+                                                                      testRep)
     results.at[idx, 'tPropQ'] = tPropQ
     results.at[idx, 'tIndQ'] = tIndQ
     results.at[idx, 'tGenQ'] = tGenQ
@@ -643,7 +643,7 @@ def currentDistributionValues(trainFeatures, trainLabels, classes, allFeatures):
     currentValues = pd.DataFrame(columns=['cov', 'mean', 'class'])
     trainLabelsAux = trainLabels[np.newaxis]
     Matrix = np.hstack((trainFeatures, trainLabelsAux.T))
-    for cla in range(0, classes):
+    for cla in range(classes):
         currentValues.at[cla, 'cov'] = np.cov(Matrix[np.where((Matrix[:, allFeatures] == cla + 1)), 0:allFeatures][0],
                                               rowvar=False)
         currentValues.at[cla, 'mean'] = np.mean(Matrix[np.where((Matrix[:, allFeatures] == cla + 1)), 0:allFeatures][0],
@@ -784,11 +784,12 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, num
 
                 preTrainedDataMatrix = preTrainedDataEPN(dataPK, classes, peoplePriorK, allFeaturesPK)
                 currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
+                pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
                 results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
                                                 classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                                 testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                                 nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                                clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre)
+                                                clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues)
 
     return results
 
@@ -900,12 +901,12 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
 
             preTrainedDataMatrix = preTrainedDataCote(dataPK, classes, peoplePriorK, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
-
+            pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
             results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
                                             classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                             testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                             nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre)
+                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues)
 
     return results
 
@@ -1006,12 +1007,12 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
 
             preTrainedDataMatrix = preTrainedDataNina5(dataPK, classes, peopleTest, person, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
-
+            pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
             results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
                                             classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                             testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                             nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre)
+                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues)
 
     return results
 
