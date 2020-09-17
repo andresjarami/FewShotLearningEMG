@@ -3,23 +3,23 @@
 This repository describe the three experiments performed to the paper *A Multi-Source Domain Adaptation for Real-Time Hand Gesture Classification using EMGs* using [python 3.7](https://www.python.org/downloads/release/python-377/)
 
 ## Required libraries 
-Numpy [link](https://numpy.org/install/)
+Numpy [https://numpy.org/install/](https://numpy.org/install/)
 
-Pandas [link](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html/)
+Pandas [https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html/](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html/)
 
-Matplotlib [link](https://matplotlib.org/3.1.1/users/installing.html)
+Matplotlib [https://matplotlib.org/3.1.1/users/installing.html](https://matplotlib.org/3.1.1/users/installing.html)
 
-Scipy [link](https://www.scipy.org/install.html)
+Scipy [https://www.scipy.org/install.html](https://www.scipy.org/install.html)
 
-Time [link](https://docs.python.org/3/library/time.html)
+Time [https://docs.python.org/3/library/time.html](https://docs.python.org/3/library/time.html)
 
-Math [link](https://docs.python.org/3/library/math.html)
+Math [https://docs.python.org/3/library/math.html](https://docs.python.org/3/library/math.html)
 
-Sklearn [link](https://scikit-learn.org/stable/install.html)
+Sklearn [https://scikit-learn.org/stable/install.html](https://scikit-learn.org/stable/install.html)
 
-Itertools [link](https://pypi.org/project/more-itertools/)
+Itertools [https://pypi.org/project/more-itertools/](https://pypi.org/project/more-itertools/)
 
-Random [link](https://pypi.org/project/random2/)
+Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 
 
 ## Experiment 1
