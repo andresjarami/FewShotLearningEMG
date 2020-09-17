@@ -21,15 +21,15 @@ Itertools [https://pypi.org/project/more-itertools/](https://pypi.org/project/mo
 
 Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 
-## Databses
+## Databases
 
 1. NinaPro5 http://ninaweb.hevs.ch/
 2. CoteAllard https://github.com/UlysseCoteAllard/MyoArmbandDataset
-3. EPN  https://drive.google.com/drive/folders/1eODcbPTAs-53Qr7YcOhu11IWzJjH_eRh
+3. EPN  https://ieeexplore.ieee.org/abstract/document/8903136/?casa_token=RYo5viuh6S8AAAAA:lizIpEqM4rK5eeo1Wxm-aPuDB20da2PngeRRnrC7agqSK1j26mqmtq5YJFLive7uW083m9tT
 
-## [Experiment 1](andresjarami/FewShotLearningEMG/other_file.md)
+## [Experiment 1](Experiment1_3.ipynb)
 
-## [Experiment 2](andresjarami/FewShotLearningEMG/other_file.md)
+## [Experiment 2](Experiment2.ipynb)
 
-## [Experiment 3](andresjarami/FewShotLearningEMG/other_file.md)
+## [Experiment 3](Experiment1_3.ipynb)
 
