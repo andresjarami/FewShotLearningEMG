@@ -1,12 +1,34 @@
 # FewShotLearningEMG
 
-## Overleaf
-There are two options to work on the LaTeX paper using overleaf AAA
-#### Collaborate online on Overleaf
+This repository describe the three experiments performed to the paper *A Multi-Source Domain Adaptation for Real-Time Hand Gesture Classification using EMGs* using [python 3.7](https://www.python.org/downloads/release/python-377/)
+
+## Required libraries 
+Numpy [link](https://numpy.org/install/)
+
+Pandas [link](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html/)
+
+Matplotlib [link](https://matplotlib.org/3.1.1/users/installing.html)
+
+Scipy [link](https://www.scipy.org/install.html)
+
+Time [link](https://docs.python.org/3/library/time.html)
+
+Math [link](https://docs.python.org/3/library/math.html)
+
+Sklearn [link](https://scikit-learn.org/stable/install.html)
+
+Itertools [link](https://pypi.org/project/more-itertools/)
+
+Random [link](https://pypi.org/project/random2/)
+
+
+## Experiment 1
 
 Please access this [link](https://www.overleaf.com/project/5dbb9b2ca1c83c0001ce0aa9)
 
-#### Collaborate with Overleaf and Git
+## Experiment 2
+
+## Experiment 2
 
 To git clone this project on Overleaf. Here we'll clone it into a directory called test_paper with the command:
 
