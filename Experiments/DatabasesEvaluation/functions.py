@@ -531,7 +531,7 @@ def SamplesProposedModel(model, samples, classes):
 def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels, classes, allFeatures,
                      trainFeaturesGen, trainLabelsGen, results, testFeatures, testLabels, idx, person, subset,
                      featureSet, nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti, clfLDAInd, clfQDAInd,
-                     clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues):
+                     clfLDAMulti, clfQDAMulti, k, testRep, tPre, pkValues):
     # Amount of Training data
     minSamplesClass = 20
     step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
@@ -540,91 +540,33 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     liuModel = LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
     vidovicModelL, vidovicModelQ = VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
 
-    # propModelLDA, wTargetMeanLDA, wTargetMeanLDAm, wTargetCovLDA, wTargetCovLDAm, tPropL = ProposedModel(
-    #     currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step, 'LDA', k)
-
-    propModelQDA, wTargetMeanQDA, wTargetMeanQDAm, wTargetCovQDA, wTargetCovQDAm, tPropQ = ProposedModel(
+    propModelQDA, _, results.at[idx, 'wTargetMeanQDA'], _, results.at[idx, 'wTargetCovQDA'], results.at[
+        idx, 'tPropQDA'] = ProposedModel(
         currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step, 'QDA', k)
-
-    # t = time.time()
-    # clfLDAInd.fit(trainFeatures, trainLabels)
-    # tIndL = time.time() - t
-    # t = time.time()
-    # clfQDAInd.fit(trainFeatures, trainLabels)
-    # tIndQ = time.time() - t
-    # t = time.time()
-    # clfLDAMulti.fit(trainFeaturesGen, trainLabelsGen)
-    # tGenL = time.time() - t
-    # t = time.time()
-    # clfQDAMulti.fit(trainFeaturesGen, trainLabelsGen)
-    # tGenQ = time.time() - t
 
     results.at[idx, 'person'] = person
     results.at[idx, 'subset'] = subset
     results.at[idx, '# shots'] = np.size(subset)
     results.at[idx, 'Feature Set'] = featureSet
     # LDA results
-    results.at[idx, 'AccLDAInd'], tIndL = scoreModelLDA(testFeatures, testLabels, currentValues, classes)
-    results.at[idx, 'AccLDAMulti'] , tGenL = scoreModelLDA(testFeatures, testLabels, pkValues, classes)
-    # results.at[idx, 'AccLDAProp'], _ = scoreModelLDA(testFeatures, testLabels, propModelLDA,
-    #                                                  classes)
-    results.at[idx, 'AccLDAPropQ'], results.at[idx, 'tCLPropL'] = scoreModelLDA(testFeatures, testLabels, propModelQDA,
-                                                                                classes)
+    results.at[idx, 'AccLDAInd'], results.at[idx, 'tIndL'] = scoreModelLDA(testFeatures, testLabels, currentValues,
+                                                                           classes)
+    results.at[idx, 'AccLDAMulti'], results.at[idx, 'tGenL'] = scoreModelLDA(testFeatures, testLabels, pkValues,
+                                                                             classes)
+    results.at[idx, 'AccLDAProp'], results.at[idx, 'tCLPropL'] = scoreModelLDA(testFeatures, testLabels, propModelQDA,
+                                                                               classes)
     results.at[idx, 'AccLDALiu'], _ = scoreModelLDA(testFeatures, testLabels, liuModel, classes)
     results.at[idx, 'AccLDAVidovic'], _ = scoreModelLDA(testFeatures, testLabels, vidovicModelL, classes)
 
-    results.at[idx, 'AccClLDAInd'] = scoreModelLDA_Classification(testFeatures, testLabels, currentValues, classes,
-                                                                  testRep)
-    # results.at[idx, 'AccClLDAProp'] = scoreModelLDA_Classification(testFeatures, testLabels, propModelLDA, classes,
-    #                                                                testRep)
-    results.at[idx, 'AccClLDAPropQ'] = scoreModelLDA_Classification(testFeatures, testLabels, propModelQDA, classes,
-                                                                    testRep)
-    results.at[idx, 'AccClLDALiu'] = scoreModelLDA_Classification(testFeatures, testLabels, liuModel, classes,
-                                                                  testRep)
-    results.at[idx, 'AccClLDAVidovic'] = scoreModelLDA_Classification(testFeatures, testLabels, vidovicModelL, classes,
-                                                                      testRep)
-    # results.at[idx, 'tPropL'] = tPropL
-    results.at[idx, 'tIndL'] = tIndL
-    results.at[idx, 'tGenL'] = tGenL
-    # results.at[idx, 'wTargetMeanLDA'] = wTargetMeanLDA
-    # results.at[idx, 'wTargetMeanLDAm'] = wTargetMeanLDAm
-    # results.at[idx, 'wTargetCovLDA'] = wTargetCovLDA
-    # results.at[idx, 'wTargetCovLDAm'] = wTargetCovLDAm
     ## QDA results
-    results.at[idx, 'AccQDAInd'], tIndQ = scoreModelQDA(testFeatures, testLabels, currentValues, classes)
-    results.at[idx, 'AccQDAMulti'] , tGenQ = scoreModelQDA(testFeatures, testLabels, pkValues, classes)
+    results.at[idx, 'AccQDAInd'], results.at[idx, 'tIndQ'] = scoreModelQDA(testFeatures, testLabels, currentValues,
+                                                                           classes)
+    results.at[idx, 'AccQDAMulti'], results.at[idx, 'tGenQ'] = scoreModelQDA(testFeatures, testLabels, pkValues,
+                                                                             classes)
     results.at[idx, 'AccQDAProp'], results.at[idx, 'tCLPropQ'] = scoreModelQDA(testFeatures, testLabels, propModelQDA,
                                                                                classes)
     results.at[idx, 'AccQDALiu'], _ = scoreModelQDA(testFeatures, testLabels, liuModel, classes)
     results.at[idx, 'AccQDAVidovic'], _ = scoreModelQDA(testFeatures, testLabels, vidovicModelQ, classes)
-    # results.at[idx, 'AccQDAPropL'], _ = scoreModelQDA(testFeatures, testLabels, propModelLDA, classes)
-    results.at[idx, 'AccClQDAInd'] = scoreModelQDA_Classification(testFeatures, testLabels, currentValues, classes,
-                                                                  testRep)
-    results.at[idx, 'AccClQDAProp'] = scoreModelQDA_Classification(testFeatures, testLabels, propModelQDA, classes,
-                                                                   testRep)
-    # results.at[idx, 'AccClQDAPropL'] = scoreModelQDA_Classification(testFeatures, testLabels, propModelLDA, classes,
-    #                                                                 testRep)
-    results.at[idx, 'AccClQDALiu'] = scoreModelQDA_Classification(testFeatures, testLabels, liuModel, classes,
-                                                                  testRep)
-    results.at[idx, 'AccClQDAVidovic'] = scoreModelQDA_Classification(testFeatures, testLabels, vidovicModelQ, classes,
-                                                                      testRep)
-    results.at[idx, 'tPropQ'] = tPropQ
-    results.at[idx, 'tIndQ'] = tIndQ
-    results.at[idx, 'tGenQ'] = tGenQ
-    results.at[idx, 'tPre'] = tPre
-    results.at[idx, 'wTargetMeanQDA'] = wTargetMeanQDA
-    results.at[idx, 'wTargetMeanQDAm'] = wTargetMeanQDAm
-    results.at[idx, 'wTargetCovQDA'] = wTargetCovQDA
-    results.at[idx, 'wTargetCovQDAm'] = wTargetCovQDAm
-    # SVM KNN
-
-    # clfSVMInd.fit(trainFeatures, trainLabels)
-    # results.at[idx, 'AccSVMInd'] = clfSVMInd.score(testFeatures, testLabels)
-    # clfKNNInd.fit(trainFeatures, trainLabels)
-    # results.at[idx, 'AccKNNInd'] = clfKNNInd.score(testFeatures, testLabels)
-    #
-    # results.at[idx, 'AccClSVMInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfSVMInd, testRep)
-    # results.at[idx, 'AccClKNNInd'] = scoreModel_SVM_KNN_Classification(testFeatures, testLabels, clfKNNInd, testRep)
 
     if nameFile is not None:
         results.to_csv(nameFile)
@@ -789,7 +731,8 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, num
                                                 classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                                 testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                                 nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                                clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues)
+                                                clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,
+                                                pkValues)
 
     return results
 
@@ -906,7 +849,7 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
                                             classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                             testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                             nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues)
+                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre, pkValues)
 
     return results
 
@@ -1012,7 +955,7 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
                                             classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
                                             testFeaturesTransform, testLabels, idx, person, subset, featureSet,
                                             nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,pkValues)
+                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre, pkValues)
 
     return results
 
@@ -1044,7 +987,7 @@ def uploadDatabases(typeDatabase, featureSet=1):
     # Setting general variables
 
     CH = 8
-    windowFile = '295'
+    windowFile = ''
     if typeDatabase == 'EPN':
         carpet = 'ExtractedDataCollectedData'
         classes = 5
@@ -1222,11 +1165,9 @@ def get_correlated_dataset(n, dependency, mu, scale):
     return scaled_with_offset[:, 0], scaled_with_offset[:, 1]
 
 
-def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, Graph=True, covRandom=True,
-                                covRandomPK=True, nameFile=None, mix=False, same=True):
+def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, Graph=True):
     peopleDiff = people - (peopleSame + 1)
-    if not mix:
-        peopleDiff = 0
+
     classes = 2
     Features = 2
     meansDistance = 2
@@ -1241,36 +1182,23 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
     idx = 0
     if Graph:
         colors_list = list(['blue', 'red', 'deepskyblue', 'lightcoral', 'orange', 'green'])
-        fig1, ax = plt.subplots(1, 1, figsize=(9, 12))
+        fig1, ax = plt.subplots(1, 1, figsize=(9, 9))
 
     for person in range(people):
-        if covRandomPK:
-            covSet1 = make_spd_matrix(Features)
-            covSet2 = make_spd_matrix(Features)
-            covSet = np.vstack((covSet1, covSet2))
-        else:
-            covSet = np.array([[1, 0], [0, 1], [1, 0], [0, 1]])
 
+        covSet = np.array([[1, 0], [0, 1], [1, 0], [0, 1]])
         if person == people - 1:
             auxPoint = np.zeros(2)
             covSet = np.array([[1, 0], [0, 1], [1, 0], [0, 1]])
-            if covRandom:
-                covSet1 = make_spd_matrix(Features)
-                covSet2 = make_spd_matrix(Features)
-                covSet = np.vstack((covSet1, covSet2))
-        elif mix:
+
+        else:
             if person < peopleDiff:
                 classCovFactor = 10
-                # auxPoint = np.random.uniform(low=5, high=classCovFactor * 2 + 5, size=(1, Features))[0]
+                auxPoint = np.random.uniform(low=5, high=classCovFactor * 2 + 5, size=(1, Features))[0]
                 # only for the graph
-                auxPoint = np.array([0, 7])
+                # auxPoint = np.array([0, 7])
             else:
                 auxPoint = np.zeros(2)
-        elif same:
-            auxPoint = np.zeros(2)
-        elif not same:
-            classCovFactor = 10
-            auxPoint = np.random.uniform(low=5, high=classCovFactor * 2 + 5, size=(1, Features))[0]
 
         for cl in range(classes):
 
@@ -1299,11 +1227,11 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
                         markerCL = '^'
                     ax.scatter(x1, x2, s=sizeM, color=color, marker=markerCL)
                     confidence_ellipse(x1, x2, ax, edgecolor=color, label=label)
-                elif mix:
+                else:
                     if person < peopleDiff:
                         color = colors_list[cl + 4]
                         label = 'clase ' + str(cl) + ' PK: ' + str(
-                            people - 1 - peopleSame) + ' people distinct to the target user'
+                            people - 1 - peopleSame) + ' people different to the target user'
                         lineStyle = '-.'
                         if cl == 0:
                             markerCL = 's'
@@ -1318,23 +1246,6 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
                             markerCL = '*'
                         else:
                             markerCL = 'x'
-                elif same:
-                    color = colors_list[cl + 2]
-
-                    label = 'clase ' + str(cl) + ' PK: ' + str(people - 1) + ' person similar to the target user'
-                    lineStyle = ':'
-                    if cl == 0:
-                        markerCL = '*'
-                    else:
-                        markerCL = 'x'
-                elif not same:
-                    color = colors_list[cl + 4]
-                    label = 'clase ' + str(cl) + ' PK: ' + str(people - 1) + ' people distinct to the target user'
-                    lineStyle = '-.'
-                    if cl == 0:
-                        markerCL = 's'
-                    else:
-                        markerCL = 'p'
 
                 if person != people - 1:
                     if person == people - 2 or person == peopleDiff - 1:
@@ -1347,12 +1258,8 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
             idx += 1
 
     if Graph:
-        if people == 1:
-            ax.set_title(
-                'Traget Person and Prior Knowledge \n (' + str(classes) + ' Clases - ' + str(Features) + ' Features)')
-        else:
-            ax.set_title(
-                'Traget Person and Prior Knowledge \n (' + str(classes) + ' Clases - ' + str(Features) + ' Features)')
+
+        ax.set_title('A Traget User and Two Source Users \n (' + str(classes) + ' Clases - ' + str(Features) + ' Features)')
 
         plt.grid()
         plt.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0., prop={'size': 8})
@@ -1361,298 +1268,180 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
         fig1.tight_layout(pad=0.1)
         plt.savefig("distr.png", bbox_inches='tight', dpi=600)
         plt.show()
-
-    if nameFile is not None:
-        DataFrame.to_pickle(nameFile + '.pkl')
     return DataFrame
 
 
-def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, peopleEvaluated=0, samples=500, Features=2,
-                         classes=2, times=10, Graph=False, printValues=False, peopleSame=1):
+def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, samples=500, Features=2,
+                         classes=2, times=10, Graph=False, printValues=False):
     iSample = 3
     people = 1
-    clfLDAInd = LDA()
-    clfQDAInd = QDA()
-    clfLDAMulti = LDA()
-    clfQDAMulti = QDA()
 
-    resultsData = pd.DataFrame(
-        columns=['yLDAInd', 'yQDAInd', 'yLDAMulti', 'yQDAMulti', 'yPropL', 'yPropQ', 'yLiu', 'yLiuQDA',
-                 'wTargetMeanLDA', 'wTargetCovLDA', 'wTargetMeanQDA', 'wTargetCovQDA', 'wLiu', 'person', 'times',
-                 'shots'])
+    resultsData = pd.DataFrame()
 
     idx = 0
 
-    for per in range(peopleEvaluated - 1, peopleEvaluated):
+    per = peoplePK
 
-        currentPerson = DataFrame[DataFrame['person'] == per].reset_index(drop=True)
-        lenTest = int(samples / 2)
-        preTrainedDataMatrix = DataFrame[DataFrame['person'] != per].reset_index(drop=True)
-        preTrainedDataMatrix.at[:, 'class'] = preTrainedDataMatrix.loc[:, 'class'] + 1
+    currentPerson = DataFrame[DataFrame['person'] == per].reset_index(drop=True)
+    lenTest = int(samples / 2)
+    preTrainedDataMatrix = DataFrame[DataFrame['person'] != per].reset_index(drop=True)
+    preTrainedDataMatrix.at[:, 'class'] = preTrainedDataMatrix.loc[:, 'class'] + 1
 
-        currentPersonTrain = pd.DataFrame(columns=['data', 'class'])
-        currentValues = pd.DataFrame(columns=['data', 'mean', 'cov', 'class'])
+    currentPersonTrain = pd.DataFrame(columns=['data', 'class'])
+    currentValues = pd.DataFrame(columns=['mean', 'cov', 'class'])
+    pkValues = pd.DataFrame(columns=['mean', 'cov', 'class'])
 
-        x_test = currentPerson.loc[0, 'data'][0:Features, 0:lenTest]
-        y_test = np.ones(lenTest)
+    x_test = currentPerson.loc[0, 'data'][0:Features, 0:lenTest]
+    y_test = np.ones(lenTest)
 
-        x_PK = np.empty((2, 0))
-        y_PK = []
-        for cla in range(1, 3):
-            for person in range(peoplePK):
-                auxPre = preTrainedDataMatrix[
-                    (preTrainedDataMatrix['person'] == person) & (preTrainedDataMatrix['class'] == cla)][
-                    'data'].reset_index(drop=True)
-                x_PK = np.hstack((x_PK, auxPre[0]))
-                y_PK = np.hstack((y_PK, cla * np.ones(samples * people)))
+    x_PK = np.empty((2, 0))
+    y_PK = []
+    for cla in range(1, 3):
+        for person in range(peoplePK):
+            auxPre = preTrainedDataMatrix[
+                (preTrainedDataMatrix['person'] == person) & (preTrainedDataMatrix['class'] == cla)][
+                'data'].reset_index(drop=True)
+            x_PK = np.hstack((x_PK, auxPre[0]))
+            y_PK = np.hstack((y_PK, cla * np.ones(samples * people)))
 
-        currentPersonTrain.at[0, 'data'] = currentPerson.loc[0, 'data'][0:Features, lenTest:samples]
-        currentPersonTrain.at[0, 'class'] = 1
-        for cl in range(1, classes):
-            currentPersonTrain.at[cl, 'data'] = currentPerson.loc[cl, 'data'][0:Features, lenTest:samples]
-            currentPersonTrain.at[cl, 'class'] = cl + 1
-            x_test = np.hstack((x_test, currentPerson.loc[cl, 'data'][0:Features, 0:lenTest]))
-            y_test = np.hstack((y_test, np.ones(lenTest) * cl + 1))
-        x_test = x_test.T
+    currentPersonTrain.at[0, 'data'] = currentPerson.loc[0, 'data'][0:Features, lenTest:samples]
+    currentPersonTrain.at[0, 'class'] = 1
+    for cl in range(1, classes):
+        currentPersonTrain.at[cl, 'data'] = currentPerson.loc[cl, 'data'][0:Features, lenTest:samples]
+        currentPersonTrain.at[cl, 'class'] = cl + 1
+        x_test = np.hstack((x_test, currentPerson.loc[cl, 'data'][0:Features, 0:lenTest]))
+        y_test = np.hstack((y_test, np.ones(lenTest) * cl + 1))
+    x_test = x_test.T
 
-        if peopleSame == 0:
-
-            hyperKNN = hyperParameterTuning_KNN(x_test, y_test, peopleEvaluated)
-            hyperSVM = hyperParameterTuning_SVM(x_test, y_test, peopleEvaluated)
-
-            p = hyperKNN['p'].loc[hyperKNN['person'] == peopleEvaluated].reset_index(drop=True)[0]
-            n_neighbors = hyperKNN['n_neighbors'].loc[hyperKNN['person'] == peopleEvaluated].reset_index(drop=True)[0]
-            if n_neighbors > (iSample * classes):
-                n_neighbors = (iSample * classes)
-            weights = hyperKNN['weights'].loc[hyperKNN['person'] == peopleEvaluated].reset_index(drop=True)[0]
-            clfKNNInd = KNN(n_neighbors=n_neighbors, p=p, weights=weights)
-            clfKNNMulti = KNN(n_neighbors=n_neighbors, p=p, weights=weights)
-
-            C = hyperSVM['C'].loc[hyperKNN['person'] == peopleEvaluated].reset_index(drop=True)[0]
-            degree = hyperSVM['degree'].loc[hyperKNN['person'] == peopleEvaluated].reset_index(drop=True)[0]
-            kernel = hyperSVM['kernel'].loc[hyperKNN['person'] == peopleEvaluated].reset_index(drop=True)[0]
-            gamma = hyperSVM['gamma'].loc[hyperKNN['person'] == peopleEvaluated].reset_index(drop=True)[0]
-            clfSVMInd = SVM(C=C, kernel=kernel, degree=degree, gamma=gamma)
-            clfSVMMulti = SVM(C=C, kernel=kernel, degree=degree, gamma=gamma)
-
-        # for t in range(times):
-        t = times
-
-        for i in range(numberShots):
-            x_train = currentPersonTrain.loc[0, 'data'][:, t:i + t + iSample]
-            y_train = np.ones(i + iSample)
-            currentValues.at[0, 'data'] = currentPersonTrain.loc[0, 'data'][:, t:i + t + iSample]
-            currentValues.at[0, 'mean'] = np.mean(x_train, axis=1)
-            currentValues.at[0, 'cov'] = np.cov(x_train, rowvar=True)
-            currentValues.at[0, 'class'] = 1
-
-            for cl in range(1, classes):
-                x_train = np.hstack((x_train, currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample]))
-                y_train = np.hstack((y_train, np.ones(i + iSample) * cl + 1))
-                currentValues.at[cl, 'data'] = currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample]
-                currentValues.at[cl, 'mean'] = np.mean(currentValues.loc[cl, 'data'], axis=1)
-                currentValues.at[cl, 'cov'] = np.cov(currentValues.loc[cl, 'data'], rowvar=True)
-                currentValues.at[cl, 'class'] = cl + 1
-
-            x_Multi = np.hstack((x_PK, x_train))
-            y_Multi = np.hstack((y_PK, y_train))
-            x_train = x_train.T
-            x_Multi = x_Multi.T
-
-            clfLDAInd.fit(x_train, y_train)
-            clfQDAInd.fit(x_train, y_train)
-            clfLDAMulti.fit(x_Multi, y_Multi)
-            clfQDAMulti.fit(x_Multi, y_Multi)
-
-            if peopleSame == 0:
-                clfKNNInd.fit(x_train, y_train)
-                clfSVMInd.fit(x_train, y_train)
-                clfKNNMulti.fit(x_Multi, y_Multi)
-                clfSVMMulti.fit(x_Multi, y_Multi)
-                resultsData.at[idx, 'yKNNInd'] = clfKNNInd.score(x_test, y_test)
-                resultsData.at[idx, 'ySVMInd'] = clfSVMInd.score(x_test, y_test)
-                resultsData.at[idx, 'yKNNMulti'] = clfKNNMulti.score(x_test, y_test)
-                resultsData.at[idx, 'ySVMMulti'] = clfSVMMulti.score(x_test, y_test)
-
-            step = 1
-            k = 1 - (np.log(i + 1) / np.log(samples + 1))
-            print(k)
-
-            propModelQDA, wTargetMeanQDA, wTargetMeanQDAm, wTargetCovQDA, wTargetCovQDAm, tPropQ = ProposedModel(
-                currentValues, preTrainedDataMatrix, classes, Features, x_train, y_train, step, 'QDA', k)
-            propModelLDA, wTargetMeanLDA, wTargetMeanLDAm, wTargetCovLDA, wTargetCovLDAm, tPropL = ProposedModel(
-                currentValues, preTrainedDataMatrix, classes, Features, x_train, y_train, step, 'LDA', k)
-
-            liuModel = LiuModel(currentValues, preTrainedDataMatrix, classes, Features)
-
-            resultsData.at[idx, 'yLDAInd'] = clfLDAInd.score(x_test, y_test)
-            resultsData.at[idx, 'yQDAInd'] = clfQDAInd.score(x_test, y_test)
-
-            resultsData.at[idx, 'yLDAMulti'] = clfLDAMulti.score(x_test, y_test)
-            resultsData.at[idx, 'yQDAMulti'] = clfQDAMulti.score(x_test, y_test)
-
-            resultsData.at[idx, 'yPropL'], _ = scoreModelLDA(x_test, y_test, propModelLDA, classes)
-            resultsData.at[idx, 'yPropQ'], _ = scoreModelQDA(x_test, y_test, propModelQDA, classes)
-            resultsData.at[idx, 'yLiu'], _ = scoreModelLDA(x_test, y_test, liuModel, classes)
-            resultsData.at[idx, 'yLiuQDA'], _ = scoreModelQDA(x_test, y_test, liuModel, classes)
-
-            resultsData.at[idx, 'wTargetMeanLDA'] = wTargetMeanLDA
-            resultsData.at[idx, 'wTargetMeanLDAm'] = wTargetMeanLDAm
-            resultsData.at[idx, 'wTargetCovLDA'] = wTargetCovLDA
-            resultsData.at[idx, 'wTargetCovLDAm'] = wTargetCovLDAm
-
-            resultsData.at[idx, 'wTargetMeanQDA'] = wTargetMeanQDA
-            resultsData.at[idx, 'wTargetMeanQDAm'] = wTargetMeanQDAm
-            resultsData.at[idx, 'wTargetCovQDA'] = wTargetCovQDA
-            resultsData.at[idx, 'wTargetCovQDAm'] = wTargetCovQDAm
-
-            resultsData.at[idx, 'wLiu'] = 0.5
-            resultsData.at[idx, 'person'] = per
-            resultsData.at[idx, 'times'] = t
-            resultsData.at[idx, 'shots'] = i + iSample
-
-            if nameFile is not None:
-                resultsData.to_csv(nameFile)
-            idx += 1
-            if printValues:
-                print(per + 1, t + 1, i + 1)
-
-    if Graph:
-        clAdap = True
-        title = 'Accuracy vs Samples'
-        graphSyntheticData(None, resultsData, numberShots, iSample, clAdap, title)
-
-
-def graphSyntheticData(resultsDataCL, resultsData, numberShots, iSample, clAdap, title):
-    if resultsDataCL is None:
-        resultsDataCL = resultsData.copy()
-    shot = np.arange(numberShots)
-    yLDAInd = np.zeros(numberShots)
-    yQDAInd = np.zeros(numberShots)
-    yKNNInd = np.zeros(numberShots)
-    ySVMInd = np.zeros(numberShots)
-    yLDAMulti = np.zeros(numberShots)
-    yQDAMulti = np.zeros(numberShots)
-    yKNNMulti = np.zeros(numberShots)
-    ySVMMulti = np.zeros(numberShots)
-    yPropQ = np.zeros(numberShots)
-    yPropL = np.zeros(numberShots)
-    yLiu = np.zeros(numberShots)
-    yLiuQDA = np.zeros(numberShots)
-    wTargetLm = np.zeros(numberShots)
-    wTargetQm = np.zeros(numberShots)
-    wTargetLc = np.zeros(numberShots)
-    wTargetQc = np.zeros(numberShots)
-    wLiu = np.ones(numberShots) * 0.5
+    # for t in range(times):
+    t = times
 
     for i in range(numberShots):
-        yLDAInd[i] = resultsData['yLDAInd'][
+        x_train = currentPersonTrain.loc[0, 'data'][:, t:i + t + iSample]
+        y_train = np.ones(i + iSample)
+        currentValues.at[0, 'mean'] = np.mean(x_train, axis=1)
+        currentValues.at[0, 'cov'] = np.cov(x_train, rowvar=True)
+        currentValues.at[0, 'class'] = 1
+
+        for cl in range(1, classes):
+            x_train = np.hstack((x_train, currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample]))
+            y_train = np.hstack((y_train, np.ones(i + iSample) * cl + 1))
+            currentValues.at[cl, 'mean'] = np.mean(currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample], axis=1)
+            currentValues.at[cl, 'cov'] = np.cov(currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample], rowvar=True)
+            currentValues.at[cl, 'class'] = cl + 1
+
+        x_Multi = np.hstack((x_PK, x_train))
+        y_Multi = np.hstack((y_PK, y_train))
+        for cl in range(classes):
+            pkValues.at[cl, 'mean'] = np.mean(x_Multi[:, y_Multi == cl + 1], axis=1)
+            pkValues.at[cl, 'cov'] = np.cov(x_Multi[:, y_Multi == cl + 1], rowvar=True)
+            pkValues.at[cl, 'class'] = cl + 1
+
+        step = 1
+        k = 1 - (np.log(i + 1) / np.log(samples + 1))
+
+
+        propModelQDA, _, resultsData.at[idx, 'wTargetMeanQDA'], _, resultsData.at[idx, 'wTargetCovQDA'], resultsData.at[
+            idx, 'tPropQDA'] = ProposedModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T, y_train,
+                                             step, 'QDA', k)
+
+        liuModel = LiuModel(currentValues, preTrainedDataMatrix, classes, Features)
+        vidovicModelL, vidovicModelQ = VidovicModel(currentValues, preTrainedDataMatrix, classes, Features)
+
+        resultsData.at[idx, 'AccLDAInd'], _ = scoreModelLDA(x_test, y_test, currentValues, classes)
+        resultsData.at[idx, 'AccQDAInd'], _ = scoreModelQDA(x_test, y_test, currentValues, classes)
+
+        resultsData.at[idx, 'AccLDAMulti'], _ = scoreModelLDA(x_test, y_test, pkValues, classes)
+        resultsData.at[idx, 'AccQDAMulti'], _ = scoreModelQDA(x_test, y_test, pkValues, classes)
+
+        resultsData.at[idx, 'AccLDAProp'], _ = scoreModelLDA(x_test, y_test, propModelQDA, classes)
+        resultsData.at[idx, 'AccQDAProp'], _ = scoreModelQDA(x_test, y_test, propModelQDA, classes)
+        resultsData.at[idx, 'AccLDALiu'], _ = scoreModelLDA(x_test, y_test, liuModel, classes)
+        resultsData.at[idx, 'AccQDALiu'], _ = scoreModelQDA(x_test, y_test, liuModel, classes)
+        resultsData.at[idx, 'AccLDAVidovic'], _ = scoreModelLDA(x_test, y_test, vidovicModelL, classes)
+        resultsData.at[idx, 'AccQDAVidovic'], _ = scoreModelQDA(x_test, y_test, vidovicModelQ, classes)
+
+        resultsData.at[idx, 'person'] = per
+        resultsData.at[idx, 'times'] = t
+        resultsData.at[idx, 'shots'] = i + iSample
+
+        if nameFile is not None:
+            resultsData.to_csv(nameFile)
+        idx += 1
+        if printValues:
+            print(per + 1, t + 1, i + 1)
+
+    if Graph:
+        title = 'Accuracy vs Samples'
+        graphSyntheticData(resultsData, numberShots, iSample)
+
+
+def graphSyntheticData(resultsData, numberShots, iSample):
+    shot = np.arange(numberShots)
+    AccLDAInd = np.zeros(numberShots)
+    AccQDAInd = np.zeros(numberShots)
+
+    AccLDAMulti = np.zeros(numberShots)
+    AccQDAMulti = np.zeros(numberShots)
+
+    AccLDAProp = np.zeros(numberShots)
+    AccQDAProp = np.zeros(numberShots)
+    AccLDALiu = np.zeros(numberShots)
+    AccQDALiu = np.zeros(numberShots)
+    AccLDAVidovic = np.zeros(numberShots)
+    AccQDAVidovic = np.zeros(numberShots)
+
+    for i in range(numberShots):
+        AccLDAInd[i] = resultsData['AccLDAInd'][
             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        yQDAInd[i] = resultsData['yQDAInd'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        yKNNInd[i] = resultsDataCL['yKNNInd'][
-            (resultsDataCL['shots'] == i + iSample) & (resultsDataCL['shots'] == i + iSample)].mean()
-        ySVMInd[i] = resultsDataCL['ySVMInd'][
-            (resultsDataCL['shots'] == i + iSample) & (resultsDataCL['shots'] == i + iSample)].mean()
-        yLDAMulti[i] = resultsData['yLDAMulti'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        yQDAMulti[i] = resultsData['yQDAMulti'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        yKNNMulti[i] = resultsDataCL['yKNNMulti'][
-            (resultsDataCL['shots'] == i + iSample) & (resultsDataCL['shots'] == i + iSample)].mean()
-        ySVMMulti[i] = resultsDataCL['ySVMMulti'][
-            (resultsDataCL['shots'] == i + iSample) & (resultsDataCL['shots'] == i + iSample)].mean()
-        yPropL[i] = resultsData['yPropL'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        yPropQ[i] = resultsData['yPropQ'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        yLiu[i] = resultsData['yLiu'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        yLiuQDA[i] = resultsData['yLiuQDA'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        wTargetLm[i] = resultsData['wTargetMeanLDAm'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        wTargetQm[i] = resultsData['wTargetMeanQDAm'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        wTargetLc[i] = resultsData['wTargetCovLDAm'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        wTargetQc[i] = resultsData['wTargetCovQDAm'][
+        AccQDAInd[i] = resultsData['AccQDAInd'][
             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
 
-        # confidence = 0.1
-        #
-        # T_test = stats.ttest_ind(
-        #     resultsData['yPropL'][(resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].values,
-        #     LDAInd.values)[1]
-        # if T_test <= confidence:
-        #     results.at[idx, 'T-test (LDA_Ind)'] = T_test
-        # else:
-        #     results.at[idx, 'T-test (LDA_Ind)'] = 1
+        AccLDAMulti[i] = resultsData['AccLDAMulti'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+        AccQDAMulti[i] = resultsData['AccQDAMulti'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
 
-    fig1, (ax1) = plt.subplots(nrows=1, ncols=1, sharex=True, figsize=(9, 3))
+        AccLDAProp[i] = resultsData['AccLDAProp'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+        AccQDAProp[i] = resultsData['AccQDAProp'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+        AccLDALiu[i] = resultsData['AccLDALiu'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+        AccQDALiu[i] = resultsData['AccQDALiu'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+        AccLDAVidovic[i] = resultsData['AccLDAVidovic'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+        AccQDAVidovic[i] = resultsData['AccQDAVidovic'][
+            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+
+    fig1, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(9, 3))
     sizeM = 5
-    if clAdap:
-        ax1.plot(shot + iSample, yLDAInd, label='LDA', markersize=sizeM, marker='s', color='tab:orange')
-        ax1.plot(shot + iSample, yQDAInd, label='QDA', markersize=sizeM, marker='p', color='tab:green')
-        ax1.plot(shot + iSample, yPropL, label='Adaptive LDA', markersize=sizeM, marker='^', color='tab:blue')
-        ax1.plot(shot + iSample, yPropQ, label='Adaptive QDA', markersize=sizeM, marker='v', color='tab:gray')
-        ax1.plot(shot + iSample, yLiu, label='Liu', markersize=sizeM, marker='.', color='tab:red')
-
-    else:
-        ax1.plot(shot + iSample, yLDAInd, label='Adaptive LDA', markersize=sizeM, marker='s', color='tab:orange')
-        ax1.plot(shot + iSample, yQDAInd, label='QDA', markersize=sizeM, marker='p', color='tab:green')
-        ax1.plot(shot + iSample, yKNNInd, label='KNN', markersize=sizeM, marker='*', color='tab:brown')
-        ax1.plot(shot + iSample, ySVMInd, label='SVM', markersize=sizeM, marker='x', color='tab:purple')
-        # ax1.plot(shot + iSample, yPropL, label='Adaptive LDA', markersize=sizeM, marker='^', color='black')
-        # ax1.plot(shot + iSample, yPropQ, label='Adaptive QDA', markersize=sizeM, marker='v', color='blue')
-        # ax1.plot(shot + iSample, yLiu, label='Liu', markersize=sizeM, marker='.', color='red')
-
-    # ax1.plot(shot + iSample, yLDAMulti, label='Mutli-user LDA',markersize=sizeM, marker='o')
-    # ax1.plot(shot + iSample, yQDAMulti, label='Mutli-user QDA', markersize=sizeM, marker='^')
-    # ax1.plot(shot + iSample, yKNNMulti, label='Mutli-user KNN', markersize=sizeM, marker='v')
-    # ax1.plot(shot + iSample, ySVMMulti, label='Mutli-user SVM', markersize=sizeM, marker='1')
-
-    ax1.set_title(title)
+    ax1.plot(shot + iSample, AccLDAInd, label='Individual', markersize=sizeM, color='tab:orange', linestyle='--')
+    ax1.plot(shot + iSample, AccLDAMulti, label='Multi-user', markersize=sizeM, color='tab:purple',
+             linestyle=(0, (3, 3, 1, 3, 1, 3)))
+    ax1.plot(shot + iSample, AccLDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
+    ax1.plot(shot + iSample, AccLDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
+             linestyle=(0, (3, 3, 1, 3)))
+    ax1.plot(shot + iSample, AccLDAProp, label='Adaptive', color='tab:blue')
+    ax1.set_title('LDA')
     ax1.grid()
-    ax1.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
-
     ax1.set_ylabel('accuracy')
-    ax1.set_xlabel('samples')
+    ax2.plot(shot + iSample, AccQDAInd, label='Individual', markersize=sizeM, color='tab:orange', linestyle='--')
+    ax2.plot(shot + iSample, AccQDAMulti, label='Multi-user', markersize=sizeM, color='tab:purple',
+             linestyle=(0, (3, 3, 1, 3, 1, 3)))
+    ax2.plot(shot + iSample, AccQDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
+    ax2.plot(shot + iSample, AccQDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
+             linestyle=(0, (3, 3, 1, 3)))
+    ax2.plot(shot + iSample, AccQDAProp, label='Adaptive', color='tab:blue')
+    ax2.set_title('QDA')
+    ax2.grid()
+    ax2.set_ylabel('accuracy')
+    ax2.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
+    ax2.set_xlabel('samples')
 
-    # ax2.plot(shot + iSample, wTargetLm, label='W Adaptive LDA mean',markersize=sizeM, marker='^')
-    # ax2.plot(shot + iSample, wTargetQm, label='W Adaptive QDA mean',markersize=sizeM, marker='v')
-    # ax2.plot(shot + iSample, wTargetLc, label='W Adaptive LDA cov',markersize=sizeM, marker='^')
-    # ax2.plot(shot + iSample, wTargetQc, label='W Adaptive QDA cov',markersize=sizeM, marker='v')
-    # ax2.plot(shot + iSample, wLiu, label='W Liu',markersize=sizeM, marker='.')
-    # ax2.set_title('Target Weight  vs Samples')
-    # ax2.grid()
-    # ax2.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
-    # ax2.set_xlabel('Samples')
-    # ax2.set_ylabel('Weight')
-
-    # fig2, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(9, 6))
-    #
-    # ax1.plot(shot + iSample, yPropQ, label='Adaptive QDA', color='green', marker='^')
-    # ax1.plot(shot + iSample, yLiuQDA, label='Liu QDA', color='orange', marker='v')
-    # ax1.plot(shot + iSample, yQDAInd, label='Individual QDA', color='red', marker='x')
-    # # ax1.plot(shot + iSample, yQDAMulti, label='Mutli-user QDA', color='blue', marker='o')
-    #
-    # ax1.set_title('Accuracy vs Samples')
-    # ax1.grid()
-    # ax1.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
-    #
-    # ax1.set_ylabel('QDA \n Accuracy')
-    #
-    # ax2.plot(shot + iSample, wTargetQ, label='W Adaptive QDA', color='green', marker='^')
-    # ax2.plot(shot + iSample, wLiu, label='W Liu QDA', color='red', marker='x')
-    # ax2.set_title('Target Weight vs Samples')
-    # ax2.grid()
-    # ax2.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
-    # ax2.set_xlabel('Shots')
-    # ax2.set_ylabel('QDA \n Weight')
     fig1.tight_layout()
     plt.savefig("synthetic.png", bbox_inches='tight', dpi=600)
-    # fig2.tight_layout()
     plt.show()
 
 
