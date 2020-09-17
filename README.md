@@ -27,9 +27,9 @@ Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 2. CoteAllard https://github.com/UlysseCoteAllard/MyoArmbandDataset
 3. EPN  https://drive.google.com/drive/folders/1eODcbPTAs-53Qr7YcOhu11IWzJjH_eRh
 
-## [Experiment 1](andresjarami/FewShotLearningEMG/other_file.md)
+## [Experiment 1](andresjarami/FewShotLearningEMG/Experiment1_3.ipynb)
 
-## [Experiment 2](andresjarami/FewShotLearningEMG/other_file.md)
+## [Experiment 2](andresjarami/FewShotLearningEMG/Experiment2.ipynb)
 
-## [Experiment 3](andresjarami/FewShotLearningEMG/other_file.md)
+## [Experiment 3](andresjarami/FewShotLearningEMG/Experiment1_3.ipynb)
 
