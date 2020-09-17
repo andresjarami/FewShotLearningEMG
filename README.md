@@ -27,16 +27,9 @@ Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 2. CoteAllard https://github.com/UlysseCoteAllard/MyoArmbandDataset
 3. EPN  https://drive.google.com/drive/folders/1eODcbPTAs-53Qr7YcOhu11IWzJjH_eRh
 
-## [Experiment1](andresjarami/FewShotLearningEMG/other_file.md)
+## [Experiment 1](andresjarami/FewShotLearningEMG/other_file.md)
 
-## Experiment 2
+## [Experiment 2](andresjarami/FewShotLearningEMG/other_file.md)
 
-## Experiment 2
+## [Experiment 3](andresjarami/FewShotLearningEMG/other_file.md)
 
-To git clone this project on Overleaf. Here we'll clone it into a directory called test_paper with the command:
-
-git clone https://git.overleaf.com/project/5dbb9b2ca1c83c0001ce0aa9 test_paper
-
-Now that you've cloned your project, you can edit it using whatever tools you like and commit your changes with the git commit command, as usual when working with git
-
-[More Information about Collaborate Online and Offline with Overleaf and Git](https://www.overleaf.com/blog/195-new-collaborate-online-and-offline-with-overleaf-and-git-beta)
