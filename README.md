@@ -1,6 +1,6 @@
 # FewShotLearningEMG
 
-This repository describe the three experiments performed to the paper *A Multi-Source Domain Adaptation for Real-Time Hand Gesture Classification using EMGs* using [python 3.7](https://www.python.org/downloads/release/python-377/)
+This repository describes the three experiments performed to the paper *A Multi-Source Domain Adaptation for Real-Time Hand Gesture Classification using EMGs* using [python 3.7](https://www.python.org/downloads/release/python-377/)
 
 ## Required libraries 
 Numpy [https://numpy.org/install/](https://numpy.org/install/)
@@ -32,16 +32,17 @@ To reproduce our experiments, please perform the following steps:
 
 1. We extracted the data from the three databases using the [DataExtraction](ExtractedData/DataExtraction.py) python file. This file was run over a personal computer (Intel® Core™ i5-8250U processor and 8GB of RAM).
 
-The next stepts were perfromed over a supercomputer [Gadi](http://nci.org.au/our-services/supercomputing). The characteristics of Gadi are: Intel Xeon Platinum 8274 (Cascade Lake), Two physical processors per node, 3.2 GHz clock speed, and 48 cores per node.
+The next steps were performed over a supercomputer [Gadi](http://nci.org.au/our-services/supercomputing). The characteristics of Gadi are Intel Xeon Platinum 8274 (Cascade Lake), Two physical processors per node, 3.2 GHz clock speed, and 48 cores per node.
 
-2. For the experiment 1 and 2, we run over Gadi the batch files : 
+2. For the experiment 1 and 2, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment1_2/Nina5_scriptNew.sh), [CoteAllard](Experiments/Experiment1_2/Cote_script.sh), and [EPN](Experiments/Experiment1_2/EPN_script.sh).
+3. For the experiment 3, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment3/Cote_CWT_NinaPro5/EVALUATE1.sh), [CoteAllard](Experiments/Experiment3/Cote_CWT_Cote/EVALUATE1.sh), and [EPN](Experiments/Experiment3/Cote_CWT_EPN/EVALUATE1.sh).
  
-The three experiments were performed over a 
 
 ## Visualization of the three experiments:
+After the execution of the experiments, we analyzed and developed the graphs, which are presented in the paper.
+
 [Experiment 1](Experiment1_3.ipynb)
 
 [Experiment 2](Experiment2.ipynb)
 
 [Experiment 3](Experiment1_3.ipynb)
-
