@@ -27,9 +27,21 @@ Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 2. CoteAllard https://github.com/UlysseCoteAllard/MyoArmbandDataset
 3. EPN  https://ieeexplore.ieee.org/abstract/document/8903136/?casa_token=RYo5viuh6S8AAAAA:lizIpEqM4rK5eeo1Wxm-aPuDB20da2PngeRRnrC7agqSK1j26mqmtq5YJFLive7uW083m9tT
 
-## [Experiment 1](Experiment1_3.ipynb)
+## Experiments
+To reproduce our experiments, please perform the following steps:
 
-## [Experiment 2](Experiment2.ipynb)
+1. We extracted the data from the three databases using the [DataExtraction](ExtractedData/DataExtraction.py) python file. This file was run over a personal computer (Intel® Core™ i5-8250U processor and 8GB of RAM).
 
-## [Experiment 3](Experiment1_3.ipynb)
+The next stepts were perfromed over a supercomputer [Gadi](http://nci.org.au/our-services/supercomputing). The characteristics of Gadi are: Intel Xeon Platinum 8274 (Cascade Lake), Two physical processors per node, 3.2 GHz clock speed, and 48 cores per node.
+
+2. For the experiment 1 and 2, we run over Gadi the batch files : 
+ 
+The three experiments were performed over a 
+
+## Visualization of the three experiments:
+[Experiment 1](Experiment1_3.ipynb)
+
+[Experiment 2](Experiment2.ipynb)
+
+[Experiment 3](Experiment1_3.ipynb)
 
