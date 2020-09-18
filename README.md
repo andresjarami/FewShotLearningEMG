@@ -1,6 +1,6 @@
 # FewShotLearningEMG
 
-This repository describes the three experiments performed to the paper *A Multi-Source Domain Adaptation for Real-Time Hand Gesture Classification using EMGs* using [python 3.7](https://www.python.org/downloads/release/python-377/)
+This repository describes the three experiments performed to the paper *A Multi-Source Domain Adaptation for Real-Time Hand Gesture Classification using EMGs*. We implemented the experiments using [python 3.7](https://www.python.org/downloads/release/python-377/).
 
 ## Required libraries 
 Numpy [https://numpy.org/install/](https://numpy.org/install/)
