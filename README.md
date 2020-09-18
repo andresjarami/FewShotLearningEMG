@@ -39,7 +39,9 @@ The next steps were performed over a supercomputer [Gadi](http://nci.org.au/our-
 3. For the experiment 1, we run over Gadi one batch files ([Synthetic Data](Experiments/Experiment1_2/SyntheticRand_script.sh))
 
 4. For the experiment 3, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment3/Cote_CWT_NinaPro5/EVALUATE1.sh), [CoteAllard](Experiments/Experiment3/Cote_CWT_Cote/EVALUATE1.sh), and [EPN](Experiments/Experiment3/Cote_CWT_EPN/EVALUATE1.sh).
- 
+
+#### NOTE
+The implementations of our adaptation technique and the Liu and Vidovic methods are in the [Fucntions](Experiments/Experiment1_2/functions.py) python file.
 
 ## Visualization of the three experiments:
 After the execution of the experiments, we analyzed and developed the graphs, which are presented in the paper.
