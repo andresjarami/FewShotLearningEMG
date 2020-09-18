@@ -1268,7 +1268,7 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
         plt.xlabel('Feature 1')
         plt.ylabel('Feature 2')
         fig1.tight_layout(pad=0.1)
-        plt.savefig("distr.png", bbox_inches='tight', dpi=600)
+        # plt.savefig("distr.png", bbox_inches='tight', dpi=600)
         plt.show()
     return DataFrame
 
@@ -1442,7 +1442,7 @@ def graphSyntheticData(resultsData, numberShots, iSample):
     ax2.set_xlabel('samples')
 
     fig1.tight_layout()
-    plt.savefig("synthetic.png", bbox_inches='tight', dpi=600)
+    # plt.savefig("synthetic.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -1644,7 +1644,7 @@ def DataGenerator_TwoCL_TwoFeatEXAMPLE(seed=1, samples=50, people=3, peopleSame=
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
     fig1.tight_layout(pad=0.1)
-    plt.savefig("distr.png", bbox_inches='tight', dpi=600)
+    # plt.savefig("distr.png", bbox_inches='tight', dpi=600)
     plt.show()
     return
 
@@ -1693,7 +1693,7 @@ def SyntheticData(resultsData, numberShots, iSample):
 
 def graphSyntheticDataALL():
     samples = 50
-    place = 'Experiments/DatabasesEvaluation/ResultsExp2/results'
+    place = 'Experiments/Experiment1_2/ResultsExp2/results'
     for j in [0, 1, 3, 5, 10, 15, 20]:
         frame = pd.read_csv(place + 'Synthetic_peopleSimilar_' + str(j) + 'time_0' + '.csv')
 
@@ -1714,7 +1714,7 @@ def graphSyntheticDataALL():
     iSample = 3
     idx = 0
     for peopleSimilar in [0, 1, 3, 5]:
-        place = 'Experiments/DatabasesEvaluation/ResultsExp2/results'
+        place = 'Experiments/Experiment1_2/ResultsExp2/results'
         resultsData = pd.read_csv(place + 'Synthetic_peopleSimilar_' + str(peopleSimilar) + '.csv')
 
         shot, AccLDAInd, AccQDAInd, AccLDAMulti, AccQDAMulti, AccLDAProp, AccQDAProp, AccLDALiu, AccQDALiu, AccLDAVidovic, AccQDAVidovic = SyntheticData(
@@ -1754,7 +1754,7 @@ def graphSyntheticDataALL():
     ax[3, 1].set_xlabel('samples')
 
     fig.tight_layout()
-    plt.savefig("synthetic.png", bbox_inches='tight', dpi=600)
+    # plt.savefig("synthetic.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -2080,7 +2080,7 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
     #     ax[1,2].legend(loc='best',prop={'size': 7})
     #     ax[2,2].legend(loc='best',prop={'size': 7})
     fig.tight_layout(pad=0.1)
-    plt.savefig("databaseACC.png", bbox_inches='tight', dpi=600)
+    # plt.savefig("databaseACC.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -2127,7 +2127,7 @@ def graphWeights(resultsNina5T,resultsCoteT,resultsEPNT):
     ax[0].set_ylabel('Weight value')
     lgd = ax[2].legend(loc='lower center', bbox_to_anchor=(1.2, -0.8), ncol=2)
     fig.tight_layout(pad=1)
-    plt.savefig("weights.png", bbox_inches='tight', dpi=600, bbox_extra_artists=(lgd,))
+    # plt.savefig("weights.png", bbox_inches='tight', dpi=600, bbox_extra_artists=(lgd,))
     plt.show()
 
 
@@ -2164,7 +2164,7 @@ def Analysis():
 
             for s in range(1, shots):
 
-                place = "Experiments/DatabasesEvaluation/ResultsExp1/" + base
+                place = "Experiments/Experiment1_2/ResultsExp1/" + base
                 DataFrame = uploadData(place, samples, people, shots)
 
                 #                 place="Experiments/CotePyTorchImplementation/Cote_CWT_"+base+"/"
@@ -2440,19 +2440,19 @@ def AnalysisFriedman():
     samples = 4
     people = 10
     shots = 5
-    place = "Experiments/DatabasesEvaluation/ResultsExp1/" + base
+    place = "Experiments/Experiment1_2/ResultsExp1/" + base
     DataFrameN = uploadData(place, samples, people, shots)
     base = 'Cote'
     samples = 4
     people = 17
     shots = 5
-    place = "Experiments/DatabasesEvaluation/ResultsExp1/" + base
+    place = "Experiments/Experiment1_2/ResultsExp1/" + base
     DataFrameC = uploadData(place, samples, people, shots)
     base = 'EPN'
     samples = 25
     people = 30
     shots = 5
-    place = "Experiments/DatabasesEvaluation/ResultsExp1/" + base
+    place = "Experiments/Experiment1_2/ResultsExp1/" + base
     DataFrameE = uploadData(place, samples, people, shots)
 
     TotalDataframe = pd.concat([DataFrameN, DataFrameC, DataFrameE])
@@ -2543,7 +2543,7 @@ def AnalysisCote():
                     c.append(ast.literal_eval(cote.loc[0][i]))
                     c.append(ast.literal_eval(cote.loc[1][i]))
                 c = np.mean(np.array(c), axis=0)
-            place = "Experiments/DatabasesEvaluation/ResultsExp1/" + base
+            place = "Experiments/Experiment1_2/ResultsExp1/" + base
             DataFrame = uploadData(place, samples, people, shots)
 
             propQ = DataFrame['AccQDAProp'].loc[
