@@ -44,7 +44,7 @@ The next steps were performed over a supercomputer [Gadi](http://nci.org.au/our-
 The implementations of our adaptation technique and the Liu and Vidovic methods are in the [Fucntions](Experiments/Experiment1_2/functions.py) python file. In addition, the [CoteAllard implementation](Experiments/Experiment3) used in experiment 3 is a version of the original one, which you can find [here](https://github.com/UlysseCoteAllard/MyoArmbandDataset). We only modified the files used to load the data in order to use the three databases and evaluate using the Friedman rank and Holm Post-Hoc tests (the convolutional neural networks and the transfer learning technique did not modify).
 
 ## Visualization of the three experiments:
-After the execution of the experiments, we analyzed and developed the graphs, which are presented in the paper.
+After the execution of the experiments, we use Jupyter notebooks to analyzed and developed the graphs, which are presented in the paper.
 
 [Experiment 1](Experiment1_3.ipynb)
 
