@@ -28,19 +28,13 @@ nameFile = place + '_FeatureSet_' + sys.argv[1] + '_startPerson_' + sys.argv[2] 
 # nameFile = 'None'
 
 # Upload Data
-dataMatrix, numberFeatures, CH, classes, peoplePriorK, peopleTest, numberShots, combinationSet, allFeatures, \
+dataMatrix, numberFeatures, CH, classes, _, peopleTest, numberShots, _, allFeatures, \
 labelsDataMatrix = F.uploadDatabases(typeDatabase, featureSet)
 
-# Hyper-Parameters tuning
-if hyper:
-    # Preprocessing
-    dataMatrix = F.preprocessingData(dataMatrix, allFeatures, peoplePriorK, peopleTest, typeDatabase)
 
-    F.hyperParameterTuning(dataMatrix, labelsDataMatrix, featureSet, typeDatabase, allFeatures, peoplePriorK,
-                           peopleTest)
 
 # Evaluation
 
 if eval:
-    F.evaluation(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
-                 startPerson, endPerson, allFeatures, typeDatabase, printR)
+    F.evaluation(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+                 allFeatures, typeDatabase, printR)

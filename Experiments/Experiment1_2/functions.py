@@ -6,7 +6,6 @@ from matplotlib.patches import Ellipse
 import matplotlib.transforms as transforms
 import matplotlib.ticker as mtick
 
-
 from scipy import stats
 from scipy.spatial import distance
 
@@ -24,8 +23,6 @@ from sklearn.decomposition import PCA
 import itertools
 import random
 import ast
-
-
 
 
 #
@@ -531,9 +528,7 @@ def SamplesProposedModel(model, samples, classes):
 
 
 def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels, classes, allFeatures,
-                     trainFeaturesGen, trainLabelsGen, results, testFeatures, testLabels, idx, person, subset,
-                     featureSet, nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti, clfLDAInd, clfQDAInd,
-                     clfLDAMulti, clfQDAMulti, k, testRep, tPre, pkValues):
+                     results, testFeatures, testLabels, idx, person, subset, featureSet, nameFile, printR, k, pkValues):
     # Amount of Training data
     minSamplesClass = 20
     step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
@@ -597,47 +592,24 @@ def currentDistributionValues(trainFeatures, trainLabels, classes, allFeatures):
     return currentValues
 
 
-def evaluation(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
-               startPerson, endPerson, allFeatures, typeDatabase, printR):
-    hyperKNN = pd.read_csv('KNN_hyper' + typeDatabase + str(featureSet) + '.csv')
-    hyperSVM = pd.read_csv('SVM_hyper' + typeDatabase + str(featureSet) + '.csv')
-
-    p = hyperKNN['p'].mode()[0]
-    n_neighbors = hyperKNN['n_neighbors'].mode()[0]
-    weights = hyperKNN['weights'].mode()[0]
-    clfKNNMulti = KNN(n_neighbors=n_neighbors, p=p, weights=weights)
-
-    C = hyperSVM['C'].mode()[0]
-    degree = hyperSVM['degree'].mode()[0]
-    kernel = hyperSVM['kernel'].mode()[0]
-    gamma = hyperSVM['gamma'].mode()[0]
-    clfSVMMulti = SVM(C=C, kernel=kernel, degree=degree, gamma=gamma)
-
-    clfLDAInd = LDA()
-    clfQDAInd = QDA()
-    clfLDAMulti = LDA()
-    clfQDAMulti = QDA()
-
+def evaluation(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson, allFeatures,
+               typeDatabase, printR):
     scaler = preprocessing.MinMaxScaler()
 
     if typeDatabase == 'EPN':
-        evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
-                      startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
-                      clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler)
+        evaluationEPN(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+                      allFeatures, printR, scaler)
     elif typeDatabase == 'Nina5':
-        evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet,
-                        nameFile, startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM,
-                        clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler)
+        evaluationNina5(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+                        allFeatures, printR, scaler)
     elif typeDatabase == 'Cote':
-        evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet,
-                       nameFile, startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM,
-                       clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler)
+        evaluationCote(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+                       allFeatures, printR, scaler)
 
 
 ### EPN
-def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
-                  startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
-                  clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
+def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
+                  allFeatures, printR, scaler):
     results = pd.DataFrame(
         columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
 
@@ -648,93 +620,52 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, num
     idx = 0
     for person in range(peoplePriorK + startPerson, peoplePriorK + endPerson + 1):
 
-        p = hyperKNN['p'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        n_neighbors = hyperKNN['n_neighbors'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        weights = hyperKNN['weights'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        clfKNNInd = KNN(n_neighbors=n_neighbors, p=p, weights=weights)
-
-        C = hyperSVM['C'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        degree = hyperSVM['degree'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        kernel = hyperSVM['kernel'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        gamma = hyperSVM['gamma'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        clfSVMInd = SVM(C=C, kernel=kernel, degree=degree, gamma=gamma)
-
-        # combinationSet = list(range(1, 26))
-        # if person == 44:
-        #     combinationSet = np.setdiff1d(list(range(1, 26)), 15)
-
         typeData = 1
         testFeatures = dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (
                 dataMatrix[:, allFeatures + 1] == person)), 0:allFeatures][0]
         testLabels = dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (
                 dataMatrix[:, allFeatures + 1] == person)), allFeatures + 2][0]
-        testRep = dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (
-                dataMatrix[:, allFeatures + 1] == person)), allFeatures + 3][0]
 
         typeData = 0
-
         for shot in range(1, numberShots + 1):
-            # for shot in range(1, 2):
 
-            if shot >= 0:
-                randSubsets = range(1)
-            else:
+            subset = tuple(range(1, shot + 1))
 
-                random.seed(1)
-                subsets = []
-                for subset in itertools.combinations(combinationSet, shot):
-                    subsets.append(subset)
+            trainFeatures = np.empty((0, allFeatures))
+            trainLabels = []
+            for auxIndex in range(np.size(subset)):
+                trainFeatures = np.vstack(
+                    (trainFeatures, dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (
+                            dataMatrix[:, allFeatures + 1] == person) * (
+                                                                dataMatrix[:, allFeatures + 3] == subset[
+                                                            auxIndex])), 0:allFeatures][0]))
+                trainLabels = np.hstack(
+                    (trainLabels, dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (
+                            dataMatrix[:, allFeatures + 1] == person) * (
+                                                              dataMatrix[:, allFeatures + 3] == subset[
+                                                          auxIndex])), allFeatures + 2][0].T))
 
-                if len(subsets) <= 25:
-                    randSubsets = subsets
-                else:
-                    randSubsets = random.sample(subsets, 25)
+            trainFeaturesGen = np.vstack((trainFeaturesGenPre, trainFeatures))
+            trainLabelsGen = np.hstack((trainLabelsGenPre, trainLabels))
 
-            auxSh = 0
-            for subset in randSubsets:
-                if auxSh == 0:
-                    subset = tuple(range(1, shot + 1))
-                    auxSh = 1
+            k = 1 - (np.log(shot) / np.log(numberShots + 1))
+            print(k)
 
-                trainFeatures = np.empty((0, allFeatures))
-                trainLabels = []
-                for auxIndex in range(np.size(subset)):
-                    trainFeatures = np.vstack(
-                        (trainFeatures, dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (
-                                dataMatrix[:, allFeatures + 1] == person) * (
-                                                                    dataMatrix[:, allFeatures + 3] == subset[
-                                                                auxIndex])), 0:allFeatures][0]))
-                    trainLabels = np.hstack(
-                        (trainLabels, dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (
-                                dataMatrix[:, allFeatures + 1] == person) * (
-                                                                  dataMatrix[:, allFeatures + 3] == subset[
-                                                              auxIndex])), allFeatures + 2][0].T))
+            scaler.fit(trainFeatures)
 
-                trainFeaturesGen = np.vstack((trainFeaturesGenPre, trainFeatures))
-                trainLabelsGen = np.hstack((trainLabelsGenPre, trainLabels))
+            trainFeatures = scaler.transform(trainFeatures)
 
-                k = 1 - (np.log(shot) / np.log(numberShots + 1))
-                print(k)
+            trainFeaturesGen = scaler.transform(trainFeaturesGen)
+            testFeaturesTransform = scaler.transform(testFeatures)
 
-                scaler.fit(trainFeatures)
-                t = time.time()
-                trainFeatures = scaler.transform(trainFeatures)
-                tPre = (time.time() - t) / len(trainFeatures)
+            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
 
-                trainFeaturesGen = scaler.transform(trainFeaturesGen)
-                testFeaturesTransform = scaler.transform(testFeatures)
-
-                dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
-
-                preTrainedDataMatrix = preTrainedDataEPN(dataPK, classes, peoplePriorK, allFeaturesPK)
-                currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
-                pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
-                results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
-                                                classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
-                                                testFeaturesTransform, testLabels, idx, person, subset, featureSet,
-                                                nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                                clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre,
-                                                pkValues)
+            preTrainedDataMatrix = preTrainedDataEPN(dataPK, classes, peoplePriorK, allFeaturesPK)
+            currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
+            pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
+            results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
+                                            classes, allFeaturesPK, results, testFeaturesTransform, testLabels, idx,
+                                            person, subset, featureSet, nameFile, printR, k, pkValues)
 
     return results
 
@@ -761,9 +692,8 @@ def preTrainedDataEPN(dataMatrix, classes, peoplePriorK, allFeatures):
 
 ### Cote
 
-def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet,
-                   nameFile, startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM,
-                   clfSVMMulti, clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
+def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
+                   allFeatures, printR, scaler):
     # Creating Variables
     results = pd.DataFrame(
         columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
@@ -778,17 +708,6 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
     typeData = 1
     for person in range(peoplePriorK + startPerson, peoplePriorK + endPerson + 1):
 
-        p = hyperKNN['p'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        n_neighbors = hyperKNN['n_neighbors'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        weights = hyperKNN['weights'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        clfKNNInd = KNN(n_neighbors=n_neighbors, p=p, weights=weights)
-
-        C = hyperSVM['C'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        degree = hyperSVM['degree'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        kernel = hyperSVM['kernel'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        gamma = hyperSVM['gamma'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        clfSVMInd = SVM(C=C, kernel=kernel, degree=degree, gamma=gamma)
-
         carpet = 2
         testFeatures = \
             dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (dataMatrix[:, allFeatures + 1] == person)
@@ -796,20 +715,12 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
         testLabels = \
             dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (dataMatrix[:, allFeatures + 1] == person)
                                 * (dataMatrix[:, allFeatures + 2] == carpet)), allFeatures + 3][0]
-        testRep = \
-            dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData) * (dataMatrix[:, allFeatures + 1] == person)
-                                * (dataMatrix[:, allFeatures + 2] == carpet)), allFeatures + 4][0]
 
         carpet = 1
         # 4 cycles - cross_validation for 4 cycles or shots
         for shot in range(1, numberShots + 1):
 
             subset = tuple(range(1, shot + 1))
-            # for subset in itertools.combinations(combinationSet, shot):
-
-            ####
-            # subset = list(range(1, shot + 1))
-            ###
 
             trainFeatures = np.empty((0, allFeatures))
             trainLabels = []
@@ -835,9 +746,8 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
             print(k)
 
             scaler.fit(trainFeatures)
-            t = time.time()
+
             trainFeatures = scaler.transform(trainFeatures)
-            tPre = (time.time() - t) / len(trainFeatures)
 
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
             testFeaturesTransform = scaler.transform(testFeatures)
@@ -848,10 +758,8 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, nu
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
             pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
             results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
-                                            classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
-                                            testFeaturesTransform, testLabels, idx, person, subset, featureSet,
-                                            nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre, pkValues)
+                                            classes, allFeaturesPK, results, testFeaturesTransform, testLabels, idx,
+                                            person, subset, featureSet, nameFile, printR, k, pkValues)
 
     return results
 
@@ -878,9 +786,8 @@ def preTrainedDataCote(dataMatrix, classes, peoplePriorK, allFeatures):
 
 ### Nina Pro 5
 
-def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, numberShots, combinationSet, nameFile,
-                    startPerson, endPerson, allFeatures, printR, hyperKNN, clfKNNMulti, hyperSVM, clfSVMMulti,
-                    clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, scaler):
+def evaluationNina5(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile,
+                    startPerson, endPerson, allFeatures, printR, scaler):
     # Creating Variables
 
     results = pd.DataFrame(
@@ -889,17 +796,6 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
     idx = 0
 
     for person in range(startPerson, endPerson + 1):
-
-        p = hyperKNN['p'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        n_neighbors = hyperKNN['n_neighbors'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        weights = hyperKNN['weights'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        clfKNNInd = KNN(n_neighbors=n_neighbors, p=p, weights=weights)
-
-        C = hyperSVM['C'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        degree = hyperSVM['degree'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        kernel = hyperSVM['kernel'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        gamma = hyperSVM['gamma'].loc[hyperKNN['person'] == person].reset_index(drop=True)[0]
-        clfSVMInd = SVM(C=C, kernel=kernel, degree=degree, gamma=gamma)
 
         trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), 0:allFeatures][0]
         trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), allFeatures + 1][0]
@@ -911,11 +807,6 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
         testLabels = dataMatrix[
             np.where((dataMatrix[:, allFeatures] == person) * (dataMatrix[:, allFeatures + 2] >= 5)), allFeatures + 1][
             0].T
-        testRep = dataMatrix[
-            np.where((dataMatrix[:, allFeatures] == person) * (dataMatrix[:, allFeatures + 2] >= 5)), allFeatures + 2][
-            0].T
-
-        Set = np.arange(1, 7)
 
         # 4 cycles - cross_validation for 4 cycles
         for shot in range(1, numberShots + 1):
@@ -941,9 +832,8 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
             print(k)
 
             scaler.fit(trainFeatures)
-            t = time.time()
+
             trainFeatures = scaler.transform(trainFeatures)
-            tPre = (time.time() - t) / len(trainFeatures)
 
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
             testFeaturesTransform = scaler.transform(testFeatures)
@@ -954,10 +844,8 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, peopleTest, featureSet, n
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
             pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
             results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
-                                            classes, allFeaturesPK, trainFeaturesGen, trainLabelsGen, results,
-                                            testFeaturesTransform, testLabels, idx, person, subset, featureSet,
-                                            nameFile, printR, clfKNNInd, clfKNNMulti, clfSVMInd, clfSVMMulti,
-                                            clfLDAInd, clfQDAInd, clfLDAMulti, clfQDAMulti, k, testRep, tPre, pkValues)
+                                            classes, allFeaturesPK, results, testFeaturesTransform, testLabels, idx,
+                                            person, subset, featureSet, nameFile, printR, k, pkValues)
 
     return results
 
@@ -989,7 +877,7 @@ def uploadDatabases(typeDatabase, featureSet=1):
     # Setting general variables
 
     CH = 8
-    windowFile = ''
+
     if typeDatabase == 'EPN':
         carpet = 'ExtractedDataCollectedData'
         classes = 5
@@ -1014,7 +902,7 @@ def uploadDatabases(typeDatabase, featureSet=1):
 
     if featureSet == 1:
         # Setting variables
-        Feature1 = 'logvarMatrix' + windowFile
+        Feature1 = 'logvarMatrix'
         segment = ''
         numberFeatures = 1
         allFeatures = numberFeatures * CH
@@ -1036,10 +924,10 @@ def uploadDatabases(typeDatabase, featureSet=1):
 
     elif featureSet == 2:
         # Setting variables
-        Feature1 = 'mavMatrix' + windowFile
-        Feature2 = 'wlMatrix' + windowFile
-        Feature3 = 'zcMatrix' + windowFile
-        Feature4 = 'sscMatrix' + windowFile
+        Feature1 = 'mavMatrix'
+        Feature2 = 'wlMatrix'
+        Feature3 = 'zcMatrix'
+        Feature4 = 'sscMatrix'
         segment = ''
         numberFeatures = 4
         allFeatures = numberFeatures * CH
@@ -1065,10 +953,10 @@ def uploadDatabases(typeDatabase, featureSet=1):
 
     elif featureSet == 3:
         # Setting variables
-        Feature1 = 'lscaleMatrix' + windowFile
-        Feature2 = 'mflMatrix' + windowFile
-        Feature3 = 'msrMatrix' + windowFile
-        Feature4 = 'wampMatrix' + windowFile
+        Feature1 = 'lscaleMatrix'
+        Feature2 = 'mflMatrix'
+        Feature3 = 'msrMatrix'
+        Feature4 = 'wampMatrix'
         segment = ''
         numberFeatures = 4
         allFeatures = numberFeatures * CH
@@ -1197,8 +1085,7 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
             if person < peopleDiff:
                 classCovFactor = 10
                 auxPoint = np.random.uniform(low=5, high=classCovFactor * 2 + 5, size=(1, Features))[0]
-                # only for the graph
-                # auxPoint = np.array([0, 7])
+
             else:
                 auxPoint = np.zeros(2)
 
@@ -1446,77 +1333,6 @@ def graphSyntheticData(resultsData, numberShots, iSample):
     plt.show()
 
 
-# Hyper-Parameters Tuning
-
-def hyperParameterTuning_KNN(x, y, per):
-    parameters = {'p': [1, 2, 3], 'n_neighbors': [1, 3, 5, 7], 'weights': ('uniform', 'distance')}
-    # Create new KNN object
-    knn = KNN()
-    # Use GridSearch
-    generalClassifierKNN = GridSearchCV(knn, parameters, cv=3)
-    # Fit the model
-    best_model = generalClassifierKNN.fit(x, y)
-    # Print The value of best Hyperparameters
-    print('PERSON:', per)
-    print('Best p:', best_model.best_estimator_.get_params()['p'])
-    print('Best n_neighbors:', best_model.best_estimator_.get_params()['n_neighbors'])
-    print('Best weights:', best_model.best_estimator_.get_params()['weights'])
-    # Best parameters
-    parameters = pd.DataFrame(columns=['p', 'n_neighbors', 'weights', 'person'])
-    parameters.at[0, 'p'] = best_model.best_estimator_.get_params()['p']
-    parameters.at[0, 'n_neighbors'] = best_model.best_estimator_.get_params()['n_neighbors']
-    parameters.at[0, 'weights'] = best_model.best_estimator_.get_params()['weights']
-    parameters.at[0, 'person'] = per
-
-    return parameters
-
-
-def hyperParameterTuning_SVM(x, y, per):
-    parameters = {'C': [0.1, 1, 10], 'degree': [2, 3], 'kernel': ('rbf', 'poly', 'linear'), 'gamma': ('scale', 'auto')}
-    # Create new SVM object
-    svm = SVM()
-    # Use GridSearch
-    generalClassifierSVM = GridSearchCV(svm, parameters, cv=3)
-    # Fit the model
-    best_model = generalClassifierSVM.fit(x, y)
-    # Print The value of best Hyperparameters
-    print('PERSON:', per)
-    print('Best C:', best_model.best_estimator_.get_params()['C'])
-    print('Best degree:', best_model.best_estimator_.get_params()['degree'])
-    print('Best kernel:', best_model.best_estimator_.get_params()['kernel'])
-    print('Best gamma:', best_model.best_estimator_.get_params()['gamma'])
-    # Best parameters
-    parameters = pd.DataFrame(columns=['C', 'degree', 'kernel', 'gamma', 'person'])
-    parameters.at[0, 'C'] = best_model.best_estimator_.get_params()['C']
-    parameters.at[0, 'degree'] = best_model.best_estimator_.get_params()['degree']
-    parameters.at[0, 'kernel'] = best_model.best_estimator_.get_params()['kernel']
-    parameters.at[0, 'gamma'] = best_model.best_estimator_.get_params()['gamma']
-    parameters.at[0, 'person'] = per
-
-    return parameters
-
-
-def hyperParameterTuning(dataMatrix, labelsDataMatrix, featureSet, typeDatabase, allFeatures, peoplePriorK, peopleTest):
-    parametersKNN = pd.DataFrame(columns=['p', 'n_neighbors', 'weights', 'person'])
-    parametersSVM = pd.DataFrame(columns=['C', 'degree', 'kernel', 'gamma', 'person'])
-    if typeDatabase == 'Cote':
-        idxPer = allFeatures + 1
-    elif typeDatabase == 'Nina5':
-        idxPer = allFeatures
-    elif typeDatabase == 'EPN':
-        idxPer = allFeatures + 1
-
-    for per in range(peoplePriorK + 1, peoplePriorK + peopleTest + 1):
-        x = dataMatrix[np.where((dataMatrix[:, idxPer] == per)), 0:allFeatures][0]
-        y = labelsDataMatrix[np.where((dataMatrix[:, idxPer] == per))]
-        parametersKNN = parametersKNN.append(hyperParameterTuning_KNN(x, y, per), ignore_index=True)
-        parametersSVM = parametersSVM.append(hyperParameterTuning_SVM(x, y, per), ignore_index=True)
-
-    parametersKNN.to_csv('KNN_hyper' + typeDatabase + str(featureSet) + '.csv')
-    parametersSVM.to_csv('SVM_hyper' + typeDatabase + str(featureSet) + '.csv')
-    print('PRINT PARAMETERS' + typeDatabase + str(featureSet))
-
-
 def preprocessingData(dataMatrix, allFeatures, peoplePriorK, peopleTest, typeDatabase):
     scaler = preprocessing.MinMaxScaler()
 
@@ -1704,8 +1520,6 @@ def graphSyntheticDataALL(place):
                 print('error' + ' 0 ' + str(i))
                 print(len(auxFrame))
         frame.to_csv(place + 'Synthetic_peopleSimilar_' + str(j) + '.csv')
-
-
 
     fig, ax = plt.subplots(nrows=4, ncols=2, sharex=True, sharey=True, figsize=(11, 6))
     sizeM = 5
@@ -1942,7 +1756,7 @@ def analysisResults(resultDatabase, shots, Classification=False):
     return results, timeM
 
 
-def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
+def graphACC(resultsNina5T, resultsCoteT, resultsEPNT):
     FeatureSetM = 3
     fig, ax = plt.subplots(nrows=3, ncols=6, sharey='row', figsize=(13, 6))
     #     shot=np.arange(1,5)
@@ -1964,8 +1778,6 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
                     shot = np.arange(1, 26)
 
                     ax[Data, FeatureSet].yaxis.set_ticks(np.arange(0.50, 1, 0.06))
-
-
 
                 if classifier == 0:
 
@@ -2012,7 +1824,6 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
 
                 elif classifier == 1:
 
-
                     Model = 'QDA_Ind'
 
                     Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1])
@@ -2049,7 +1860,6 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
                         ax[Data, FeatureSet + 3].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
                     ax[Data, FeatureSet + 3].grid()
 
-
     ax[2, 0].set_xlabel('repetitions')
     ax[2, 1].set_xlabel('repetitions')
     ax[2, 2].set_xlabel('repetitions')
@@ -2075,7 +1885,7 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
     plt.show()
 
 
-def graphWeights(resultsNina5T,resultsCoteT,resultsEPNT):
+def graphWeights(resultsNina5T, resultsCoteT, resultsEPNT):
     fig, ax = plt.subplots(nrows=1, ncols=3, sharey='row', sharex='col', figsize=(9, 5))
     for Data in range(3):
 
@@ -2123,7 +1933,6 @@ def graphWeights(resultsNina5T,resultsCoteT,resultsEPNT):
 
 
 def Analysis():
-
     bases = ['NinaPro5', 'Cote', 'EPN']
     confidence = 0.05
     results = pd.DataFrame()
@@ -2155,8 +1964,6 @@ def Analysis():
                 place = "Experiments/Experiment1_2/ResultsExp1/" + base
                 DataFrame = uploadData(place, samples, people, shots)
 
-
-
                 if methodCL == 0:
                     propQ = DataFrame['AccQDAProp'].loc[
                                 (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
@@ -2175,8 +1982,6 @@ def Analysis():
                     vidQ = DataFrame['AccQDAVidovic'].loc[
                                (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
 
-
-
                 iL = np.median(indL)
                 iQ = np.median(indQ)
                 pL = np.median(propL)
@@ -2186,9 +1991,6 @@ def Analysis():
                 vL = np.median(vidL)
                 vQ = np.median(vidQ)
 
-
-
-
                 WilcoxonMethod = 'wilcox'
                 alternativeMethod = 'greater'
 
@@ -2197,12 +1999,10 @@ def Analysis():
                 if pL > iL:
                     p = stats.wilcoxon(propL, indL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propL LDA (p)' + base, idx] = p
                 elif iL > pL:
                     p = stats.wilcoxon(indL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propL LDA (p)' + base, idx] = p
                         print(1)
 
@@ -2211,12 +2011,10 @@ def Analysis():
                 if pL > lL:
                     p = stats.wilcoxon(propL, liuL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propL LiuL (p)' + base, idx] = p
                 elif lL > pL:
                     p = stats.wilcoxon(liuL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propL LiuL (p)' + base, idx] = p
                         print(1)
 
@@ -2225,28 +2023,23 @@ def Analysis():
                 if pL > vL:
                     p = stats.wilcoxon(propL, vidL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propL VidovicL (p)' + base, idx] = p
                 elif vL > pL:
                     p = stats.wilcoxon(vidL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propL VidovicL (p)' + base, idx] = p
                         print(1)
-
 
                 results.at['propQ QDA BL' + base, idx] = round(pQ - iQ, 2)
                 results.at['propQ QDA BL (p)' + base, idx] = 1
                 if pQ > iQ:
                     p = stats.wilcoxon(propQ, indQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propQ QDA BL (p)' + base, idx] = p
 
                 elif iQ > pQ:
                     p = stats.wilcoxon(indQ, propQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propQ QDA BL (p)' + base, idx] = p
                         print(1)
 
@@ -2255,35 +2048,27 @@ def Analysis():
                 if pQ > lQ:
                     p = stats.wilcoxon(propQ, liuQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propQ LiuQ (p)' + base, idx] = p
                 elif lQ > pQ:
                     p = stats.wilcoxon(liuQ, propQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propQ LiuQ (p)' + base, idx] = p
                         print(1)
-
 
                 results.at['propQ Vidovic QDA' + base, idx] = round(pQ - vQ, 2)
                 results.at['propQ Vidovic QDA (p)' + base, idx] = 1
                 if pQ > vQ:
                     p = stats.wilcoxon(propQ, vidQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propQ Vidovic QDA (p)' + base, idx] = p
                 elif vQ > pQ:
                     p = stats.wilcoxon(vidQ, propQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-
                         results.at['propQ Vidovic QDA (p)' + base, idx] = p
 
                 idx += 1
         idxD += 12
     return results
-
-
-
 
 
 def friedman_test(*args):
@@ -2327,7 +2112,7 @@ def friedman_test(*args):
     rankings_cmp = [r / np.sqrt(k * (k + 1) / (6. * n)) for r in rankings_avg]
 
     chi2 = ((12 * n) / float((k * (k + 1)))) * (
-                (np.sum(r ** 2 for r in rankings_avg)) - ((k * (k + 1) ** 2) / float(4)))
+            (np.sum(r ** 2 for r in rankings_avg)) - ((k * (k + 1) ** 2) / float(4)))
     iman_davenport = ((n - 1) * chi2) / float((n * (k - 1) - chi2))
 
     p_value = 1 - stats.f.cdf(iman_davenport, k - 1, (k - 1) * (n - 1))
@@ -2498,12 +2283,8 @@ def AnalysisCote():
             propL = DataFrame['AccLDAPropQ'].loc[
                         (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
 
-
-
             pQ = np.median(propQ)
             co = np.median(c)
-
-
 
             WilcoxonMethod = 'wilcox'
             alternativeMethod = 'greater'
