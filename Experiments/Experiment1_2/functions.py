@@ -1344,7 +1344,7 @@ def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, sample
 
         propModelQDA, _, resultsData.at[idx, 'wTargetMeanQDA'], _, resultsData.at[idx, 'wTargetCovQDA'], resultsData.at[
             idx, 'tPropQDA'] = ProposedModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T, y_train,
-                                             step, 'QDA', k)
+                                             step, 'LDA', k)
 
         liuModel = LiuModel(currentValues, preTrainedDataMatrix, classes, Features)
         vidovicModelL, vidovicModelQ = VidovicModel(currentValues, preTrainedDataMatrix, classes, Features)
@@ -1691,9 +1691,9 @@ def SyntheticData(resultsData, numberShots, iSample):
     return shot, AccLDAInd * 100, AccQDAInd * 100, AccLDAMulti * 100, AccQDAMulti * 100, AccLDAProp * 100, AccQDAProp * 100, AccLDALiu * 100, AccQDALiu * 100, AccLDAVidovic * 100, AccQDAVidovic * 100
 
 
-def graphSyntheticDataALL():
+def graphSyntheticDataALL(place):
     samples = 50
-    place = 'Experiments/Experiment1_2/ResultsExp2/results'
+    # place = 'Experiments/Experiment1_2/ResultsExp2/results'
     for j in [0, 1, 3, 5, 10, 15, 20]:
         frame = pd.read_csv(place + 'Synthetic_peopleSimilar_' + str(j) + 'time_0' + '.csv')
 
@@ -1714,7 +1714,6 @@ def graphSyntheticDataALL():
     iSample = 3
     idx = 0
     for peopleSimilar in [0, 1, 3, 5]:
-        place = 'Experiments/Experiment1_2/ResultsExp2/results'
         resultsData = pd.read_csv(place + 'Synthetic_peopleSimilar_' + str(peopleSimilar) + '.csv')
 
         shot, AccLDAInd, AccQDAInd, AccLDAMulti, AccQDAMulti, AccLDAProp, AccQDAProp, AccLDALiu, AccQDALiu, AccLDAVidovic, AccQDAVidovic = SyntheticData(
@@ -2013,9 +2012,6 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
 
                 elif classifier == 1:
 
-                    #                     Model='T-test (QDA_Ind)'
-                    #                     a=np.array(results[Model].loc[results['Feature Set']==FeatureSet+1])
-                    #                     markers_on = list(np.where(a <= value)[0])
 
                     Model = 'QDA_Ind'
 
@@ -2042,7 +2038,7 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
                     Model = 'PropQ'
 
                     Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1])
-                    #                     ax[Data,FeatureSet+3].plot(shot,Y,label='Adaptive')
+
                     ax[Data, FeatureSet + 3].plot(shot, Y, label='Adaptive', color='tab:blue')
 
                     ax[Data, FeatureSet + 3].yaxis.set_major_formatter(mtick.FormatStrFormatter('%.2f'))
@@ -2053,32 +2049,27 @@ def graphACC(resultsNina5T,resultsCoteT,resultsEPNT):
                         ax[Data, FeatureSet + 3].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
                     ax[Data, FeatureSet + 3].grid()
 
-    #     ax[2,0].set_xlabel('shots')
+
     ax[2, 0].set_xlabel('repetitions')
     ax[2, 1].set_xlabel('repetitions')
     ax[2, 2].set_xlabel('repetitions')
     ax[2, 3].set_xlabel('repetitions')
     ax[2, 4].set_xlabel('repetitions')
     ax[2, 5].set_xlabel('repetitions')
-    #     ax[2,2].set_xlabel('shots')
+
     ax[0, 0].set_title('LDA\n Feature Set 1')
     ax[0, 1].set_title('LDA\n Feature Set 2')
     ax[0, 2].set_title('LDA\n Feature Set 3')
-    #     ax[2,3].set_xlabel('shots')
-    #     ax[2,4].set_xlabel('repetitions')
-    #     ax[2,5].set_xlabel('shots')
+
     ax[0, 3].set_title('QDA\n Feature Set 1')
     ax[0, 4].set_title('QDA\n Feature Set 2')
     ax[0, 5].set_title('QDA\n Feature Set 3')
     ax[0, 0].set_ylabel('NinaPro5\n\naccuracy')
     ax[1, 0].set_ylabel('Cote Allard\n\naccuracy')
     ax[2, 0].set_ylabel('EPN \n\naccuracy')
-    #     ax[1,5].legend(loc=0,prop={'size':7})
+
     ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
-    #     ax[0,5].legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
-    #     ax[0,2].legend(loc='best',prop={'size': 7})
-    #     ax[1,2].legend(loc='best',prop={'size': 7})
-    #     ax[2,2].legend(loc='best',prop={'size': 7})
+
     fig.tight_layout(pad=0.1)
     # plt.savefig("databaseACC.png", bbox_inches='tight', dpi=600)
     plt.show()
@@ -2132,16 +2123,13 @@ def graphWeights(resultsNina5T,resultsCoteT,resultsEPNT):
 
 
 def Analysis():
-    s = 1
+
     bases = ['NinaPro5', 'Cote', 'EPN']
     confidence = 0.05
-    windows = ['Databases', 'Databases295']
     results = pd.DataFrame()
 
-    #     for w in windows:
     w = 'Total'
 
-    #     for methodCL in range(2):
     methodCL = 0
     idxD = 0
     print('\n\n', 'Method ' + str(methodCL) + ' ' + w)
@@ -2167,8 +2155,7 @@ def Analysis():
                 place = "Experiments/Experiment1_2/ResultsExp1/" + base
                 DataFrame = uploadData(place, samples, people, shots)
 
-                #                 place="Experiments/CotePyTorchImplementation/Cote_CWT_"+base+"/"
-                #                 cote=pd.read_csv(place+"Pytorch_results_"+str(s)+"_cycles.csv",header=None)
+
 
                 if methodCL == 0:
                     propQ = DataFrame['AccQDAProp'].loc[
@@ -2201,23 +2188,6 @@ def Analysis():
 
 
 
-                #         iL=np.median(indL)
-                #         iQ=np.median(indQ)
-                #         pL=np.median(propL)
-                #         pQ=np.median(propL)
-                #         co=np.median(c)
-                #         l=np.median(liu)
-                #         lF=np.median(liuF)
-
-                #                 print('\nshot: ',s, ' feature: ',f)
-
-                #                 print('\n Analysis Wilcoxon')
-
-                #                 print('\nIndL:',round(iL,2),' PropL:',round(pL,2),' LiuL:',round(lL,2)
-                #                       ,' vidL:',round(vL,2))
-
-                #                 print('IndL:',round(siL,2),' PropL:',round(spL,2),' LiuL:',round(slL,2)
-                #                       ,' vidL:',round(svL,2))
 
                 WilcoxonMethod = 'wilcox'
                 alternativeMethod = 'greater'
@@ -2227,12 +2197,12 @@ def Analysis():
                 if pL > iL:
                     p = stats.wilcoxon(propL, indL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc PropL is higher than Acc IndL (p<'+str(confidence)+')',p)
+
                         results.at['propL LDA (p)' + base, idx] = p
                 elif iL > pL:
                     p = stats.wilcoxon(indL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc IndL is higher than Acc PropL (p<'+str(confidence)+')',p)
+
                         results.at['propL LDA (p)' + base, idx] = p
                         print(1)
 
@@ -2241,12 +2211,12 @@ def Analysis():
                 if pL > lL:
                     p = stats.wilcoxon(propL, liuL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc PropL is higher than Acc Liu LDA (p<'+str(confidence)+')',p)
+
                         results.at['propL LiuL (p)' + base, idx] = p
                 elif lL > pL:
                     p = stats.wilcoxon(liuL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc Liu LDA is higher than Acc PropL (p<'+str(confidence)+')',p)
+
                         results.at['propL LiuL (p)' + base, idx] = p
                         print(1)
 
@@ -2255,44 +2225,28 @@ def Analysis():
                 if pL > vL:
                     p = stats.wilcoxon(propL, vidL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc PropL is higher than Acc Vidovic LDA (p<'+str(confidence)+')',p)
+
                         results.at['propL VidovicL (p)' + base, idx] = p
                 elif vL > pL:
                     p = stats.wilcoxon(vidL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc Vidovic LDA is higher than Acc PropL (p<'+str(confidence)+')',p)
+
                         results.at['propL VidovicL (p)' + base, idx] = p
                         print(1)
-                #                 if pL>vQ:
-                #                     p=stats.wilcoxon(propL,vidQ,alternative=alternativeMethod,zero_method='zsplit')[1]
-                #                     if p<confidence:
-                #                         print('Acc PropL is higher than Acc Vidovic QDA (p<'+str(confidence)+')',p)
-                #                 elif vQ>pL:
-                #                     p=stats.wilcoxon(vidQ,propL,alternative=alternativeMethod,zero_method='zsplit')[1]
-                #                     if p<confidence:
-                #                         print('Acc Vidovic QDA is higher than Acc PropL (p<'+str(confidence)+')',p)
 
-                #                 QDA
-
-                #                 print('\nIndQ:',round(iQ,2),' PropQ:',round(pQ,2),' LiuQ:',round(lQ,2)
-                #                       ,' vidQ:',round(vQ,2))
-
-                #                 print('IndQ:',round(siQ,2),' PropQ:',round(spQ,2),' LiuQ:',round(slQ,2)
-                #                       ,' vidQ:',round(svQ,2))
 
                 results.at['propQ QDA BL' + base, idx] = round(pQ - iQ, 2)
                 results.at['propQ QDA BL (p)' + base, idx] = 1
                 if pQ > iQ:
                     p = stats.wilcoxon(propQ, indQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc PropQ is higher than Acc IndQ (p<'+str(confidence)+')',p)
+
                         results.at['propQ QDA BL (p)' + base, idx] = p
-                #                 else:
-                #                     print('Acc PropL is better than Acc Ind')
+
                 elif iQ > pQ:
                     p = stats.wilcoxon(indQ, propQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc IndQ is higher than Acc PropQ (p<'+str(confidence)+')',p)
+
                         results.at['propQ QDA BL (p)' + base, idx] = p
                         print(1)
 
@@ -2301,34 +2255,27 @@ def Analysis():
                 if pQ > lQ:
                     p = stats.wilcoxon(propQ, liuQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc PropQ is higher than Acc Liu QDA (p<'+str(confidence)+')',p)
+
                         results.at['propQ LiuQ (p)' + base, idx] = p
                 elif lQ > pQ:
                     p = stats.wilcoxon(liuQ, propQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc Liu QDA is higher than Acc PropQ (p<'+str(confidence)+')',p)
+
                         results.at['propQ LiuQ (p)' + base, idx] = p
                         print(1)
 
-                #                 if pQ>co:
-                #                     p=stats.wilcoxon(propQ,c,alternative=alternativeMethod,zero_method='zsplit')[1]
-                #                     if p<confidence:
-                #                         print('Acc PropQ is higher than Acc Cote (p<'+str(confidence)+')',p)
-                #                 elif co>pQ:
-                #                     p=stats.wilcoxon(c,propQ,alternative=alternativeMethod,zero_method='zsplit')[1]
-                #                     if p<confidence:
-                #                         print('Acc Cote is higher than Acc PropQ (p<'+str(confidence)+')',p)
+
                 results.at['propQ Vidovic QDA' + base, idx] = round(pQ - vQ, 2)
                 results.at['propQ Vidovic QDA (p)' + base, idx] = 1
                 if pQ > vQ:
                     p = stats.wilcoxon(propQ, vidQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc PropQ is higher than Acc Vidovic QDA (p<'+str(confidence)+')',p)
+
                         results.at['propQ Vidovic QDA (p)' + base, idx] = p
                 elif vQ > pQ:
                     p = stats.wilcoxon(vidQ, propQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                     if p < confidence:
-                        #                         print('Acc Vidovic QDA is higher than Acc PropQ (p<'+str(confidence)+')',p)
+
                         results.at['propQ Vidovic QDA (p)' + base, idx] = p
 
                 idx += 1
@@ -2550,26 +2497,13 @@ def AnalysisCote():
                         (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
             propL = DataFrame['AccLDAPropQ'].loc[
                         (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            indQ = DataFrame['AccQDAInd'].loc[
-                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            indL = DataFrame['AccLDAInd'].loc[
-                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            liuL = DataFrame['AccLDALiu'].loc[
-                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            liuQ = DataFrame['AccQDALiu'].loc[
-                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            vidL = DataFrame['AccLDAVidovic'].loc[
-                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            vidQ = DataFrame['AccQDAVidovic'].loc[
-                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
 
-            pL = np.median(propL)
+
+
             pQ = np.median(propQ)
             co = np.median(c)
 
-            spL = np.std(propL)
-            spQ = np.std(propQ)
-            sco = np.std(c)
+
 
             WilcoxonMethod = 'wilcox'
             alternativeMethod = 'greater'

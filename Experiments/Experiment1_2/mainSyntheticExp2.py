@@ -13,8 +13,8 @@ nameFileR = place + 'resultsSynthetic_peopleSimilar_' + str(peopleSame) + 'time_
 
 # peopleSame = 0
 # place = 'ResultsExp2/'
-# times = 1
-# nameFileR = place + 'resultsSynthetic_peopleSimilar_' + str(peopleSame) + str(times) + '.csv'
+# times = 25
+# nameFileR = None
 
 seed = 1
 samples = 1000
