@@ -23,9 +23,9 @@ Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 
 ## Databases
 
-1. NinaPro5 http://ninaweb.hevs.ch/
-2. Côté-Allard https://github.com/UlysseCoteAllard/MyoArmbandDataset
-3. EPN  https://ieeexplore.ieee.org/abstract/document/8903136/?casa_token=RYo5viuh6S8AAAAA:lizIpEqM4rK5eeo1Wxm-aPuDB20da2PngeRRnrC7agqSK1j26mqmtq5YJFLive7uW083m9tT
+1. [NinaPro5](http://ninaweb.hevs.ch/)
+2. [Côté-Allard](https://github.com/UlysseCoteAllard/MyoArmbandDataset)
+3. [EPN](https://ieeexplore.ieee.org/abstract/document/8903136/?casa_token=RYo5viuh6S8AAAAA:lizIpEqM4rK5eeo1Wxm-aPuDB20da2PngeRRnrC7agqSK1j26mqmtq5YJFLive7uW083m9tT)
 
 ## Experiments
 To reproduce our experiments, please perform the following steps:
