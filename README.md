@@ -34,14 +34,14 @@ To reproduce our experiments, please perform the following steps:
 
 The next steps were performed over a supercomputer [Gadi](http://nci.org.au/our-services/supercomputing). The characteristics of Gadi are Intel Xeon Platinum 8274 (Cascade Lake), Two physical processors per node, 3.2 GHz clock speed, and 48 cores per node.
 
-2. For the experiment 1, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment1_2/Nina5_scriptNew.sh), [CoteAllard](Experiments/Experiment1_2/Cote_script.sh), and [EPN](Experiments/Experiment1_2/EPN_script.sh).
+2. For the experiment 1, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment1/Nina5_scriptNew.sh), [CoteAllard](Experiments/Experiment1/Cote_script.sh), and [EPN](Experiments/Experiment1/EPN_script.sh).
 
-3. For the experiment 2, we run over Gadi one batch files ([Synthetic Data](Experiments/Experiment1_2/SyntheticRand_script.sh))
+3. For the experiment 2, we run over Gadi one batch files ([Synthetic Data](Experiments/Experiment2/SyntheticRand_script.sh))
 
 4. For the experiment 3, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment3/Cote_CWT_NinaPro5/EVALUATE1.sh), [CoteAllard](Experiments/Experiment3/Cote_CWT_Cote/EVALUATE1.sh), and [EPN](Experiments/Experiment3/Cote_CWT_EPN/EVALUATE1.sh).
 
 #### NOTE
-The implementations of our adaptation technique and the [Liu](https://ieeexplore.ieee.org/abstract/document/6985518/?casa_token=H9vZpl9IcF8AAAAA:Iom6Q55n9FSn-G9CqqS6bxQzzho7vvb0OtQPdgZMQBOuNo5HwCHZSh0wddgdSp6V3q_pFsSJ) and [Vidovic](https://ieeexplore.ieee.org/abstract/document/7302056/?casa_token=3KVFZed5PzoAAAAA:rQJutibAYMQ_Za4ZSNEee6VIR59ZlWlt9o6_MKLFY2GKq2_zgYBkFPqs5UhrFCvMyP41SBbJ) methods are in the [fucntions](Experiments/Experiment1_2/functions.py) python file. In addition, the [CoteAllard implementation](Experiments/Experiment3) used in experiment 3 is a version of the original one, which you can find [here](https://github.com/UlysseCoteAllard/MyoArmbandDataset). We only modified the files used to load the data in order to use the three databases and evaluate using the Friedman rank and Holm Post-Hoc tests (the convolutional neural networks and the transfer learning technique did not modify).
+The implementations of our adaptation technique and the [Liu](https://ieeexplore.ieee.org/abstract/document/6985518/?casa_token=H9vZpl9IcF8AAAAA:Iom6Q55n9FSn-G9CqqS6bxQzzho7vvb0OtQPdgZMQBOuNo5HwCHZSh0wddgdSp6V3q_pFsSJ) and [Vidovic](https://ieeexplore.ieee.org/abstract/document/7302056/?casa_token=3KVFZed5PzoAAAAA:rQJutibAYMQ_Za4ZSNEee6VIR59ZlWlt9o6_MKLFY2GKq2_zgYBkFPqs5UhrFCvMyP41SBbJ) methods are in the [DA_BasedAdaptiveModels](Experiments/Experiment1/DA_BasedAdaptiveModels.py) python file. In addition, the [CoteAllard implementation](Experiments/Experiment3) used in experiment 3 is a version of the original one, which you can find [here](https://github.com/UlysseCoteAllard/MyoArmbandDataset). We only modified the files used to load the data in order to use the three databases and evaluate using the Friedman rank and Holm Post-Hoc tests (the convolutional neural networks and the transfer learning technique did not modify).
 
 ## Visualization of the three experiments:
 After the execution of the experiments, we use Jupyter notebooks to analyzed and developed the graphs, which are presented in the paper.
