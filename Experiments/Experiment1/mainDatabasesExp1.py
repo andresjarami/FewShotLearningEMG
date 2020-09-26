@@ -1,8 +1,6 @@
 import sys
-import functions as F
+import Experiments.Experiment1.functionsExp1 as functionsExp1
 
-# import warnings
-# warnings.filterwarnings("ignore")
 
 ## Input Variables
 
@@ -29,12 +27,12 @@ nameFile = place + '_FeatureSet_' + sys.argv[1] + '_startPerson_' + sys.argv[2] 
 
 # Upload Data
 dataMatrix, numberFeatures, CH, classes, _, peopleTest, numberShots, _, allFeatures, \
-labelsDataMatrix = F.uploadDatabases(typeDatabase, featureSet)
+labelsDataMatrix = functionsExp1.uploadDatabases(typeDatabase, featureSet)
 
 
 
 # Evaluation
 
 if eval:
-    F.evaluation(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+    functionsExp1.evaluation(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
                  allFeatures, typeDatabase, printR)

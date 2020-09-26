@@ -1,8 +1,6 @@
 import sys
-import functions as F
-import warnings
+import Experiments.Experiment2.functionsExp2 as functionsExp2
 
-warnings.simplefilter('ignore')
 
 ## Input Variables
 
@@ -11,6 +9,7 @@ place = str(sys.argv[2])
 times = int(sys.argv[3])
 nameFileR = place + 'resultsSynthetic_peopleSimilar_' + str(peopleSame) + 'time_' + str(times) + '.csv'
 
+################EXAMPLE
 # peopleSame = 0
 # place = 'ResultsExp2/'
 # times = 25
@@ -21,7 +20,7 @@ samples = 1000
 people = 21
 Graph = False
 
-generatedData = F.DataGenerator_TwoCL_TwoFeat(seed, samples, people, peopleSame, Graph)
+generatedData = functionsExp2.DataGenerator_TwoCL_TwoFeat(seed, samples, people, peopleSame, Graph)
 
 shots = 50
 peoplePK = 20
@@ -30,4 +29,4 @@ classes = 2
 Graph = False
 printValues = False
 
-F.ResultsSyntheticData(generatedData, nameFileR, shots, peoplePK, samples, Features, classes, times, Graph, printValues)
+functionsExp2.ResultsSyntheticData(generatedData, nameFileR, shots, peoplePK, samples, Features, classes, times, Graph, printValues)
