@@ -736,21 +736,21 @@ VF1.analysisTime(extractionTimeNinaPro5, timeNinaPro5)
 ```
 
     
-    Feature set: 0
+    Feature set: 1
     Training Time of Our Technique [s]:  199.08 +- 2.06
     LDA
     Extraction time [ms]:  0.75 0.36 Classification time [ms]:  1.08 0.02 Analysis time [ms]:  1.83 0.36
     QDA
     Extraction time [ms]:  0.75 0.36 Classification time [ms]:  1.69 0.05 Analysis time [ms]:  2.44 0.36
     
-    Feature set: 1
+    Feature set: 2
     Training Time of Our Technique [s]:  267.07 +- 3.51
     LDA
     Extraction time [ms]:  1.0 0.47 Classification time [ms]:  1.6 0.02 Analysis time [ms]:  2.6 0.47
     QDA
     Extraction time [ms]:  1.0 0.47 Classification time [ms]:  2.28 0.03 Analysis time [ms]:  3.28 0.47
     
-    Feature set: 2
+    Feature set: 3
     Training Time of Our Technique [s]:  266.55 +- 1.47
     LDA
     Extraction time [ms]:  2.38 0.86 Classification time [ms]:  1.58 0.02 Analysis time [ms]:  3.96 0.86
@@ -766,21 +766,21 @@ VF1.analysisTime(extractionTimeCote, timeCote)
 ```
 
     
-    Feature set: 0
+    Feature set: 1
     Training Time of Our Technique [s]:  50.56 +- 20.39
     LDA
     Extraction time [ms]:  0.39 0.32 Classification time [ms]:  0.82 0.45 Analysis time [ms]:  1.21 0.32
     QDA
     Extraction time [ms]:  0.39 0.32 Classification time [ms]:  1.33 0.71 Analysis time [ms]:  1.72 0.32
     
-    Feature set: 1
+    Feature set: 2
     Training Time of Our Technique [s]:  43.94 +- 15.82
     LDA
     Extraction time [ms]:  0.6 0.41 Classification time [ms]:  0.96 0.43 Analysis time [ms]:  1.56 0.41
     QDA
     Extraction time [ms]:  0.6 0.41 Classification time [ms]:  1.32 0.62 Analysis time [ms]:  1.92 0.41
     
-    Feature set: 2
+    Feature set: 3
     Training Time of Our Technique [s]:  37.54 +- 9.72
     LDA
     Extraction time [ms]:  1.28 0.6 Classification time [ms]:  0.99 0.65 Analysis time [ms]:  2.27 0.6
@@ -796,21 +796,21 @@ VF1.analysisTime(extractionTimeEPN, timeEPN)
 ```
 
     
-    Feature set: 0
+    Feature set: 1
     Training Time of Our Technique [s]:  26.59 +- 7.54
     LDA
     Extraction time [ms]:  0.24 0.31 Classification time [ms]:  0.62 0.13 Analysis time [ms]:  0.86 0.31
     QDA
     Extraction time [ms]:  0.24 0.31 Classification time [ms]:  0.9 0.23 Analysis time [ms]:  1.14 0.31
     
-    Feature set: 1
+    Feature set: 2
     Training Time of Our Technique [s]:  26.52 +- 9.49
     LDA
     Extraction time [ms]:  0.44 0.52 Classification time [ms]:  0.83 0.23 Analysis time [ms]:  1.27 0.52
     QDA
     Extraction time [ms]:  0.44 0.52 Classification time [ms]:  1.08 0.35 Analysis time [ms]:  1.52 0.52
     
-    Feature set: 2
+    Feature set: 3
     Training Time of Our Technique [s]:  26.24 +- 9.19
     LDA
     Extraction time [ms]:  0.89 0.57 Classification time [ms]:  0.81 0.23 Analysis time [ms]:  1.7 0.57
