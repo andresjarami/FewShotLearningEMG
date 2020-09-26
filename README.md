@@ -46,8 +46,8 @@ The implementations of our adaptation technique and the [Liu](https://ieeexplore
 ## Visualization of the three experiments:
 After the execution of the experiments, we use Jupyter notebooks to analyzed and developed the graphs, which are presented in the paper.
 
-[Experiment 1](Experiment1.ipynb) (jupyter notebook) or [Experiment 1](Experiment1.md) (markdown file)
+[Experiment 1](Experiment1.ipynb) (Jupyter notebook) or [Experiment 1](Experiment1.md) (markdown file)
 
-[Experiment 2](Experiment2.ipynb) (jupyter notebook) or [Experiment 2](Experiment2.md) (markdown file)
+[Experiment 2](Experiment2.ipynb) (Jupyter notebook) or [Experiment 2](Experiment2.md) (markdown file)
 
-[Experiment 3](Experiment3.ipynb) (jupyter notebook) or [Experiment 3](Experiment3.md) (markdown file)
+[Experiment 3](Experiment3.ipynb) (Jupyter notebook) or [Experiment 3](Experiment3.md) (markdown file)
