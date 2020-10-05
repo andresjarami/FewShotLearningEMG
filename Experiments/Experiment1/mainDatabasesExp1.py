@@ -26,13 +26,13 @@ nameFile = place + '_FeatureSet_' + sys.argv[1] + '_startPerson_' + sys.argv[2] 
 # nameFile = 'None'
 
 # Upload Data
-dataMatrix, numberFeatures, CH, classes, _, peopleTest, numberShots, _, allFeatures, \
-labelsDataMatrix = functionsExp1.uploadDatabases(typeDatabase, featureSet)
+dataMatrix, _, _, classes, peoplePriorK, _, numberShots, _, allFeatures, _ = functionsExp1.uploadDatabases(
+    typeDatabase, featureSet)
 
 
 
 # Evaluation
 
 if eval:
-    functionsExp1.evaluation(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
-                 allFeatures, typeDatabase, printR)
+    functionsExp1.evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
+                             allFeatures, typeDatabase, printR)
