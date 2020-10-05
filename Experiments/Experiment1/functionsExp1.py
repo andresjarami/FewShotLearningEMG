@@ -10,7 +10,7 @@ from sklearn import preprocessing
 
 def uploadDatabases(Database, featureSet=1):
     # Setting general variables
-
+    path = '../../'
     CH = 8
 
     if Database == 'EPN':
@@ -23,7 +23,7 @@ def uploadDatabases(Database, featureSet=1):
     elif Database == 'Nina5':
         carpet = 'ExtractedDataNinaDB5'
         classes = 18
-        peoplePriorK = 0
+        peoplePriorK = 10
         peopleTest = 10
         combinationSet = list(range(1, 5))
         numberShots = 4
@@ -42,7 +42,8 @@ def uploadDatabases(Database, featureSet=1):
         numberFeatures = 1
         allFeatures = numberFeatures * CH
         # Getting Data
-        logvarMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv', delimiter=',')
+        logvarMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv',
+                                     delimiter=',')
         if Database == 'EPN':
             dataMatrix = logvarMatrix[:, 0:]
             labelsDataMatrix = dataMatrix[:, allFeatures + 2]
@@ -66,10 +67,10 @@ def uploadDatabases(Database, featureSet=1):
         segment = ''
         numberFeatures = 4
         allFeatures = numberFeatures * CH
-        mavMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv', delimiter=',')
-        wlMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature2 + segment + '.csv', delimiter=',')
-        zcMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature3 + segment + '.csv', delimiter=',')
-        sscMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature4 + segment + '.csv', delimiter=',')
+        mavMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv', delimiter=',')
+        wlMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature2 + segment + '.csv', delimiter=',')
+        zcMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature3 + segment + '.csv', delimiter=',')
+        sscMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature4 + segment + '.csv', delimiter=',')
         if Database == 'EPN':
             dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:]))
             labelsDataMatrix = dataMatrix[:, allFeatures + 2]
@@ -96,10 +97,11 @@ def uploadDatabases(Database, featureSet=1):
         numberFeatures = 4
         allFeatures = numberFeatures * CH
         # Getting Data
-        lscaleMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv', delimiter=',')
-        mflMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature2 + segment + '.csv', delimiter=',')
-        msrMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature3 + segment + '.csv', delimiter=',')
-        wampMatrix = np.genfromtxt('../../ExtractedData/' + carpet + '/' + Feature4 + segment + '.csv', delimiter=',')
+        lscaleMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + segment + '.csv',
+                                     delimiter=',')
+        mflMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature2 + segment + '.csv', delimiter=',')
+        msrMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature3 + segment + '.csv', delimiter=',')
+        wampMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature4 + segment + '.csv', delimiter=',')
 
         if Database == 'EPN':
             dataMatrix = np.hstack((lscaleMatrix[:, 0:CH], mflMatrix[:, 0:CH], msrMatrix[:, 0:CH], wampMatrix[:, 0:]))
@@ -122,19 +124,18 @@ def uploadDatabases(Database, featureSet=1):
 # EVALUATION OVER THE THREE DATABASES
 
 
-
-def evaluation(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson, allFeatures,
+def evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson, allFeatures,
                typeDatabase, printR):
     scaler = preprocessing.MinMaxScaler()
 
     if typeDatabase == 'EPN':
-        evaluationEPN(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+        evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                       allFeatures, printR, scaler)
     elif typeDatabase == 'Nina5':
-        evaluationNina5(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+        evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                         allFeatures, printR, scaler)
     elif typeDatabase == 'Cote':
-        evaluationCote(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile, startPerson, endPerson,
+        evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                        allFeatures, printR, scaler)
 
 
@@ -146,7 +147,6 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, na
 
     trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures + 1] <= peoplePriorK)), 0:allFeatures][0]
     trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures + 1] <= peoplePriorK)), allFeatures + 2][0]
-
 
     idx = 0
     for person in range(peoplePriorK + startPerson, peoplePriorK + endPerson + 1):
@@ -180,7 +180,6 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, na
             trainLabelsGen = np.hstack((trainLabelsGenPre, trainLabels))
 
             k = 1 - (np.log(shot) / np.log(numberShots + 1))
-            print(k)
 
             scaler.fit(trainFeatures)
 
@@ -235,7 +234,6 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, n
     trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData)), 0:allFeatures][0]
     trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] == typeData)), allFeatures + 3][0]
 
-
     typeData = 1
     for person in range(peoplePriorK + startPerson, peoplePriorK + endPerson + 1):
 
@@ -274,7 +272,6 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, n
             trainLabelsGen = np.hstack((trainLabelsGenPre, trainLabels))
 
             k = 1 - (np.log(shot) / np.log(numberShots + 1))
-            print(k)
 
             scaler.fit(trainFeatures)
 
@@ -317,7 +314,7 @@ def preTrainedDataCote(dataMatrix, classes, peoplePriorK, allFeatures):
 
 ### Nina Pro 5
 
-def evaluationNina5(dataMatrix, classes, peopleTest, featureSet, numberShots, nameFile,
+def evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
                     startPerson, endPerson, allFeatures, printR, scaler):
     # Creating Variables
 
@@ -330,7 +327,6 @@ def evaluationNina5(dataMatrix, classes, peopleTest, featureSet, numberShots, na
 
         trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), 0:allFeatures][0]
         trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), allFeatures + 1][0]
-
 
         testFeatures = \
             dataMatrix[np.where((dataMatrix[:, allFeatures] == person) * (dataMatrix[:, allFeatures + 2] >= 5)),
@@ -359,8 +355,6 @@ def evaluationNina5(dataMatrix, classes, peopleTest, featureSet, numberShots, na
             trainLabelsGen = np.hstack((trainLabelsGenPre, trainLabels))
 
             k = 1 - (np.log(shot) / np.log(numberShots + 1))
-            # k = 1
-            print(k)
 
             scaler.fit(trainFeatures)
 
@@ -371,7 +365,7 @@ def evaluationNina5(dataMatrix, classes, peopleTest, featureSet, numberShots, na
 
             dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
 
-            preTrainedDataMatrix = preTrainedDataNina5(dataPK, classes, peopleTest, person, allFeaturesPK)
+            preTrainedDataMatrix = preTrainedDataNina5(dataPK, classes, peoplePriorK, person, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
             pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
             results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
@@ -400,7 +394,6 @@ def preTrainedDataNina5(dataMatrix, classes, peoplePriorK, evaluatedPerson, allF
                 indx += 1
 
     return preTrainedDataMatrix
-
 
 # Auxiliar functions of the evaluation
 
