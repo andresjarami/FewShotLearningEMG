@@ -208,7 +208,7 @@ def analysisTime(extractionT, timeM):
     extractionT = extractionT * 1000
 
     for featureSet in range(3):
-        print('\nFeature set: ' + str(featureSet+1))
+        print('\nFeature set: ' + str(featureSet + 1))
         print('Training Time of Our Technique [s]: ',
               round(timeM.loc[featureSet + 1, 'trainingTimeMean'], 2), '+-',
               round(timeM.loc[featureSet + 1, 'trainingTimeStd'], 2))
@@ -518,149 +518,177 @@ def graphWeights(resultsNina5T, resultsCoteT, resultsEPNT):
     plt.show()
 
 
-def AnalysisWilcoxon(folder):
-    bases = ['NinaPro5', 'Cote', 'EPN']
+def AnalysisWilcoxon(folder, base):
+    # bases = ['NinaPro5', 'Cote', 'EPN']
     confidence = 0.05
     results = pd.DataFrame()
 
-    idxD = 0
+    # for base in bases:
+    #
+    if base == 'NinaPro5':
+        samples = 4
+        people = 10
+        shots = 5
+    elif base == 'Cote':
+        samples = 4
+        people = 17
+        shots = 5
+    elif base == 'EPN':
+        samples = 25
+        people = 30
+        shots = 5
 
-    for base in bases:
+    for f in range(1, 4):
 
-        if base == 'NinaPro5':
-            samples = 4
-            people = 10
-            shots = 5
-        elif base == 'Cote':
-            samples = 4
-            people = 17
-            shots = 5
-        elif base == 'EPN':
-            samples = 25
-            people = 30
-            shots = 5
-        idx = 0
-        for f in range(1, 4):
+        for s in range(1, shots):
 
-            for s in range(1, shots):
+            place = folder + base
+            DataFrame = uploadResults(place, samples, people)
 
-                place = folder + base
-                DataFrame = uploadResults(place, samples, people)
+            OurResultsQDA = DataFrame['AccQDAProp'].loc[
+                                (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            propL = DataFrame['AccLDAPropQ'].loc[
+                        (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            indQ = DataFrame['AccQDAInd'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            indL = DataFrame['AccLDAInd'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            liuL = DataFrame['AccLDALiu'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            liuQ = DataFrame['AccQDALiu'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            vidL = DataFrame['AccLDAVidovic'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            vidQ = DataFrame['AccQDAVidovic'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
 
-                OurResultsQDA = DataFrame['AccQDAProp'].loc[
-                                    (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-                propL = DataFrame['AccLDAPropQ'].loc[
-                            (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-                indQ = DataFrame['AccQDAInd'].loc[
-                           (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-                indL = DataFrame['AccLDAInd'].loc[
-                           (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-                liuL = DataFrame['AccLDALiu'].loc[
-                           (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-                liuQ = DataFrame['AccQDALiu'].loc[
-                           (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-                vidL = DataFrame['AccLDAVidovic'].loc[
-                           (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-                vidQ = DataFrame['AccQDAVidovic'].loc[
-                           (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            iL = np.median(indL)
+            iQ = np.median(indQ)
+            pL = np.median(propL)
+            OurQDAMedian = np.median(OurResultsQDA)
+            lL = np.median(liuL)
+            lQ = np.median(liuQ)
+            vL = np.median(vidL)
+            vQ = np.median(vidQ)
 
-                iL = np.median(indL)
-                iQ = np.median(indQ)
-                pL = np.median(propL)
-                OurQDAMedian = np.median(OurResultsQDA)
-                lL = np.median(liuL)
-                lQ = np.median(liuQ)
-                vL = np.median(vidL)
-                vQ = np.median(vidQ)
+            WilcoxonMethod = 'wilcox'
+            alternativeMethod = 'greater'
 
-                WilcoxonMethod = 'wilcox'
-                alternativeMethod = 'greater'
+            results.at['Accuracy difference (Our and Individual classifiers) [%] LDA', 'FS:' + str(
+                f) + ' Shot:' + str(s)] = round(
+                pL - iL, 2)
+            results.at[
+                'p-value (Our and Individual classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
+            if pL > iL:
+                p = stats.wilcoxon(propL, indL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Individual classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
+            elif iL > pL:
+                p = stats.wilcoxon(indL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Individual classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
+                    print(1)
 
-                results.at['LDA: Accuracy difference (Our and Individual classifiers) [%] ' + base, idx] = round(
-                    pL - iL, 2)
-                results.at['LDA: p-value (Our and Individual classifiers) [%] ' + base, idx] = 1
-                if pL > iL:
-                    p = stats.wilcoxon(propL, indL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                    if p < confidence:
-                        results.at['LDA: p-value (Our and Individual classifiers) [%] ' + base, idx] = p
-                elif iL > pL:
-                    p = stats.wilcoxon(indL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                    if p < confidence:
-                        results.at['LDA: p-value (Our and Individual classifiers) [%] ' + base, idx] = p
-                        print(1)
+            results.at[
+                'Accuracy difference (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
+                    s)] = round(pL - lL, 2)
+            results.at['p-value (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
+            if pL > lL:
+                p = stats.wilcoxon(propL, liuL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = p
+            elif lL > pL:
+                p = stats.wilcoxon(liuL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = p
+                    print(1)
 
-                results.at['LDA: Accuracy difference (Our and Liu classifiers) [%] ' + base, idx] = round(pL - lL, 2)
-                results.at['LDA: p-value (Our and Liu classifiers) [%] ' + base, idx] = 1
-                if pL > lL:
-                    p = stats.wilcoxon(propL, liuL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                    if p < confidence:
-                        results.at['LDA: p-value (Our and Liu classifiers) [%] ' + base, idx] = p
-                elif lL > pL:
-                    p = stats.wilcoxon(liuL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                    if p < confidence:
-                        results.at['LDA: p-value (Our and Liu classifiers) [%] ' + base, idx] = p
-                        print(1)
+            results.at[
+                'Accuracy difference (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
+                    s)] = round(pL - vL,
+                                2)
+            results.at['p-value (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
+            if pL > vL:
+                p = stats.wilcoxon(propL, vidL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
+            elif vL > pL:
+                p = stats.wilcoxon(vidL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
+                    print(1)
 
-                results.at['LDA: Accuracy difference (Our and Vidovic classifiers) [%] ' + base, idx] = round(pL - vL,
-                                                                                                              2)
-                results.at['LDA: p-value (Our and Vidovic classifiers) [%] ' + base, idx] = 1
-                if pL > vL:
-                    p = stats.wilcoxon(propL, vidL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                    if p < confidence:
-                        results.at['LDA: p-value (Our and Vidovic classifiers) [%] ' + base, idx] = p
-                elif vL > pL:
-                    p = stats.wilcoxon(vidL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                    if p < confidence:
-                        results.at['LDA: p-value (Our and Vidovic classifiers) [%] ' + base, idx] = p
-                        print(1)
+            results.at['Accuracy difference (Our and Individual classifiers) [%] QDA ', 'FS:' + str(
+                f) + ' Shot:' + str(s)] = round(
+                OurQDAMedian - iQ, 2)
+            results.at[
+                'p-value (Our and Individual classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
+            if OurQDAMedian > iQ:
+                p = stats.wilcoxon(OurResultsQDA, indQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
+                    1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Individual classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
 
-                results.at['QDA: Accuracy difference (Our and Individual classifiers) [%] ' + base, idx] = round(
-                    OurQDAMedian - iQ, 2)
-                results.at['QDA: p-value (Our and Individual classifiers) [%] ' + base, idx] = 1
-                if OurQDAMedian > iQ:
-                    p = stats.wilcoxon(OurResultsQDA, indQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
-                        1]
-                    if p < confidence:
-                        results.at['QDA: p-value (Our and Individual classifiers) [%] ' + base, idx] = p
+            elif iQ > OurQDAMedian:
+                p = stats.wilcoxon(indQ, OurResultsQDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
+                    1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Individual classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
+                    print(1)
 
-                elif iQ > OurQDAMedian:
-                    p = stats.wilcoxon(indQ, OurResultsQDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
-                        1]
-                    if p < confidence:
-                        results.at['QDA: p-value (Our and Individual classifiers) [%] ' + base, idx] = p
-                        print(1)
+            results.at[
+                'Accuracy difference (Our and Liu classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(
+                    s)] = round(
+                OurQDAMedian - lQ, 2)
+            results.at['p-value (Our and Liu classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
+            if OurQDAMedian > lQ:
+                p = stats.wilcoxon(OurResultsQDA, liuQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
+                    1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Liu classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = p
+            elif lQ > OurQDAMedian:
+                p = stats.wilcoxon(liuQ, OurResultsQDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
+                    1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Liu classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = p
+                    print(1)
 
-                results.at['QDA: Accuracy difference (Our and Liu classifiers) [%] ' + base, idx] = round(
-                    OurQDAMedian - lQ, 2)
-                results.at['QDA: p-value (Our and Liu classifiers) [%] ' + base, idx] = 1
-                if OurQDAMedian > lQ:
-                    p = stats.wilcoxon(OurResultsQDA, liuQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
-                        1]
-                    if p < confidence:
-                        results.at['QDA: p-value (Our and Liu classifiers) [%] ' + base, idx] = p
-                elif lQ > OurQDAMedian:
-                    p = stats.wilcoxon(liuQ, OurResultsQDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
-                        1]
-                    if p < confidence:
-                        results.at['QDA: p-value (Our and Liu classifiers) [%] ' + base, idx] = p
-                        print(1)
+            results.at[
+                'Accuracy difference (Our and Vidovic classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(
+                    s)] = round(
+                OurQDAMedian - vQ, 2)
+            results.at['p-value (Our and Vidovic classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
+            if OurQDAMedian > vQ:
+                p = stats.wilcoxon(OurResultsQDA, vidQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
+                    1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Vidovic classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
+            elif vQ > OurQDAMedian:
+                p = stats.wilcoxon(vidQ, OurResultsQDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
+                    1]
+                if p < confidence:
+                    results.at[
+                        'p-value (Our and Vidovic classifiers) [%] QDA ', 'FS:' + str(f) + ' Shot:' + str(
+                            s)] = p
 
-                results.at['QDA: Accuracy difference (Our and Vidovic classifiers) [%] ' + base, idx] = round(
-                    OurQDAMedian - vQ, 2)
-                results.at['QDA: p-value (Our and Vidovic classifiers) [%] ' + base, idx] = 1
-                if OurQDAMedian > vQ:
-                    p = stats.wilcoxon(OurResultsQDA, vidQ, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
-                        1]
-                    if p < confidence:
-                        results.at['QDA: p-value (Our and Vidovic classifiers) [%] ' + base, idx] = p
-                elif vQ > OurQDAMedian:
-                    p = stats.wilcoxon(vidQ, OurResultsQDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[
-                        1]
-                    if p < confidence:
-                        results.at['QDA: p-value (Our and Vidovic classifiers) [%] ' + base, idx] = p
-
-                idx += 1
-        idxD += 12
     return results
 
 
