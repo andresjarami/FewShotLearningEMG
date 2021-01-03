@@ -5,74 +5,75 @@ from matplotlib.patches import Ellipse
 import matplotlib.transforms as transforms
 import matplotlib.ticker as mtick
 from scipy import stats
+import ast
 
 
-def graphSyntheticData(resultsData, numberShots, iSample):
-    shot = np.arange(numberShots)
-    AccLDAInd = np.zeros(numberShots)
-    AccQDAInd = np.zeros(numberShots)
-
-    AccLDAMulti = np.zeros(numberShots)
-    AccQDAMulti = np.zeros(numberShots)
-
-    AccLDAProp = np.zeros(numberShots)
-    AccQDAProp = np.zeros(numberShots)
-    AccLDALiu = np.zeros(numberShots)
-    AccQDALiu = np.zeros(numberShots)
-    AccLDAVidovic = np.zeros(numberShots)
-    AccQDAVidovic = np.zeros(numberShots)
-
-    for i in range(numberShots):
-        AccLDAInd[i] = resultsData['AccLDAInd'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        AccQDAInd[i] = resultsData['AccQDAInd'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-
-        AccLDAMulti[i] = resultsData['AccLDAMulti'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        AccQDAMulti[i] = resultsData['AccQDAMulti'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-
-        AccLDAProp[i] = resultsData['AccLDAProp'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        AccQDAProp[i] = resultsData['AccQDAProp'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        AccLDALiu[i] = resultsData['AccLDALiu'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        AccQDALiu[i] = resultsData['AccQDALiu'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        AccLDAVidovic[i] = resultsData['AccLDAVidovic'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-        AccQDAVidovic[i] = resultsData['AccQDAVidovic'][
-            (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
-
-    fig1, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(9, 3))
-    sizeM = 5
-    ax1.plot(shot + iSample, AccLDAInd, label='Individual', markersize=sizeM, color='tab:orange', linestyle='--')
-    ax1.plot(shot + iSample, AccLDAMulti, label='Multi-user', markersize=sizeM, color='tab:purple',
-             linestyle=(0, (3, 3, 1, 3, 1, 3)))
-    ax1.plot(shot + iSample, AccLDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
-    ax1.plot(shot + iSample, AccLDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
-             linestyle=(0, (3, 3, 1, 3)))
-    ax1.plot(shot + iSample, AccLDAProp, label='Our technique', color='tab:blue')
-    ax1.set_title('LDA')
-    ax1.grid()
-    ax1.set_ylabel('accuracy')
-    ax2.plot(shot + iSample, AccQDAInd, label='Individual', markersize=sizeM, color='tab:orange', linestyle='--')
-    ax2.plot(shot + iSample, AccQDAMulti, label='Multi-user', markersize=sizeM, color='tab:purple',
-             linestyle=(0, (3, 3, 1, 3, 1, 3)))
-    ax2.plot(shot + iSample, AccQDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
-    ax2.plot(shot + iSample, AccQDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
-             linestyle=(0, (3, 3, 1, 3)))
-    ax2.plot(shot + iSample, AccQDAProp, label='Our technique', color='tab:blue')
-    ax2.set_title('QDA')
-    ax2.grid()
-    ax2.set_ylabel('accuracy')
-    ax2.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
-    ax2.set_xlabel('samples')
-
-    fig1.tight_layout()
-    plt.show()
+# def graphSyntheticData(resultsData, numberShots, iSample):
+#     shot = np.arange(numberShots)
+#     AccLDAInd = np.zeros(numberShots)
+#     AccQDAInd = np.zeros(numberShots)
+#
+#     AccLDAMulti = np.zeros(numberShots)
+#     AccQDAMulti = np.zeros(numberShots)
+#
+#     AccLDAProp = np.zeros(numberShots)
+#     AccQDAProp = np.zeros(numberShots)
+#     AccLDALiu = np.zeros(numberShots)
+#     AccQDALiu = np.zeros(numberShots)
+#     AccLDAVidovic = np.zeros(numberShots)
+#     AccQDAVidovic = np.zeros(numberShots)
+#
+#     for i in range(numberShots):
+#         AccLDAInd[i] = resultsData['AccLDAInd'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#         AccQDAInd[i] = resultsData['AccQDAInd'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#
+#         AccLDAMulti[i] = resultsData['AccLDAMulti'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#         AccQDAMulti[i] = resultsData['AccQDAMulti'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#
+#         AccLDAProp[i] = resultsData['AccLDAProp'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#         AccQDAProp[i] = resultsData['AccQDAProp'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#         AccLDALiu[i] = resultsData['AccLDALiu'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#         AccQDALiu[i] = resultsData['AccQDALiu'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#         AccLDAVidovic[i] = resultsData['AccLDAVidovic'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#         AccQDAVidovic[i] = resultsData['AccQDAVidovic'][
+#             (resultsData['shots'] == i + iSample) & (resultsData['shots'] == i + iSample)].mean()
+#
+#     fig1, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(9, 3))
+#     sizeM = 5
+#     ax1.plot(shot + iSample, AccLDAInd, label='Individual', markersize=sizeM, color='tab:orange', linestyle='--')
+#     ax1.plot(shot + iSample, AccLDAMulti, label='Multi-user', markersize=sizeM, color='tab:purple',
+#              linestyle=(0, (3, 3, 1, 3, 1, 3)))
+#     ax1.plot(shot + iSample, AccLDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
+#     ax1.plot(shot + iSample, AccLDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
+#              linestyle=(0, (3, 3, 1, 3)))
+#     ax1.plot(shot + iSample, AccLDAProp, label='Our technique', color='tab:blue')
+#     ax1.set_title('LDA')
+#     ax1.grid()
+#     ax1.set_ylabel('accuracy')
+#     ax2.plot(shot + iSample, AccQDAInd, label='Individual', markersize=sizeM, color='tab:orange', linestyle='--')
+#     ax2.plot(shot + iSample, AccQDAMulti, label='Multi-user', markersize=sizeM, color='tab:purple',
+#              linestyle=(0, (3, 3, 1, 3, 1, 3)))
+#     ax2.plot(shot + iSample, AccQDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
+#     ax2.plot(shot + iSample, AccQDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
+#              linestyle=(0, (3, 3, 1, 3)))
+#     ax2.plot(shot + iSample, AccQDAProp, label='Our technique', color='tab:blue')
+#     ax2.set_title('QDA')
+#     ax2.grid()
+#     ax2.set_ylabel('accuracy')
+#     ax2.legend(bbox_to_anchor=(1.1, 1), loc='upper left', borderaxespad=0.)
+#     ax2.set_xlabel('samples')
+#
+#     fig1.tight_layout()
+#     plt.show()
 
 
 #####################################################################
@@ -257,7 +258,7 @@ def analysisResults(resultDatabase, shots):
                 (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
             PropQ = resultDatabase['AccQDAProp'].loc[
                 (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
-            PropQ_L = resultDatabase['AccLDAPropQ'].loc[
+            PropQ_L = resultDatabase['AccLDAProp'].loc[
                 (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
 
             LiuL = resultDatabase['AccLDALiu'].loc[
@@ -279,16 +280,16 @@ def analysisResults(resultDatabase, shots):
             classificationPropQDAT = resultDatabase['tCLPropQ'].loc[(resultDatabase['Feature Set'] == j)]
             classificationPropLDAT = resultDatabase['tCLPropL'].loc[(resultDatabase['Feature Set'] == j)]
 
-            results.at[idx, 'LDA_Ind'] = LDAInd.median(axis=0)
-            results.at[idx, 'QDA_Ind'] = QDAInd.median(axis=0)
-            results.at[idx, 'LDA_Multi'] = LDAmulti.median(axis=0)
-            results.at[idx, 'QDA_Multi'] = QDAmulti.median(axis=0)
-            results.at[idx, 'LiuL'] = LiuL.median(axis=0)
-            results.at[idx, 'LiuQ'] = LiuQ.median(axis=0)
-            results.at[idx, 'VidL'] = VidL.median(axis=0)
-            results.at[idx, 'VidQ'] = VidQ.median(axis=0)
-            results.at[idx, 'PropQ'] = PropQ.median(axis=0)
-            results.at[idx, 'PropQ_L'] = PropQ_L.median(axis=0)
+            results.at[idx, 'LDA_Ind'] = LDAInd.mean(axis=0)
+            results.at[idx, 'QDA_Ind'] = QDAInd.mean(axis=0)
+            results.at[idx, 'LDA_Multi'] = LDAmulti.mean(axis=0)
+            results.at[idx, 'QDA_Multi'] = QDAmulti.mean(axis=0)
+            results.at[idx, 'LiuL'] = LiuL.mean(axis=0)
+            results.at[idx, 'LiuQ'] = LiuQ.mean(axis=0)
+            results.at[idx, 'VidL'] = VidL.mean(axis=0)
+            results.at[idx, 'VidQ'] = VidQ.mean(axis=0)
+            results.at[idx, 'PropQ'] = PropQ.mean(axis=0)
+            results.at[idx, 'PropQ_L'] = PropQ_L.mean(axis=0)
             results.at[idx, 'wmQ'] = wmQ.mean(axis=0)
             results.at[idx, 'wcQ'] = wcQ.mean(axis=0)
 
@@ -471,6 +472,225 @@ def graphACC(resultsNina5T, resultsCoteT, resultsEPNT):
     plt.show()
 
 
+def graphACC2(resultsNina5T, resultsCoteT, resultsEPNT):
+    FeatureSetM = 3
+    fig, ax = plt.subplots(nrows=3, ncols=6, sharey='row', sharex='col', figsize=(13, 6))
+    #     shot=np.arange(1,5)
+    for Data in range(FeatureSetM):
+        for classifier in range(2):
+            for FeatureSet in range(FeatureSetM):
+
+                if Data == 0:
+                    shot = np.arange(1, 5)
+                    results = resultsNina5T
+
+                    ax[Data, FeatureSet].yaxis.set_ticks(np.arange(30, 100, 6))
+                elif Data == 1:
+                    shot = np.arange(1, 5)
+                    results = resultsCoteT
+
+                    ax[Data, FeatureSet].yaxis.set_ticks(np.arange(74, 100, 5))
+                elif Data == 2:
+                    results = resultsEPNT
+                    shot = np.arange(1, 5)
+
+                    ax[Data, FeatureSet].yaxis.set_ticks(np.arange(50, 100, 6))
+
+                if classifier == 0:
+                    Model = 'LDA_Ind'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='x', label='Individual',
+                                                 color='tab:orange')
+
+                    Model = 'LDA_Multi'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='v', label='Multi-user',
+                                                 color='tab:purple')
+
+                    Model = 'LiuL'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='o', label='Liu',
+                                                 color='tab:green')
+
+                    Model = 'VidL'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='^', label='Vidovic',
+                                                 color='tab:red')
+
+                    Model = 'PropQ_L'
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet].plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+
+                    ax[Data, FeatureSet].yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1f'))
+
+                    if len(shot) == 25:
+                        ax[Data, FeatureSet].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
+                    else:
+
+                        ax[Data, FeatureSet].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
+                    ax[Data, FeatureSet].grid()
+
+                    # if FeatureSet == 0:
+                    #     ax1 = ax[Data, FeatureSet].twinx()
+                    #     ax1.plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+                    # elif FeatureSet == 1:
+                    #     ax2 = ax[Data, FeatureSet].twinx()
+                    #     ax2.plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+                    # elif FeatureSet == 2:
+                    #     ax3 = ax[Data, FeatureSet].twinx()
+                    #     ax3.plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+                    #
+                    # if Data == 0:
+                    #     ax1.yaxis.set_ticks(np.arange(-1.6, 9, 1))
+                    # elif Data == 1:
+                    #     ax1.yaxis.set_ticks(np.arange(-0.2, 10, 1))
+                    # elif Data == 2:
+                    #     ax1.yaxis.set_ticks(np.arange(-2, 15, 1.5))
+
+
+
+
+                elif classifier == 1:
+
+                    Model = 'QDA_Ind'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='x', label='Individual',
+                                                     color='tab:orange')
+
+                    Model = 'QDA_Multi'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='v', label='Multi-user',
+                                                     color='tab:purple')
+
+                    Model = 'LiuQ'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='o', label='Liu',
+                                                     color='tab:green')
+
+                    Model = 'VidQ'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='^', label='Vidovic',
+                                                     color='tab:red')
+
+                    Model = 'PropQ'
+
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+
+                    ax[Data, FeatureSet + 3].plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+
+                    ax[Data, FeatureSet + 3].yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1f'))
+
+                    if len(shot) == 25:
+                        ax[Data, FeatureSet + 3].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
+                    else:
+                        ax[Data, FeatureSet + 3].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
+                    ax[Data, FeatureSet + 3].grid()
+
+        #             if FeatureSet == 0:
+        #                 ax4 = ax[Data, FeatureSet + 3].twinx()
+        #                 ax4.plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+        #             elif FeatureSet == 1:
+        #                 ax5 = ax[Data, FeatureSet + 3].twinx()
+        #                 ax5.plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+        #             elif FeatureSet == 2:
+        #                 ax6 = ax[Data, FeatureSet + 3].twinx()
+        #                 ax6.plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+        #
+        #             if Data == 0:
+        #                 ax4.yaxis.set_ticks(np.arange(-1.6, 9, 1))
+        #             elif Data == 1:
+        #                 ax4.yaxis.set_ticks(np.arange(-0.2, 10, 1))
+        #             elif Data == 2:
+        #                 ax4.yaxis.set_ticks(np.arange(-2, 15, 1.5))
+        #
+        # ax1.get_shared_y_axes().join(ax1, ax2, ax3)
+        # ax4.get_shared_y_axes().join(ax4, ax5, ax6)
+
+    ax[2, 0].set_xlabel('repetitions')
+    ax[2, 1].set_xlabel('repetitions')
+    ax[2, 2].set_xlabel('repetitions')
+    ax[2, 3].set_xlabel('repetitions')
+    ax[2, 4].set_xlabel('repetitions')
+    ax[2, 5].set_xlabel('repetitions')
+
+    ax[0, 0].set_title('LDA\n Feature Set 1')
+    ax[0, 1].set_title('LDA\n Feature Set 2')
+    ax[0, 2].set_title('LDA\n Feature Set 3')
+
+    ax[0, 3].set_title('QDA\n Feature Set 1')
+    ax[0, 4].set_title('QDA\n Feature Set 2')
+    ax[0, 5].set_title('QDA\n Feature Set 3')
+    ax[0, 0].set_ylabel('NinaPro5\naccuracy')
+    ax[1, 0].set_ylabel('Cote Allard\naccuracy')
+    ax[2, 0].set_ylabel('EPN \naccuracy')
+
+    ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
+    # ax2.legend(loc='lower center', bbox_to_anchor=(2, -1.2), ncol=5)
+
+    fig.tight_layout(pad=0.1)
+    plt.savefig("fig1.png", bbox_inches='tight', dpi=600)
+    plt.show()
+
+
+def matrixACC(folder, base):
+    results = pd.DataFrame()
+
+    if base == 'NinaPro5':
+        samples = 4
+        people = 10
+        shots = list(range(1, 5))
+    elif base == 'Cote':
+        samples = 4
+        people = 17
+        shots = list(range(1, 5))
+    elif base == 'EPN':
+        samples = 25
+        people = 30
+        shots = [1, 2, 3, 4, 10, 15, 25]
+
+    place = folder + base
+    DataFrame = uploadResults(place, samples, people)
+
+    for f in range(1, 4):
+
+        for s in shots:
+            OurResultsQDA = DataFrame['AccQDAProp'].loc[
+                                (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            OurResultsLDA = DataFrame['AccLDAProp'].loc[
+                                (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            indQ = DataFrame['AccQDAInd'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            indL = DataFrame['AccLDAInd'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            liuL = DataFrame['AccLDALiu'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            liuQ = DataFrame['AccQDALiu'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            vidL = DataFrame['AccLDAVidovic'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            vidQ = DataFrame['AccQDAVidovic'].loc[
+                       (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+
+            results.at['Individual classifier [%] LDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(indL)
+            results.at['Our classifier [%] LDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(OurResultsLDA)
+            results.at['Liu classifier [%] LDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(liuL)
+            results.at['Vidovic classifier [%] LDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(vidL)
+            results.at['Individual classifier [%] QDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(indQ)
+            results.at['Our classifier [%] QDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(OurResultsQDA)
+            results.at['Liu classifier [%] QDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(liuQ)
+            results.at['Vidovic classifier [%] QDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(vidQ)
+
+    return results
+
+
 def graphWeights(resultsNina5T, resultsCoteT, resultsEPNT):
     fig, ax = plt.subplots(nrows=1, ncols=3, sharey='row', sharex='col', figsize=(9, 5))
     for Data in range(3):
@@ -519,12 +739,9 @@ def graphWeights(resultsNina5T, resultsCoteT, resultsEPNT):
 
 
 def AnalysisWilcoxon(folder, base):
-    # bases = ['NinaPro5', 'Cote', 'EPN']
     confidence = 0.05
     results = pd.DataFrame()
 
-    # for base in bases:
-    #
     if base == 'NinaPro5':
         samples = 4
         people = 10
@@ -547,8 +764,8 @@ def AnalysisWilcoxon(folder, base):
 
             OurResultsQDA = DataFrame['AccQDAProp'].loc[
                                 (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            propL = DataFrame['AccLDAPropQ'].loc[
-                        (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
+            OurResultsLDA = DataFrame['AccLDAProp'].loc[
+                                (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
             indQ = DataFrame['AccQDAInd'].loc[
                        (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
             indL = DataFrame['AccLDAInd'].loc[
@@ -564,7 +781,7 @@ def AnalysisWilcoxon(folder, base):
 
             iL = np.median(indL)
             iQ = np.median(indQ)
-            pL = np.median(propL)
+            OurLDAMedian = np.median(OurResultsLDA)
             OurQDAMedian = np.median(OurResultsQDA)
             lL = np.median(liuL)
             lQ = np.median(liuQ)
@@ -576,17 +793,17 @@ def AnalysisWilcoxon(folder, base):
 
             results.at['Accuracy difference (Our and Individual classifiers) [%] LDA', 'FS:' + str(
                 f) + ' Shot:' + str(s)] = round(
-                pL - iL, 2)
+                OurLDAMedian - iL, 2)
             results.at[
                 'p-value (Our and Individual classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
-            if pL > iL:
-                p = stats.wilcoxon(propL, indL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+            if OurLDAMedian > iL:
+                p = stats.wilcoxon(OurResultsLDA, indL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                 if p < confidence:
                     results.at[
                         'p-value (Our and Individual classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
                             s)] = p
-            elif iL > pL:
-                p = stats.wilcoxon(indL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+            elif iL > OurLDAMedian:
+                p = stats.wilcoxon(indL, OurResultsLDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                 if p < confidence:
                     results.at[
                         'p-value (Our and Individual classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
@@ -595,15 +812,15 @@ def AnalysisWilcoxon(folder, base):
 
             results.at[
                 'Accuracy difference (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
-                    s)] = round(pL - lL, 2)
+                    s)] = round(OurLDAMedian - lL, 2)
             results.at['p-value (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
-            if pL > lL:
-                p = stats.wilcoxon(propL, liuL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+            if OurLDAMedian > lL:
+                p = stats.wilcoxon(OurResultsLDA, liuL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                 if p < confidence:
                     results.at[
                         'p-value (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = p
-            elif lL > pL:
-                p = stats.wilcoxon(liuL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+            elif lL > OurLDAMedian:
+                p = stats.wilcoxon(liuL, OurResultsLDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                 if p < confidence:
                     results.at[
                         'p-value (Our and Liu classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = p
@@ -611,17 +828,17 @@ def AnalysisWilcoxon(folder, base):
 
             results.at[
                 'Accuracy difference (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
-                    s)] = round(pL - vL,
+                    s)] = round(OurLDAMedian - vL,
                                 2)
             results.at['p-value (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(s)] = 1
-            if pL > vL:
-                p = stats.wilcoxon(propL, vidL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+            if OurLDAMedian > vL:
+                p = stats.wilcoxon(OurResultsLDA, vidL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                 if p < confidence:
                     results.at[
                         'p-value (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
                             s)] = p
-            elif vL > pL:
-                p = stats.wilcoxon(vidL, propL, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
+            elif vL > OurLDAMedian:
+                p = stats.wilcoxon(vidL, OurResultsLDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
                 if p < confidence:
                     results.at[
                         'p-value (Our and Vidovic classifiers) [%] LDA ', 'FS:' + str(f) + ' Shot:' + str(
@@ -787,8 +1004,6 @@ def holm_test(ranks, control=None):
 
 
 def AnalysisFriedman(folder):
-    dataFrame = pd.DataFrame()
-
     base = 'NinaPro5'
     samples = 4
     people = 10
@@ -806,46 +1021,334 @@ def AnalysisFriedman(folder):
     DataFrameE = uploadResults(place, samples, people)
 
     TotalDataframe = pd.concat([DataFrameN, DataFrameC, DataFrameE])
+    for f in range(1, 4):
 
-    dataFrame['Our LDA classifier'] = TotalDataframe['AccLDAPropQ'].values
-    dataFrame['Individual LDA classifier'] = TotalDataframe['AccLDAInd'].values
-    dataFrame['Liu LDA classifier'] = TotalDataframe['AccLDALiu'].values
-    dataFrame['Vidovic LDA classifier'] = TotalDataframe['AccLDAVidovic'].values
+        for DA in ['LDA', 'QDA']:
+            dataFrame = pd.DataFrame()
 
-    dataFrame['Our QDA classifier'] = TotalDataframe['AccQDAProp'].values
-    dataFrame['Individual QDA classifier'] = TotalDataframe['AccQDAInd'].values
-    dataFrame['Liu QDA classifier'] = TotalDataframe['AccQDALiu'].values
-    dataFrame['Vidovic QDA classifier'] = TotalDataframe['AccQDAVidovic'].values
+            dataFrame['Individual ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Ind'].loc[
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+            # dataFrame['Multi-User ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Multi'].loc[
+            #     (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+            dataFrame['Liu ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Liu'].loc[
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+            dataFrame['Vidovic ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Vidovic'].loc[
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+            if DA == 'QDA':
+                dataFrame['Our QDA ' + str(f)] = TotalDataframe['Acc' + DA + 'Prop'].loc[
+                    (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+            elif DA == 'LDA':
+                dataFrame['Our LDA ' + str(f)] = TotalDataframe['Acc' + DA + 'PropQ'].loc[
+                    (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
 
-    data = np.asarray(dataFrame)
-    num_datasets, num_methods = data.shape
-    print("Number of classifiers: ", num_methods,
-          "Number of evaluations (3(feature sets) x [10(people NinaPro5) x 4(shots) + 17(people Cote) x 4(shots) 30(people EPN) x 25(shots)]): ",
-          num_datasets, '\n')
+            data = np.asarray(dataFrame)
+            num_datasets, num_methods = data.shape
+            print("Number of classifiers: ", num_methods,
+                  "Number of evaluations (3(feature sets) x [10(people NinaPro5) x 4(shots) + 17(people Cote) x 4(shots) 30(people EPN) x 7(shots)]): ",
+                  num_datasets, '\n')
 
-    alpha = 0.05  # Set this to the desired alpha/signifance level
+            alpha = 0.05  # Set this to the desired alpha/signifance level
 
-    stat, p = stats.friedmanchisquare(*data)
+            stat, p = stats.friedmanchisquare(*data)
 
-    reject = p <= alpha
-    print("Should we reject H0 (i.e. is there a difference in the means) at the", (1 - alpha) * 100,
-          "% confidence level?", reject, '\n')
+            reject = p <= alpha
+            print("Should we reject H0 (i.e. is there a difference in the means) at the", (1 - alpha) * 100,
+                  "% confidence level?", reject, '\n')
 
-    if not reject:
-        print(
-            "Exiting early. The rankings are only relevant if there was a difference in the means i.e. if we rejected h0 above")
-    else:
-        statistic, p_value, ranking, rank_cmp = friedman_test(*np.transpose(data))
-        ranks = {key: rank_cmp[i] for i, key in enumerate(list(dataFrame.columns))}
+            if not reject:
+                print(
+                    "Exiting early. The rankings are only relevant if there was a difference in the means i.e. if we rejected h0 above")
+            else:
+                statistic, p_value, ranking, rank_cmp = friedman_test(*np.transpose(data))
+                ranks = {key: ranking[i] for i, key in enumerate(list(dataFrame.columns))}
+                ranksComp = {key: rank_cmp[i] for i, key in enumerate(list(dataFrame.columns))}
 
-        comparisons, z_values, p_values, adj_p_values, best = holm_test(ranks)
+                comparisons, z_values, p_values, adj_p_values, best = holm_test(ranksComp)
 
-        adj_p_values = np.asarray(adj_p_values)
+                adj_p_values = np.asarray(adj_p_values)
 
-        for method, rank in ranks.items():
-            print(method + ":", "%.2f" % rank)
-        print('\n The best classifier is: ', best)
-        holm_scores = pd.DataFrame({"p": adj_p_values, "sig": adj_p_values < alpha}, index=comparisons)
-        print(holm_scores)
+                for method, rank in ranks.items():
+                    print(method + ":", "%.1f" % rank)
+                print('\n The best classifier is: ', best)
+                holm_scores = pd.DataFrame({"p": adj_p_values, "sig": adj_p_values < alpha}, index=comparisons)
+                print(holm_scores)
 
     return
+
+
+def AllFriedman(folder, base, coteFolder):
+    results = pd.DataFrame()
+    print('Database: ' + base)
+    if base == 'NinaPro5':
+        samples = 4
+        people = 10
+        shots = list(range(1, 5))
+
+    elif base == 'Cote':
+        samples = 4
+        people = 17
+        shots = list(range(1, 5))
+    elif base == 'EPN':
+        samples = 25
+        people = 30
+        shots = list(range(1, 5))
+
+    OurData = uploadResults(folder + base, samples, people)
+    dataFrame = pd.DataFrame()
+
+    for s in shots:
+
+        place = coteFolder + "Cote_CWT_" + base + "/"
+        cote = pd.read_csv(place + "Pytorch_results_" + str(s) + "_cycles.csv", header=None)
+        coteResults = []
+        if base == 'NinaPro5':
+            for i in range(people):
+                coteResults.append(np.array(ast.literal_eval(cote.loc[0][i])).T[0].mean())
+            coteResults = np.array(coteResults)
+        elif base == 'EPN':
+            for i in range(20):
+                coteResults.append(ast.literal_eval(cote.loc[0][i]))
+            coteResults = np.mean(np.array(coteResults), axis=0)
+        elif base == 'Cote':
+            for i in range(20):
+                coteResults.append(ast.literal_eval(cote.loc[0][i]))
+                coteResults.append(ast.literal_eval(cote.loc[1][i]))
+            coteResults = np.mean(np.array(coteResults), axis=0)
+
+        dataFrame['Cote interface'] = coteResults
+        results.at['Shot:' + str(s) + 'ACC', 'Cote interface'] = np.round(np.median(coteResults), 2)
+        results.at['Shot:' + str(s) + 'STD', 'Cote interface'] = np.round(np.std(coteResults), 2)
+
+        for f in range(1, 4):
+
+            for DA in ['LDA', 'QDA']:
+
+                if DA == 'QDA':
+                    OurResults = OurData['Acc' + DA + 'Prop'].loc[
+                                     (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+                elif DA == 'LDA':
+                    OurResults = OurData['Acc' + DA + 'PropQ'].loc[
+                                     (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+                ind = OurData['Acc' + DA + 'Ind'].loc[
+                          (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+
+                liu = OurData['Acc' + DA + 'Liu'].loc[
+                          (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+                vid = OurData['Acc' + DA + 'Vidovic'].loc[
+                          (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+
+                results.at['Shot:' + str(s) + 'ACC', 'Our classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.mean(OurResults), 2)
+                results.at['Shot:' + str(s) + 'ACC', 'Individual classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.mean(ind), 2)
+                results.at['Shot:' + str(s) + 'ACC', 'Liu classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.mean(liu),
+                    2)
+                results.at['Shot:' + str(s) + 'ACC', 'Vidovic classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.mean(vid), 2)
+
+                results.at['Shot:' + str(s) + 'STD', 'Our classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.std(OurResults), 2)
+                results.at['Shot:' + str(s) + 'STD', 'Individual classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.std(ind), 2)
+                results.at['Shot:' + str(s) + 'STD', 'Liu classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.std(liu),
+                    2)
+                results.at['Shot:' + str(s) + 'STD', 'Vidovic classifier [%] ' + DA + ' FS:' + str(f)] = np.round(
+                    np.std(vid), 2)
+
+                dataFrame['Our ' + DA + '  classifier' + 'FS:' + str(f)] = OurResults
+                dataFrame['Individual ' + DA + '  classifier' + 'FS:' + str(f)] = ind
+                dataFrame['Liu ' + DA + '  classifier' + 'FS:' + str(f)] = liu
+                dataFrame['Vidovic ' + DA + '  classifier' + 'FS:' + str(f)] = vid
+
+                data = np.asarray(dataFrame)
+                num_datasets, num_methods = data.shape
+                print("Number of classifiers: ", num_methods,
+                      "Number of evaluations ([10(people NinaPro5) 17(people Cote) 30(people EPN)]): ",
+                      num_datasets, '\n')
+
+                alpha = 0.05  # Set this to the desired alpha/signifance level
+
+                stat, p = stats.friedmanchisquare(*data)
+
+                reject = p <= alpha
+                print("Should we reject H0 (i.e. is there a difference in the means) at the", (1 - alpha) * 100,
+                      "% confidence level?", reject, '\n')
+
+                if not reject:
+                    print(
+                        "Exiting early. The rankings are only relevant if there was a difference in the means i.e. if we rejected h0 above")
+                else:
+                    statistic, p_value, ranking, rank_cmp = friedman_test(*np.transpose(data))
+                    ranks = {key: rank_cmp[i] for i, key in enumerate(list(dataFrame.columns))}
+
+                    comparisons, z_values, p_values, adj_p_values, best = holm_test(ranks)
+
+                    adj_p_values = np.asarray(adj_p_values)
+
+                    for method, rank in ranks.items():
+                        print(method + ":", "%.2f" % rank)
+                    print('\n The best classifier is: ', best)
+                    holm_scores = pd.DataFrame({"p": adj_p_values, "sig": adj_p_values < alpha}, index=comparisons)
+                    print(holm_scores)
+
+    return results
+
+
+def AllMatrixFriedman(folder, coteFolder):
+    results = pd.DataFrame()
+    for base in ['NinaPro5', 'Cote', 'EPN']:
+        print('Database: ' + base)
+        if base == 'NinaPro5':
+            samples = 4
+            people = 10
+            shots = list(range(1, 5))
+
+        elif base == 'Cote':
+            samples = 4
+            people = 17
+            shots = list(range(1, 5))
+        elif base == 'EPN':
+            samples = 25
+            people = 30
+            shots = [1, 2, 3, 4, 10, 15, 25]
+
+        OurData = uploadResults(folder + base, samples, people)
+
+        for f in range(1, 4):
+            coteResultsMatrix = []
+            for s in shots:
+
+                # place = coteFolder + "Cote_CWT_" + base + "/"
+                # cote = pd.read_csv(place + "Pytorch_results_" + str(s) + "_cycles.csv", header=None)
+                # coteResults = []
+                # if base == 'NinaPro5':
+                #     for i in range(people):
+                #         coteResults.append(np.array(ast.literal_eval(cote.loc[0][i])).T[0].mean())
+                #
+                #     coteResults = np.array(coteResults)
+                # elif base == 'EPN':
+                #     for i in range(20):
+                #         coteResults.append(ast.literal_eval(cote.loc[0][i]))
+                #
+                #     coteResults = np.mean(np.array(coteResults), axis=0)
+                # elif base == 'Cote':
+                #     for i in range(20):
+                #         coteResults.append(ast.literal_eval(cote.loc[0][i]))
+                #         coteResults.append(ast.literal_eval(cote.loc[1][i]))
+                #     coteResults = np.mean(np.array(coteResults), axis=0)
+
+                # coteResultsMatrix.append(list(coteResults))
+                # results.at['ACC_' + base + ' Shot: ' + str(s), 'Cote interface'] = np.round(np.median(coteResults), 0)
+                # results.at['Shot:' + str(s) + 'STD', 'Cote interface'] = np.round(np.std(coteResults), 2)
+
+                for DA in ['LDA', 'QDA']:
+
+                    if DA == 'QDA':
+                        OurResults = OurData['Acc' + DA + 'Prop'].loc[
+                                         (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+                    elif DA == 'LDA':
+                        OurResults = OurData['Acc' + DA + 'PropQ'].loc[
+                                         (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+                    ind = OurData['Acc' + DA + 'Ind'].loc[
+                              (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+                    multi = OurData['Acc' + DA + 'Multi'].loc[
+                                (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+
+                    liu = OurData['Acc' + DA + 'Liu'].loc[
+                              (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+                    vid = OurData['Acc' + DA + 'Vidovic'].loc[
+                              (OurData['Feature Set'] == f) & (OurData['# shots'] == s)].values * 100
+
+                    results.at['ACC_' + base + ' Shot: ' + str(s), 'FS: ' + str(
+                        f) + ' Individual classifier [%] ' + DA] = np.round(np.median(ind), 2)
+                    results.at['ACC_' + base + ' Shot: ' + str(s), 'FS: ' + str(
+                        f) + ' Multi-User classifier [%] ' + DA] = np.round(np.median(multi), 2)
+                    results.at[
+                        'ACC_' + base + ' Shot: ' + str(s), 'FS: ' + str(
+                            f) + ' Liu classifier [%] ' + DA] = np.round(np.median(liu), 2)
+                    results.at[
+                        'ACC_' + base + ' Shot: ' + str(s), 'FS: ' + str(
+                            f) + ' Vidovic classifier [%] ' + DA] = np.round(np.median(vid), 2)
+                    results.at[
+                        'ACC_' + base + ' Shot: ' + str(s), 'FS: ' + str(f) + ' Our classifier [%] ' + DA] = np.round(
+                        np.median(OurResults), 2)
+
+                    # results.at[
+                    #     'STD_' + base + ' FS: ' + str(f) + ' Shot: ' + str(s), 'Our classifier [%] ' + DA] = np.round(
+                    #     np.std(OurResults), 2)
+                    # results.at['STD_' + base + ' FS: ' + str(f) + ' Shot: ' + str(
+                    #     s), 'Individual classifier [%] ' + DA] = np.round(
+                    #     np.std(ind), 2)
+                    # results.at[
+                    #     'STD_' + base + ' FS: ' + str(f) + ' Shot: ' + str(s), 'Liu classifier [%] ' + DA] = np.round(
+                    #     np.std(liu), 2)
+                    # results.at[
+                    #     'STD_' + base + ' FS: ' + str(f) + ' Shot: ' + str(
+                    #         s), 'Vidovic classifier [%] ' + DA] = np.round(
+                    #     np.std(vid), 2)
+
+        # print('FEATURE SET: ' + str(f))
+        # dataFrame = pd.DataFrame()
+        # coteResultsMatrix = np.array(coteResultsMatrix)
+        # dataFrame['Cote interface'] = np.reshape(coteResultsMatrix,
+        #                                          len(coteResultsMatrix) * len(coteResultsMatrix.T))
+
+        # for f in range(1, 4):
+        #
+        #     for DA in ['LDA', 'QDA']:
+        #
+        #         if DA == 'QDA':
+        #             OurResults = OurData['Acc' + DA + 'Prop'].loc[
+        #                              (OurData['# shots'] <= 4) & (OurData['Feature Set'] == f)].values * 100
+        #         elif DA == 'LDA':
+        #             OurResults = OurData['Acc' + DA + 'PropQ'].loc[
+        #                              (OurData['# shots'] <= 4) & (OurData['Feature Set'] == f)].values * 100
+        #         ind = OurData['Acc' + DA + 'Ind'].loc[
+        #                   (OurData['# shots'] <= 4) & (OurData['Feature Set'] == f)].values * 100
+        #         multi = OurData['Acc' + DA + 'Multi'].loc[
+        #                     (OurData['# shots'] <= 4) & (OurData['Feature Set'] == f)].values * 100
+        #         liu = OurData['Acc' + DA + 'Liu'].loc[
+        #                   (OurData['# shots'] <= 4) & (OurData['Feature Set'] == f)].values * 100
+        #         vid = OurData['Acc' + DA + 'Vidovic'].loc[
+        #                   (OurData['# shots'] <= 4) & (OurData['Feature Set'] == f)].values * 100
+        #
+        #         dataFrame['Individual ' + DA + '  classifier' + 'Feature Set: ' + str(f)] = ind
+        #         dataFrame['Multi-User ' + DA + '  classifier' + 'Feature Set: ' + str(f)] = multi
+        #         dataFrame['Liu ' + DA + '  classifier' + 'Feature Set: ' + str(f)] = liu
+        #         dataFrame['Vidovic ' + DA + '  classifier' + 'Feature Set: ' + str(f)] = vid
+        #         dataFrame['Our ' + DA + '  classifier' + 'Feature Set: ' + str(f)] = OurResults
+        #
+        # data = np.asarray(dataFrame)
+        # num_datasets, num_methods = data.shape
+        # print("Number of classifiers: ", num_methods,
+        #       "Number of evaluations ([10(people NinaPro5) 17(people Cote) 30(people EPN)]): ",
+        #       num_datasets, '\n')
+        #
+        # alpha = 0.05  # Set this to the desired alpha/signifance level
+        #
+        # stat, p = stats.friedmanchisquare(*data)
+        #
+        # reject = p <= alpha
+        # print("Should we reject H0 (i.e. is there a difference in the means) at the", (1 - alpha) * 100,
+        #       "% confidence level?", reject, '\n')
+        #
+        # if not reject:
+        #     print(
+        #         "Exiting early. The rankings are only relevant if there was a difference in the means i.e. if we rejected h0 above")
+        # else:
+        #     statistic, p_value, ranking, rank_cmp = friedman_test(*np.transpose(data))
+        #     ranks = {key: rank_cmp[i] for i, key in enumerate(list(dataFrame.columns))}
+        #
+        #     comparisons, z_values, p_values, adj_p_values, best = holm_test(ranks)
+        #
+        #     adj_p_values = np.asarray(adj_p_values)
+        #
+        #     for method, rank in ranks.items():
+        #         print(method + ":", "%.2f" % rank)
+        #     print('\n The best classifier is: ', best)
+        #     holm_scores = pd.DataFrame({"p": adj_p_values, "sig": adj_p_values < alpha}, index=comparisons)
+        #     print(holm_scores)
+
+    return results

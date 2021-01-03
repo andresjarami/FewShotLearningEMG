@@ -22,7 +22,7 @@ def DataGenerator_TwoCL_TwoFeatEXAMPLE(seed=1, samples=50, people=3, peopleSame=
     idx = 0
 
     colors_list = list(['blue', 'red', 'deepskyblue', 'lightcoral', 'orange', 'green'])
-    fig1, ax = plt.subplots(1, 1, figsize=(9, 4))
+    fig1, ax = plt.subplots(1, 1, figsize=(4.5, 3))
 
     for person in range(people):
 
@@ -95,14 +95,13 @@ def DataGenerator_TwoCL_TwoFeatEXAMPLE(seed=1, samples=50, people=3, peopleSame=
             idx += 1
 
     plt.grid()
-    ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.3), ncol=3, prop={'size': 6.5})
+    ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.8), ncol=3, prop={'size': 6.5})
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
     fig1.tight_layout(pad=0.1)
-    # plt.savefig("distr.png", bbox_inches='tight', dpi=600)
+    plt.savefig("fig2.png", bbox_inches='tight', dpi=600)
     plt.show()
     return
-
 
 
 def graphSyntheticDataALL(place):
@@ -118,10 +117,10 @@ def graphSyntheticDataALL(place):
                 print(len(auxFrame))
         frame.to_csv(place + 'Synthetic_peopleSimilar_' + str(j) + '.csv')
 
-    fig, ax = plt.subplots(nrows=4, ncols=2, sharex=True, sharey=True, figsize=(11, 6))
-    sizeM = 5
+    fig, ax = plt.subplots(nrows=4, ncols=2, sharex='all', sharey='all', figsize=(4, 6))
+    sizeM = 40
 
-    numberShots = 48
+    numberShots = 13
     iSample = 3
     idx = 0
     for peopleSimilar in [0, 1, 3, 5]:
@@ -130,33 +129,28 @@ def graphSyntheticDataALL(place):
         shot, AccLDAInd, AccQDAInd, AccLDAMulti, AccQDAMulti, AccLDAProp, AccQDAProp, AccLDALiu, AccQDALiu, AccLDAVidovic, AccQDAVidovic = SyntheticData(
             resultsData, numberShots, iSample)
 
-        ax[idx, 0].plot(shot + iSample, AccLDAInd, label='Individual', markersize=sizeM, color='tab:orange',
-                        linestyle='--')
+        ax[idx, 0].scatter(shot + iSample, AccLDAInd,marker='x', label='Individual',  color='tab:orange',s=sizeM)
         #         ax[idx,0].plot(shot + iSample, AccLDAMulti, label='Multi-user', markersize=sizeM, color='tab:purple',
         #                  linestyle=(0, (3, 3, 1, 3, 1, 3)))
-        ax[idx, 0].plot(shot + iSample, AccLDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
-        ax[idx, 0].plot(shot + iSample, AccLDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
-                        linestyle=(0, (3, 3, 1, 3)))
+        ax[idx, 0].scatter(shot + iSample, AccLDALiu, marker='o', label='Liu', color='tab:green',s=sizeM)
+        ax[idx, 0].scatter(shot + iSample, AccLDAVidovic,marker='^', label='Vidovic', color='tab:red',s=sizeM)
         ax[idx, 0].plot(shot + iSample, AccLDAProp, label='Our technique', color='tab:blue')
         ax[idx, 0].grid()
-        ax[idx, 0].set_ylabel(
-            str(20 - peopleSimilar) + ' different\n and \n' + str(peopleSimilar) + ' similar\nusers\n\naccuracy')
-        ax[idx, 0].xaxis.set_ticks([3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50])
+        ax[idx, 0].set_ylabel('accuracy')
+        ax[idx, 0].xaxis.set_ticks([3, 5, 7, 10, 15])
         ax[idx, 0].yaxis.set_ticks(np.arange(50, 90, 10))
 
-        ax[idx, 1].plot(shot + iSample, AccQDAInd, label='Individual', markersize=sizeM, color='tab:orange',
-                        linestyle='--')
-        ax[idx, 1].plot(shot + iSample, AccQDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
-        ax[idx, 1].plot(shot + iSample, AccQDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
-                        linestyle=(0, (3, 3, 1, 3)))
+        ax[idx, 1].scatter(shot + iSample, AccQDAInd,marker='x', label='Individual',  color='tab:orange',s=sizeM)
+        ax[idx, 1].scatter(shot + iSample, AccQDALiu, marker='o', label='Liu', color='tab:green',s=sizeM)
+        ax[idx, 1].scatter(shot + iSample, AccQDAVidovic,marker='^', label='Vidovic', color='tab:red',s=sizeM)
         ax[idx, 1].plot(shot + iSample, AccQDAProp, label='Our technique', color='tab:blue')
         ax[idx, 1].grid()
-        ax[idx, 1].xaxis.set_ticks([3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50])
+        ax[idx, 1].xaxis.set_ticks([3, 5, 7, 10, 15])
         ax[idx, 1].yaxis.set_ticks(np.arange(50, 90, 10))
 
         idx += 1
 
-    ax[3, 1].legend(loc='lower center', bbox_to_anchor=(0.8, -0.9), ncol=4, prop={'size': 9})
+    # ax[3, 1].legend(loc='lower center', bbox_to_anchor=(1.5, -1.5), ncol=4, prop={'size': 9})
 
     ax[0, 0].set_title('LDA')
     ax[0, 1].set_title('QDA')
@@ -164,8 +158,9 @@ def graphSyntheticDataALL(place):
     ax[3, 1].set_xlabel('samples')
 
     fig.tight_layout()
-    # plt.savefig("synthetic.png", bbox_inches='tight', dpi=600)
+    plt.savefig("fig3.png", bbox_inches='tight', dpi=600)
     plt.show()
+
 
 def SyntheticData(resultsData, numberShots, iSample):
     shot = np.arange(numberShots)
