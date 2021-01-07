@@ -150,25 +150,34 @@ def logVARch(EMG, ch):
             logVarVector[0, i] = np.log(np.sum((EMG[:, i]-np.mean(EMG[:, i])) ** 2) / (np.size(EMG[:, i], 0) - 1))
     return logVarVector
 
-logvarMatrix = []
-mavMatrix = []
-wlMatrix = []
-zcMatrix = []
-sscMatrix = []
-lscaleMatrix = []
-mflMatrix = []
-msrMatrix = []
-wampMatrix = []
-rmsMatrix = []
 
 
-for database in ['Nina5','Cote','EPN']:
+
+for database in ['NinaPro5','Cote','EPN']:
+
+    t1 = []
+    t2 = []
+    t3 = []
+    logvarMatrix = []
+    mavMatrix = []
+    wlMatrix = []
+    zcMatrix = []
+    sscMatrix = []
+    lscaleMatrix = []
+    mflMatrix = []
+    msrMatrix = []
+    wampMatrix = []
+    rmsMatrix = []
+
     sampleRate = 200
-    window = 295
-    overlap = 290
-    windowFile='295'
 
-    if database == 'Nina5':
+    #Our interface: window=295 and overlap=290
+    #Cote: window=260 and overlap=235
+    window = 260
+    overlap = 235
+    windowFileName=str(window)
+
+    if database == 'NinaPro5':
 
         ## NINA PRO 5 DATABASE
         rpt = 6
@@ -179,9 +188,8 @@ for database in ['Nina5','Cote','EPN']:
         windowSamples = int(window * sampleRate / 1000)
         incrmentSamples = windowSamples - int(overlap * sampleRate / 1000)
 
-        t1 = []
-        t2 = []
-        t3 = []
+
+
         for person in range(1, people + 1):
             aux = scipy.io.loadmat('../data/ninaDB5/s' + str(person) + '/S' + str(person) + '_E2_A1.mat')
             auxEMG = aux['emg']
@@ -265,51 +273,51 @@ for database in ['Nina5','Cote','EPN']:
                         rpR += 1
 
         timesFeatures = np.vstack((t1, t2, t3))
-        auxName = 'timesFeatures'+windowFile
+        auxName = 'timesFeatures'+windowFileName
         myFile = 'ExtractedDataNinaDB5/' + auxName + '.csv'
         np.savetxt(myFile, timesFeatures, delimiter=',')
 
-        auxName = 'mavMatrix'+windowFile
+        auxName = 'mavMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(mavMatrix)
-        auxName = 'wlMatrix'+windowFile
+        auxName = 'wlMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(wlMatrix)
-        auxName = 'zcMatrix'+windowFile
+        auxName = 'zcMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(zcMatrix)
-        auxName = 'sscMatrix'+windowFile
+        auxName = 'sscMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(sscMatrix)
-        auxName = 'lscaleMatrix'+windowFile
+        auxName = 'lscaleMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(lscaleMatrix)
-        auxName = 'mflMatrix'+windowFile
+        auxName = 'mflMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(mflMatrix)
-        auxName = 'msrMatrix'+windowFile
+        auxName = 'msrMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(msrMatrix)
-        auxName = 'wampMatrix'+windowFile
+        auxName = 'wampMatrix'+windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(wampMatrix)
-        auxName = 'logvarMatrix' + windowFile
+        auxName = 'logvarMatrix' + windowFileName
         myFile = open('ExtractedDataNinaDB5/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
@@ -330,9 +338,7 @@ for database in ['Nina5','Cote','EPN']:
 
         windowSamples = int(window * sampleRate / 1000)
         incrmentSamples = windowSamples - int(overlap * sampleRate / 1000)
-        t1 = []
-        t2 = []
-        t3 = []
+
 
 
         def emgMatrix(ty, gender, person, carpet, number):
@@ -423,51 +429,51 @@ for database in ['Nina5','Cote','EPN']:
                     per += 1
 
         timesFeatures = np.vstack((t1, t2, t3))
-        auxName = 'timesFeatures'+windowFile
+        auxName = 'timesFeatures'+windowFileName
         myFile = 'ExtractedDataCoteAllard/' + auxName + '.csv'
         np.savetxt(myFile, timesFeatures, delimiter=',')
 
-        auxName = 'mavMatrix'+windowFile
+        auxName = 'mavMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(mavMatrix)
-        auxName = 'wlMatrix'+windowFile
+        auxName = 'wlMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(wlMatrix)
-        auxName = 'zcMatrix'+windowFile
+        auxName = 'zcMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(zcMatrix)
-        auxName = 'sscMatrix'+windowFile
+        auxName = 'sscMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(sscMatrix)
-        auxName = 'lscaleMatrix'+windowFile
+        auxName = 'lscaleMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(lscaleMatrix)
-        auxName = 'mflMatrix'+windowFile
+        auxName = 'mflMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(mflMatrix)
-        auxName = 'msrMatrix'+windowFile
+        auxName = 'msrMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(msrMatrix)
-        auxName = 'wampMatrix'+windowFile
+        auxName = 'wampMatrix'+windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(wampMatrix)
-        auxName = 'logvarMatrix' + windowFile
+        auxName = 'logvarMatrix' + windowFileName
         myFile = open('ExtractedDataCoteAllard/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
@@ -485,9 +491,7 @@ for database in ['Nina5','Cote','EPN']:
         types = 2
         windowSamples = int(window * sampleRate / 1000)
         incrmentSamples = windowSamples - int(overlap * sampleRate / 1000)
-        t1 = []
-        t2 = []
-        t3 = []
+
 
         for ty in range(0, types):
             for person in range(1, people + 1):
@@ -523,51 +527,51 @@ for database in ['Nina5','Cote','EPN']:
                             wi += incrmentSamples
 
         timesFeatures = np.vstack((t1, t2, t3))
-        auxName = 'timesFeatures'+windowFile
+        auxName = 'timesFeatures'+windowFileName
         myFile = 'ExtractedDataCollectedData/' + auxName + '.csv'
         np.savetxt(myFile, timesFeatures, delimiter=',')
 
-        auxName = 'mavMatrix'+windowFile
+        auxName = 'mavMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(mavMatrix)
-        auxName = 'wlMatrix'+windowFile
+        auxName = 'wlMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(wlMatrix)
-        auxName = 'zcMatrix'+windowFile
+        auxName = 'zcMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(zcMatrix)
-        auxName = 'sscMatrix'+windowFile
+        auxName = 'sscMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(sscMatrix)
-        auxName = 'lscaleMatrix'+windowFile
+        auxName = 'lscaleMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(lscaleMatrix)
-        auxName = 'mflMatrix'+windowFile
+        auxName = 'mflMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(mflMatrix)
-        auxName = 'msrMatrix'+windowFile
+        auxName = 'msrMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(msrMatrix)
-        auxName = 'wampMatrix'+windowFile
+        auxName = 'wampMatrix'+windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)
             writer.writerows(wampMatrix)
-        auxName = 'logvarMatrix' + windowFile
+        auxName = 'logvarMatrix' + windowFileName
         myFile = open('ExtractedDataCollectedData/' + auxName + '.csv', 'w')
         with myFile:
             writer = csv.writer(myFile)

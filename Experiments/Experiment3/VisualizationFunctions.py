@@ -12,6 +12,7 @@ def AnalysisCote(placeOur,placeCote):
     results = pd.DataFrame()
     featureSet = 1
     idxD = 0
+    CoteAllardExperiment_Repetitions=20
     for base in bases:
         if base == 'NinaPro5':
             samples = 4
@@ -38,24 +39,28 @@ def AnalysisCote(placeOur,placeCote):
                 for i in range(people):
                     coteResults.append(np.array(ast.literal_eval(cote.loc[0][i])).T[0].mean())
                 coteResults = np.array(coteResults)
+                place = placeOur + 'Nina5'
             elif base == 'EPN':
-                for i in range(people):
+                for i in range(CoteAllardExperiment_Repetitions):
                     coteResults.append(ast.literal_eval(cote.loc[0][i]))
                 coteResults = np.mean(np.array(coteResults), axis=0)
+                place = placeOur + base
             elif base == 'Cote':
-                for i in range(people):
+                for i in range(CoteAllardExperiment_Repetitions):
                     coteResults.append(ast.literal_eval(cote.loc[0][i]))
                     coteResults.append(ast.literal_eval(cote.loc[1][i]))
                 coteResults = np.mean(np.array(coteResults), axis=0)
-            place = placeOur+ base
-            DataFrame = VF1.uploadResults(place, samples, people)
+                place = placeOur+ base
+            DataFrame = VF1.uploadResults2(place, samples, people)
 
             OurResultsQDA = DataFrame['AccQDAProp'].loc[
                         (DataFrame['Feature Set'] == featureSet) & (DataFrame['# shots'] == s)].values * 100
+            OurResultsLDA = DataFrame['AccLDAProp'].loc[
+                                (DataFrame['Feature Set'] == featureSet) & (DataFrame['# shots'] == s)].values * 100
 
 
-            OurQDAMedian = np.median(OurResultsQDA)
-            CoteMedian = np.median(coteResults)
+            OurQDAMedian = np.mean(OurResultsQDA)
+            CoteMedian = np.mean(coteResults)
 
             WilcoxonMethod = 'wilcox'
             alternativeMethod = 'greater'

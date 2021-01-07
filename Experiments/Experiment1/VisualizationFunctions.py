@@ -167,6 +167,24 @@ def uploadResults(place, samples, people):
     return resultsTest.drop(columns='Unnamed: 0')
 
 
+def uploadResults2(place, samples, people):
+    resultsTest = pd.read_csv(place + "_FeatureSet_1_startPerson_1_endPerson_" + str(people) + ".csv")
+    if len(resultsTest) != samples * people:
+        print('error' + ' 1' + ' 1')
+        print(len(resultsTest))
+
+    for j in range(3, 4):
+        auxFrame = pd.read_csv(
+            place + "_FeatureSet_" + str(j) + "_startPerson_" + str(1) + "_endPerson_" + str(people) + ".csv")
+        resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
+
+        if len(auxFrame) != samples * people:
+            print('error' + ' ' + str(j))
+            print(len(auxFrame))
+
+    return resultsTest.drop(columns='Unnamed: 0')
+
+
 def uploadResultsDatabase(folder, database):
     if database == 'NinaPro5':
         samples = 4
@@ -205,36 +223,6 @@ def uploadResultsDatabase(folder, database):
     return analysisResults(resultsTest.drop(columns='Unnamed: 0'), shots)
 
 
-def analysisTime(extractionT, timeM):
-    extractionT = extractionT * 1000
-
-    for featureSet in range(3):
-        print('\nFeature set: ' + str(featureSet + 1))
-        print('Training Time of Our Technique [s]: ',
-              round(timeM.loc[featureSet + 1, 'trainingTimeMean'], 2), '+-',
-              round(timeM.loc[featureSet + 1, 'trainingTimeStd'], 2))
-
-        print('LDA')
-        CL = 'LDA'
-        print('Extraction time [ms]: ', round(extractionT.loc[featureSet, :].mean(), 2),
-              round(extractionT.loc[featureSet, :].std(), 2),
-              'Classification time [ms]: ', timeM.loc[featureSet + 1, 'mean' + CL],
-              timeM.loc[featureSet + 1, 'std' + CL],
-              'Analysis time [ms]: ',
-              round(extractionT.loc[featureSet, :].mean() + timeM.loc[featureSet + 1, 'mean' + CL], 2),
-              round(np.sqrt((extractionT.loc[featureSet, :].var() + timeM.loc[featureSet + 1, 'var' + CL])), 2))
-
-        print('QDA')
-        CL = 'QDA'
-        print('Extraction time [ms]: ', round(extractionT.loc[featureSet, :].mean(), 2),
-              round(extractionT.loc[featureSet, :].std(), 2),
-              'Classification time [ms]: ', timeM.loc[featureSet + 1, 'mean' + CL],
-              timeM.loc[featureSet + 1, 'std' + CL],
-              'Analysis time [ms]: ',
-              round(extractionT.loc[featureSet, :].mean() + timeM.loc[featureSet + 1, 'mean' + CL], 2),
-              round(np.sqrt((extractionT.loc[featureSet, :].var() + timeM.loc[featureSet + 1, 'var' + CL])), 2))
-
-
 def analysisResults(resultDatabase, shots):
     results = pd.DataFrame(columns=['Feature Set', '# shots'])
     timeOurTechnique = pd.DataFrame(columns=[])
@@ -258,7 +246,7 @@ def analysisResults(resultDatabase, shots):
                 (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
             PropQ = resultDatabase['AccQDAProp'].loc[
                 (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
-            PropQ_L = resultDatabase['AccLDAProp'].loc[
+            PropQ_L = resultDatabase['AccLDAPropQ'].loc[
                 (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
 
             LiuL = resultDatabase['AccLDALiu'].loc[
@@ -293,19 +281,19 @@ def analysisResults(resultDatabase, shots):
             results.at[idx, 'wmQ'] = wmQ.mean(axis=0)
             results.at[idx, 'wcQ'] = wcQ.mean(axis=0)
 
-            results.at[idx, 'trainingPropT'] = trainingPropT.mean(axis=0)
-            results.at[idx, 'classificationPropQDAT'] = classificationPropQDAT.mean(axis=0)
-            results.at[idx, 'classificationPropLDAT'] = classificationPropLDAT.mean(axis=0)
-            results.at[idx, 'std_tPropQ'] = trainingPropT.std(axis=0)
-            results.at[idx, 'std_tIndQ'] = classificationPropQDAT.std(axis=0)
-            results.at[idx, 'std_tIndL'] = classificationPropLDAT.std(axis=0)
+            # results.at[idx, 'trainingPropT'] = trainingPropT.mean(axis=0)
+            # results.at[idx, 'classificationPropQDAT'] = classificationPropQDAT.mean(axis=0)
+            # results.at[idx, 'classificationPropLDAT'] = classificationPropLDAT.mean(axis=0)
+            # results.at[idx, 'std_tPropQ'] = trainingPropT.std(axis=0)
+            # results.at[idx, 'std_tIndQ'] = classificationPropQDAT.std(axis=0)
+            # results.at[idx, 'std_tIndL'] = classificationPropLDAT.std(axis=0)
 
-            results.at[idx, 'stdLDA_Ind'] = LDAInd.std(axis=0)
-            results.at[idx, 'stdQDA_Ind'] = QDAInd.std(axis=0)
-            results.at[idx, 'stdPropQ_L'] = PropQ_L.std(axis=0)
-            results.at[idx, 'stdPropQ'] = PropQ.std(axis=0)
-            results.at[idx, 'stdLiuL'] = LiuL.std(axis=0)
-            results.at[idx, 'stdLiuQ'] = LiuQ.std(axis=0)
+            # results.at[idx, 'stdLDA_Ind'] = LDAInd.std(axis=0)
+            # results.at[idx, 'stdQDA_Ind'] = QDAInd.std(axis=0)
+            # results.at[idx, 'stdPropQ_L'] = PropQ_L.std(axis=0)
+            # results.at[idx, 'stdPropQ'] = PropQ.std(axis=0)
+            # results.at[idx, 'stdLiuL'] = LiuL.std(axis=0)
+            # results.at[idx, 'stdLiuQ'] = LiuQ.std(axis=0)
 
             confidence = 0.05
 
@@ -345,6 +333,191 @@ def analysisResults(resultDatabase, shots):
         timeOurTechnique.at[j, 'trainingTimeStd'] = round(trainingPropT.std(axis=0), 2)
 
     return results, timeOurTechnique
+
+
+def uploadResultsDatabase2(folder, database, resultDatabase):
+    if database == 'Nina5':
+        samples = 4
+        people = 10
+        shots = 4
+    elif database == 'Cote':
+        samples = 4
+        people = 17
+        shots = 4
+    elif database == 'EPN':
+        samples = 25
+        people = 30
+        shots = 25
+    place = folder + database
+    resultsTest = pd.read_csv(place + "_FeatureSet_1_startPerson_1_endPerson_" + str(people) + ".csv")
+    if len(resultsTest) != samples * people:
+        print('error' + ' 1' + ' 1')
+        print(len(resultsTest))
+
+    for j in range(2, 4):
+        auxFrame = pd.read_csv(
+            place + "_FeatureSet_" + str(j) + "_startPerson_" + str(1) + "_endPerson_" + str(people) + ".csv")
+        resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
+
+        if len(auxFrame) != samples * people:
+            print('error' + ' ' + str(j))
+            print(len(auxFrame))
+
+    return analysisResults2(resultsTest.drop(columns='Unnamed: 0'), shots, resultDatabase)
+
+
+def analysisResults2(resultDatabaseLDA, shots, resultDatabase):
+    results = pd.DataFrame(columns=['Feature Set', '# shots'])
+    timeOurTechnique = pd.DataFrame(columns=[])
+
+    idx = 0
+    for j in range(1, 4):
+        for i in range(1, shots + 1):
+            results.at[idx, 'Feature Set'] = j
+            results.at[idx, '# shots'] = i
+
+            subset = str(tuple(range(1, i + 1)))
+
+            LDAmulti = resultDatabase['AccLDAMulti'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            QDAmulti = resultDatabase['AccQDAMulti'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+
+            LDAInd = resultDatabase['AccLDAInd'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            QDAInd = resultDatabase['AccQDAInd'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            PropQ = resultDatabase['AccQDAProp'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            PropL = resultDatabaseLDA['AccLDAProp'].loc[
+                (resultDatabaseLDA['subset'] == subset) & (resultDatabaseLDA['Feature Set'] == j)]
+
+            LiuL = resultDatabase['AccLDALiu'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            LiuQ = resultDatabase['AccQDALiu'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            VidL = resultDatabase['AccLDAVidovic'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            VidQ = resultDatabase['AccQDAVidovic'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+
+            wmQ = resultDatabase['wTargetMeanQDAm'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            wcQ = resultDatabase['wTargetCovQDAm'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+
+            trainingPropTimeQDA = resultDatabase['tPropQ'].loc[
+                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+            classificationPropQDAT = resultDatabase['tCLPropQ'].loc[(resultDatabase['Feature Set'] == j)]
+
+            wmL = resultDatabaseLDA['wTargetMeanLDA'].loc[
+                (resultDatabaseLDA['subset'] == subset) & (resultDatabaseLDA['Feature Set'] == j)]
+            wcL = resultDatabaseLDA['wTargetCovLDA'].loc[
+                (resultDatabaseLDA['subset'] == subset) & (resultDatabaseLDA['Feature Set'] == j)]
+
+            trainingPropTimeLDA = resultDatabaseLDA['tPropLDA'].loc[
+                (resultDatabaseLDA['subset'] == subset) & (resultDatabaseLDA['Feature Set'] == j)]
+            classificationPropLDAT = resultDatabaseLDA['tCLPropL'].loc[(resultDatabaseLDA['Feature Set'] == j)]
+
+            results.at[idx, 'LDA_Ind'] = LDAInd.mean(axis=0)
+            results.at[idx, 'QDA_Ind'] = QDAInd.mean(axis=0)
+            results.at[idx, 'LDA_Multi'] = LDAmulti.mean(axis=0)
+            results.at[idx, 'QDA_Multi'] = QDAmulti.mean(axis=0)
+            results.at[idx, 'LiuL'] = LiuL.mean(axis=0)
+            results.at[idx, 'LiuQ'] = LiuQ.mean(axis=0)
+            results.at[idx, 'VidL'] = VidL.mean(axis=0)
+            results.at[idx, 'VidQ'] = VidQ.mean(axis=0)
+            results.at[idx, 'PropQ'] = PropQ.mean(axis=0)
+            results.at[idx, 'PropL'] = PropL.mean(axis=0)
+            results.at[idx, 'wmQ'] = wmQ.mean(axis=0)
+            results.at[idx, 'wcQ'] = wcQ.mean(axis=0)
+            results.at[idx, 'wmL'] = wmL.mean(axis=0)
+            results.at[idx, 'wcL'] = wcL.mean(axis=0)
+
+            # results.at[idx, 'trainingPropT'] = trainingPropT.mean(axis=0)
+            # results.at[idx, 'classificationPropQDAT'] = classificationPropQDAT.mean(axis=0)
+            # results.at[idx, 'classificationPropLDAT'] = classificationPropLDAT.mean(axis=0)
+            # results.at[idx, 'std_tPropQ'] = trainingPropT.std(axis=0)
+            # results.at[idx, 'std_tIndQ'] = classificationPropQDAT.std(axis=0)
+            # results.at[idx, 'std_tIndL'] = classificationPropLDAT.std(axis=0)
+
+            # results.at[idx, 'stdLDA_Ind'] = LDAInd.std(axis=0)
+            # results.at[idx, 'stdQDA_Ind'] = QDAInd.std(axis=0)
+            # results.at[idx, 'stdPropQ_L'] = PropQ_L.std(axis=0)
+            # results.at[idx, 'stdPropQ'] = PropQ.std(axis=0)
+            # results.at[idx, 'stdLiuL'] = LiuL.std(axis=0)
+            # results.at[idx, 'stdLiuQ'] = LiuQ.std(axis=0)
+
+            confidence = 0.05
+
+            p = stats.wilcoxon(PropL.values, LDAInd.values, alternative='greater', zero_method='zsplit')[1]
+            if p < confidence:
+                results.at[idx, 'T-test (LDA_Ind)'] = p
+            else:
+                results.at[idx, 'T-test (LDA_Ind)'] = 1
+
+            p = stats.wilcoxon(PropQ.values, QDAInd.values, alternative='greater', zero_method='zsplit')[1]
+            if p < confidence:
+                results.at[idx, 'T-test (QDA_Ind)'] = p
+            else:
+                results.at[idx, 'T-test (QDA_Ind)'] = 1
+
+            p = stats.wilcoxon(PropL.values, LDAmulti.values, alternative='greater', zero_method='zsplit')[1]
+            if p < confidence:
+                results.at[idx, 'T-test (LDA_Multi)'] = p
+            else:
+                results.at[idx, 'T-test (LDA_Multi)'] = 1
+
+            p = stats.wilcoxon(PropQ.values, QDAmulti.values, alternative='greater', zero_method='zsplit')[1]
+            if p < confidence:
+                results.at[idx, 'T-test (QDA_Multi)'] = p
+            else:
+                results.at[idx, 'T-test (QDA_Multi)'] = 1
+
+            idx += 1
+
+        timeOurTechnique.at[j, 'meanLDA'] = round(classificationPropLDAT.mean(axis=0) * 1000, 2)
+        timeOurTechnique.at[j, 'stdLDA'] = round(classificationPropLDAT.std(axis=0) * 1000, 2)
+        timeOurTechnique.at[j, 'varLDA'] = round(classificationPropLDAT.var(axis=0) * 1000, 2)
+        timeOurTechnique.at[j, 'meanQDA'] = round(classificationPropQDAT.mean(axis=0) * 1000, 2)
+        timeOurTechnique.at[j, 'stdQDA'] = round(classificationPropQDAT.std(axis=0) * 1000, 2)
+        timeOurTechnique.at[j, 'varQDA'] = round(classificationPropQDAT.var(axis=0) * 1000, 2)
+        timeOurTechnique.at[j, 'trainingTimeMean_LDA'] = round(trainingPropTimeLDA.mean(axis=0), 2)
+        timeOurTechnique.at[j, 'trainingTimeStd_LDA'] = round(trainingPropTimeLDA.std(axis=0), 2)
+        timeOurTechnique.at[j, 'trainingTimeMean_QDA'] = round(trainingPropTimeQDA.mean(axis=0), 2)
+        timeOurTechnique.at[j, 'trainingTimeStd_QDA'] = round(trainingPropTimeQDA.std(axis=0), 2)
+
+    return results, timeOurTechnique
+
+
+def analysisTime(extractionT, timeM):
+    extractionT = extractionT * 1000
+
+    for featureSet in range(3):
+        print('\nFeature set: ' + str(featureSet + 1))
+        print('Training Time of Our Technique [s]: ',
+              round(timeM.loc[featureSet + 1, 'trainingTimeMean'], 2), '+-',
+              round(timeM.loc[featureSet + 1, 'trainingTimeStd'], 2))
+
+        print('LDA')
+        CL = 'LDA'
+        print('Extraction time [ms]: ', round(extractionT.loc[featureSet, :].mean(), 2),
+              round(extractionT.loc[featureSet, :].std(), 2),
+              'Classification time [ms]: ', timeM.loc[featureSet + 1, 'mean' + CL],
+              timeM.loc[featureSet + 1, 'std' + CL],
+              'Analysis time [ms]: ',
+              round(extractionT.loc[featureSet, :].mean() + timeM.loc[featureSet + 1, 'mean' + CL], 2),
+              round(np.sqrt((extractionT.loc[featureSet, :].var() + timeM.loc[featureSet + 1, 'var' + CL])), 2))
+
+        print('QDA')
+        CL = 'QDA'
+        print('Extraction time [ms]: ', round(extractionT.loc[featureSet, :].mean(), 2),
+              round(extractionT.loc[featureSet, :].std(), 2),
+              'Classification time [ms]: ', timeM.loc[featureSet + 1, 'mean' + CL],
+              timeM.loc[featureSet + 1, 'std' + CL],
+              'Analysis time [ms]: ',
+              round(extractionT.loc[featureSet, :].mean() + timeM.loc[featureSet + 1, 'mean' + CL], 2),
+              round(np.sqrt((extractionT.loc[featureSet, :].var() + timeM.loc[featureSet + 1, 'var' + CL])), 2))
 
 
 def graphACC(resultsNina5T, resultsCoteT, resultsEPNT):
@@ -521,7 +694,7 @@ def graphACC2(resultsNina5T, resultsCoteT, resultsEPNT):
                     ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='^', label='Vidovic',
                                                  color='tab:red')
 
-                    Model = 'PropQ_L'
+                    Model = 'PropL'
                     Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
                     ax[Data, FeatureSet].plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
 
@@ -664,7 +837,7 @@ def matrixACC(folder, base):
         for s in shots:
             OurResultsQDA = DataFrame['AccQDAProp'].loc[
                                 (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            OurResultsLDA = DataFrame['AccLDAProp'].loc[
+            OurResultsLDA = DataFrame['AccLDAPropQ'].loc[
                                 (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
             indQ = DataFrame['AccQDAInd'].loc[
                        (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
@@ -764,7 +937,7 @@ def AnalysisWilcoxon(folder, base):
 
             OurResultsQDA = DataFrame['AccQDAProp'].loc[
                                 (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
-            OurResultsLDA = DataFrame['AccLDAProp'].loc[
+            OurResultsLDA = DataFrame['AccLDAPropQ'].loc[
                                 (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
             indQ = DataFrame['AccQDAInd'].loc[
                        (DataFrame['Feature Set'] == f) & (DataFrame['# shots'] == s)].values * 100
@@ -1009,18 +1182,23 @@ def AnalysisFriedman(folder):
     people = 10
     place = folder + base
     DataFrameN = uploadResults(place, samples, people)
+    DataFrameN2 = uploadResults2("Experiments/Experiment1/results/Nina5", samples, people)
     base = 'Cote'
     samples = 4
     people = 17
     place = folder + base
     DataFrameC = uploadResults(place, samples, people)
+    DataFrameC2 = uploadResults2("Experiments/Experiment1/results/Cote", samples, people)
     base = 'EPN'
     samples = 25
     people = 30
     place = folder + base
     DataFrameE = uploadResults(place, samples, people)
+    DataFrameE2 = uploadResults2("Experiments/Experiment1/results/EPN", samples, people)
 
     TotalDataframe = pd.concat([DataFrameN, DataFrameC, DataFrameE])
+    TotalDataframeLDA = pd.concat([DataFrameN2, DataFrameC2, DataFrameE2])
+
     for f in range(1, 4):
 
         for DA in ['LDA', 'QDA']:
@@ -1028,8 +1206,8 @@ def AnalysisFriedman(folder):
 
             dataFrame['Individual ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Ind'].loc[
                 (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
-            # dataFrame['Multi-User ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Multi'].loc[
-            #     (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+            dataFrame['Multi-User ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Multi'].loc[
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
             dataFrame['Liu ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Liu'].loc[
                 (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
             dataFrame['Vidovic ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Vidovic'].loc[
@@ -1038,8 +1216,8 @@ def AnalysisFriedman(folder):
                 dataFrame['Our QDA ' + str(f)] = TotalDataframe['Acc' + DA + 'Prop'].loc[
                     (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
             elif DA == 'LDA':
-                dataFrame['Our LDA ' + str(f)] = TotalDataframe['Acc' + DA + 'PropQ'].loc[
-                    (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+                dataFrame['Our LDA ' + str(f)] = TotalDataframeLDA['Acc' + DA + 'Prop'].loc[
+                    (TotalDataframeLDA['Feature Set'] == f) & (TotalDataframeLDA['# shots'] <= 4)].values
 
             data = np.asarray(dataFrame)
             num_datasets, num_methods = data.shape

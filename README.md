@@ -25,7 +25,11 @@ Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 
 1. [NinaPro5](http://ninaweb.hevs.ch/). This database should import to the folder [ninaDB5](data/ninaDB5).
 2. [Côté-Allard](https://github.com/UlysseCoteAllard/MyoArmbandDataset). This database should import to the folder [MyoArmbandDataset-master](data/MyoArmbandDataset-master).
-3. [EPN](https://ieeexplore.ieee.org/abstract/document/8903136/?casa_token=RYo5viuh6S8AAAAA:lizIpEqM4rK5eeo1Wxm-aPuDB20da2PngeRRnrC7agqSK1j26mqmtq5YJFLive7uW083m9tT). This database should import to the folder [allUsers](data/CollectedData/data/allUsers).
+3. [EPN](https://ieeexplore.ieee.org/abstract/document/8903136/?casa_token=RYo5viuh6S8AAAAA:lizIpEqM4rK5eeo1Wxm-aPuDB20da2PngeRRnrC7agqSK1j26mqmtq5YJFLive7uW083m9tT). 
+This database should import to the folder [allUsers](data/CollectedData/data/allUsers). 
+In addition, the file [main.m](data/CollectedData/data/Detect muscle activity/main.m) 
+should be executed to only the gesture data using the detect-muscle-activity's technique proposed by the authors of 
+this [work](https://ieeexplore.ieee.org/document/8247458). 
 
 ## Experiments
 To reproduce our experiments, please perform the following steps:
