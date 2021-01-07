@@ -6,15 +6,12 @@
 #PBS -l walltime=48:00:00
 #PBS -l software=python
 #PBS -l wd
- 
-folder="Results/EPN"
+
+folder="Results/"
 database="EPN"
+windowSize="295"
 for j in {1..3}
 do
-
-	for i in {1..30}
-	do
-		python3 main.py $j $i $i $folder $database 1 0 0 1 > EPN$PBS_JOBID.log &
-	done
+python3 mainDatabasesExp1.py $j 1 30 $folder $database 0 $windowSize > EPN$PBS_JOBID.log &
 done
 wait

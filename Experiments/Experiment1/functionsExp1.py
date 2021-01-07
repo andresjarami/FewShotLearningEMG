@@ -1,3 +1,4 @@
+#%% Libraries
 import Experiments.Experiment1.DA_BasedAdaptiveModels as adaptive
 import Experiments.Experiment1.DA_Classifiers as DA_Classifiers
 import numpy as np
@@ -6,9 +7,9 @@ import math
 from sklearn import preprocessing
 
 
-# Upload Databases
+#%% Upload Databases
 
-def uploadDatabases(Database, featureSet, windowFileName):
+def uploadDatabases(Database, featureSet, windowSize):
     # Setting general variables
     path = '../../'
     CH = 8
@@ -41,10 +42,8 @@ def uploadDatabases(Database, featureSet, windowFileName):
         numberFeatures = 1
         allFeatures = numberFeatures * CH
         # Getting Data
-        logvarMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + windowFileName + '.csv',
+        logvarMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + windowSize + '.csv',
                                      delimiter=',')
-        np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + '' + '.csv',
-                      delimiter=',')
         if Database == 'EPN':
             dataMatrix = logvarMatrix[:, 0:]
             labelsDataMatrix = dataMatrix[:, allFeatures + 2]
@@ -57,8 +56,6 @@ def uploadDatabases(Database, featureSet, windowFileName):
             dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
             labelsDataMatrix = dataMatrix[:, allFeatures + 3]
 
-
-
     elif featureSet == 2:
         # Setting variables
         Feature1 = 'mavMatrix'
@@ -67,13 +64,13 @@ def uploadDatabases(Database, featureSet, windowFileName):
         Feature4 = 'sscMatrix'
         numberFeatures = 4
         allFeatures = numberFeatures * CH
-        mavMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + windowFileName + '.csv',
+        mavMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + windowSize + '.csv',
                                   delimiter=',')
-        wlMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature2 + windowFileName + '.csv',
+        wlMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature2 + windowSize + '.csv',
                                  delimiter=',')
-        zcMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature3 + windowFileName + '.csv',
+        zcMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature3 + windowSize + '.csv',
                                  delimiter=',')
-        sscMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature4 + windowFileName + '.csv',
+        sscMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature4 + windowSize + '.csv',
                                   delimiter=',')
         if Database == 'EPN':
             dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:]))
@@ -90,7 +87,6 @@ def uploadDatabases(Database, featureSet, windowFileName):
             dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
             labelsDataMatrix = dataMatrix[:, allFeatures + 3]
 
-
     elif featureSet == 3:
         # Setting variables
         Feature1 = 'lscaleMatrix'
@@ -100,13 +96,13 @@ def uploadDatabases(Database, featureSet, windowFileName):
         numberFeatures = 4
         allFeatures = numberFeatures * CH
         # Getting Data
-        lscaleMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + windowFileName + '.csv',
+        lscaleMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature1 + windowSize + '.csv',
                                      delimiter=',')
-        mflMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature2 + windowFileName + '.csv',
+        mflMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature2 + windowSize + '.csv',
                                   delimiter=',')
-        msrMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature3 + windowFileName + '.csv',
+        msrMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature3 + windowSize + '.csv',
                                   delimiter=',')
-        wampMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature4 + windowFileName + '.csv',
+        wampMatrix = np.genfromtxt(path + 'ExtractedData/' + carpet + '/' + Feature4 + windowSize + '.csv',
                                    delimiter=',')
 
         if Database == 'EPN':
@@ -127,12 +123,11 @@ def uploadDatabases(Database, featureSet, windowFileName):
     return dataMatrix, numberFeatures, CH, classes, peoplePriorK, peopleTest, numberShots, combinationSet, allFeatures, labelsDataMatrix
 
 
-# EVALUATION OVER THE THREE DATABASES
+#%% EVALUATION OVER THE THREE DATABASES
 
 
 def evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
-               allFeatures,
-               typeDatabase, printR):
+               allFeatures, typeDatabase, printR):
     scaler = preprocessing.MinMaxScaler()
 
     if typeDatabase == 'EPN':
@@ -146,11 +141,11 @@ def evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameF
                        allFeatures, printR, scaler)
 
 
-### EPN
+#%% EPN
 def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                   allFeatures, printR, scaler):
     results = pd.DataFrame(
-        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
+        columns=['person', 'subset', '# shots', 'Feature Set'])
 
     trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures + 1] <= peoplePriorK)), 0:allFeatures][0]
     trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures + 1] <= peoplePriorK)), allFeatures + 2][0]
@@ -227,13 +222,13 @@ def preTrainedDataEPN(dataMatrix, classes, peoplePriorK, allFeatures):
     return preTrainedDataMatrix
 
 
-### Cote-Allard
+#%% Cote-Allard
 
 def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                    allFeatures, printR, scaler):
     # Creating Variables
     results = pd.DataFrame(
-        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
+        columns=['person', 'subset', '# shots', 'Feature Set'])
 
     idx = 0
 
@@ -319,14 +314,14 @@ def preTrainedDataCote(dataMatrix, classes, peoplePriorK, allFeatures):
     return preTrainedDataMatrix
 
 
-### Nina Pro 5
+#%% Nina Pro 5
 
 def evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
                     startPerson, endPerson, allFeatures, printR, scaler):
     # Creating Variables
 
     results = pd.DataFrame(
-        columns=['person', 'subset', '# shots', 'Feature Set', 'wTargetMeanQDA', 'wTargetCovQDA'])
+        columns=['person', 'subset', '# shots', 'Feature Set'])
 
     idx = 0
 
@@ -403,7 +398,7 @@ def preTrainedDataNina5(dataMatrix, classes, peoplePriorK, evaluatedPerson, allF
     return preTrainedDataMatrix
 
 
-# Auxiliar functions of the evaluation
+#%% Auxiliar functions of the evaluation
 
 def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels, classes, allFeatures,
                      results, testFeatures, testLabels, idx, person, subset, featureSet, nameFile, printR, k, pkValues):
@@ -430,8 +425,9 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'AccLDAInd'], results.at[idx, 'tIndL'] = DA_Classifiers.accuracyModelLDA(testFeatures, testLabels,
                                                                                              currentValues,
                                                                                              classes)
-    # results.at[idx, 'AccLDAMulti'], results.at[idx, 'tGenL'] = DA_Classifiers.accuracyModelLDA(testFeatures, testLabels, pkValues,
-    #                                                                          classes)
+    results.at[idx, 'AccLDAMulti'], results.at[idx, 'tGenL'] = DA_Classifiers.accuracyModelLDA(testFeatures, testLabels,
+                                                                                               pkValues,
+                                                                                               classes)
     results.at[idx, 'AccLDAProp'], results.at[idx, 'tCLPropL'] = DA_Classifiers.accuracyModelLDA(testFeatures,
                                                                                                  testLabels,
                                                                                                  propModelLDA,
@@ -444,8 +440,9 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, 'AccQDAInd'], results.at[idx, 'tIndQ'] = DA_Classifiers.accuracyModelQDA(testFeatures, testLabels,
                                                                                              currentValues,
                                                                                              classes)
-    # results.at[idx, 'AccQDAMulti'], results.at[idx, 'tGenQ'] = DA_Classifiers.accuracyModelQDA(testFeatures, testLabels, pkValues,
-    #                                                                          classes)
+    results.at[idx, 'AccQDAMulti'], results.at[idx, 'tGenQ'] = DA_Classifiers.accuracyModelQDA(testFeatures, testLabels,
+                                                                                               pkValues,
+                                                                                               classes)
     results.at[idx, 'AccQDAProp'], results.at[idx, 'tCLPropQ'] = DA_Classifiers.accuracyModelQDA(testFeatures,
                                                                                                  testLabels,
                                                                                                  propModelQDA,
