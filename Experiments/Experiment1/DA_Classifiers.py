@@ -3,7 +3,7 @@ import time
 import math
 
 
-# LDA Calssifier
+#%% LDA Calssifier
 def LDA_Discriminant(x, covariance, mean):
     det = np.linalg.det(covariance)
     if det > 0:
@@ -58,7 +58,7 @@ def accuracyModelLDA(testFeatures, testLabels, model, classes):
     return true / count, t / np.size(testLabels)
 
 
-# QDA Classifier
+#%% QDA Classifier
 def QDA_Discriminant(x, covariance, mean):
     det = np.linalg.det(covariance)
     if det > 0:

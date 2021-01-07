@@ -4,9 +4,9 @@ import pandas as pd
 from scipy.spatial import distance
 import time
 
-
+#%% LIU IMPLEMENTATION
 # Reduced Daily Recalibration of Myoelectric Prosthesis Classifiers Based on Domain Adaptation
-# LIU IMPLEMENTATION
+
 def weightDenominatorLiu(currentMean, preTrainedDataMatrix):
     weightDenominatorV = 0
     for i in range(len(preTrainedDataMatrix.index)):
@@ -57,7 +57,7 @@ def LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
     return trainedModel
 
 
-# VIDOVIC IMPLEMENTATION
+#%% VIDOVIC IMPLEMENTATION
 def VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
     trainedModelL = pd.DataFrame(columns=['cov', 'mean', 'class'])
     trainedModelQ = pd.DataFrame(columns=['cov', 'mean', 'class'])
@@ -88,7 +88,7 @@ def VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
 
 
 
-###### OUR TECHNIQUE
+#%% OUR TECHNIQUE
 
 def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step,
                   typeModel, k):
