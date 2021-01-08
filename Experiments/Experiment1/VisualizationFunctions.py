@@ -216,9 +216,9 @@ def analysisResults(resultDatabase, shots):
         timeOurTechnique.at[j, 'meanClQDA'] = round(ourQDAclassifyTime.mean(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'stdClQDA'] = round(ourQDAclassifyTime.std(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'varClQDA'] = round(ourQDAclassifyTime.var(axis=0) * 1000, 2)
-        timeOurTechnique.at[j, 'meanNorm'] = round(ourNormTime.mean(axis=0) * 1000, 2)
-        timeOurTechnique.at[j, 'stdNorm'] = round(ourNormTime.std(axis=0) * 1000, 2)
-        timeOurTechnique.at[j, 'varNorm'] = round(ourNormTime.var(axis=0) * 1000, 2)
+        timeOurTechnique.at[j, 'meanNorm'] = round(ourNormTime.mean(axis=0) * 1000000, 2)
+        timeOurTechnique.at[j, 'stdNorm'] = round(ourNormTime.std(axis=0) * 1000000, 2)
+        timeOurTechnique.at[j, 'varNorm'] = round(ourNormTime.var(axis=0) * 1000000, 2)
 
     return results, timeOurTechnique
 
@@ -244,37 +244,31 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
 
                 if DA == 'QDA':
                     idx += 3
+                ax[Data, idx].grid(color='gainsboro', linewidth=1)
+                ax[Data, idx].set_axisbelow(True)
 
                 Model = 'Ind' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].scatter(shot, Y[:len(shot)], marker='x', label='Individual', color='tab:orange')
-
+                ax[Data, idx].plot(shot, Y[:len(shot)], marker='x', label='Individual', color='tab:orange')
                 Model = 'Multi' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].scatter(shot, Y[:len(shot)], marker='v', label='Multi-user', color='tab:purple')
-
+                ax[Data, idx].plot(shot, Y[:len(shot)], marker='s', label='Multi-user', color='tab:purple')
                 Model = 'Liu' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].scatter(shot, Y[:len(shot)], marker='o', label='Liu',
-                                      color='tab:green')
-
+                ax[Data, idx].plot(shot, Y[:len(shot)], marker='o', label='Liu', color='tab:green')
                 Model = 'Vid' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].scatter(shot, Y[:len(shot)], marker='^', label='Vidovic',
-                                      color='tab:red')
-
+                ax[Data, idx].plot(shot, Y[:len(shot)], marker='^', label='Vidovic', color='tab:red')
                 Model = 'Our' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
+                ax[Data, idx].plot(shot, Y[:len(shot)], marker='v', label='Our classifier', color='tab:blue')
 
-                ax[Data, idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1f'))
+                ax[Data, idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
 
                 if len(shot) == 25:
                     ax[Data, idx].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
                 else:
-
-                    ax[Data, FeatureSet].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
-                ax[Data, idx].grid()
+                    ax[Data, idx].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
 
     ax[2, 0].set_xlabel('repetitions')
     ax[2, 1].set_xlabel('repetitions')
@@ -295,10 +289,9 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
     ax[2, 0].set_ylabel('EPN \naccuracy')
 
     ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
-    # ax2.legend(loc='lower center', bbox_to_anchor=(2, -1.2), ncol=5)
 
     fig.tight_layout(pad=0.1)
-    plt.savefig("fig1.png", bbox_inches='tight', dpi=600)
+    plt.savefig("acc.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -464,6 +457,94 @@ def AnalysisFriedman(folder, windowSize):
 
     return
 
+
+# %% Analysis using a large database (EPN)
+def largeDatabase(results):
+    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(9, 3))
+    shotsTotal = 25
+    shotsSet = np.array([0, 4, 9, 14, 19, 24])
+    xAxis = shotsSet + 1
+
+    idx = 2
+    title = 'Weights'
+    wL = np.array(results['wLDA'])
+    lL = np.array(results['lLDA'])
+    wQ = np.array(results['wQDA'])
+    lQ = np.array(results['lQDA'])
+    ax[idx].grid(color='gainsboro', linewidth=1)
+    ax[idx].set_axisbelow(True)
+    ax[idx].plot(xAxis, np.mean(wL.reshape((3, shotsTotal)), axis=0)[shotsSet], label='$\hat{\omega}_c$ LDA',
+                 marker='*', color='black')
+    ax[idx].plot(xAxis, np.mean(lL.reshape((3, shotsTotal)), axis=0)[shotsSet], label='$\hat{\lambda}_c$ LDA',
+                 marker='<', color='black')
+    ax[idx].plot(xAxis, np.mean(wQ.reshape((3, shotsTotal)), axis=0)[shotsSet], label='$\hat{\omega}_c$ QDA',
+                 marker='*', color='tab:cyan')
+    ax[idx].plot(xAxis, np.mean(lQ.reshape((3, shotsTotal)), axis=0)[shotsSet], label='$\hat{\lambda}_c$ QDA',
+                 marker='<', color='tab:cyan')
+    ax[idx].set_title(title)
+    ax[idx].xaxis.set_ticks(shotsSet)
+    ax[idx].set_xlabel('repetitions')
+    ax[idx].set_ylabel('Weight value')
+    ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+    # ax[idx].legend(loc='lower center', bbox_to_anchor=(1.2, -0.8), ncol=2)
+
+    idx = 0
+    for DA in ['LDA', 'QDA']:
+        title = DA
+        ind = np.array(results['Ind' + DA]) * 100
+        liu = np.array(results['Liu' + DA]) * 100
+        vid = np.array(results['Vid' + DA]) * 100
+        our = np.array(results['Our' + DA]) * 100
+        ax[idx].grid(color='gainsboro', linewidth=1)
+        ax[idx].set_axisbelow(True)
+        ax[idx].plot(xAxis, np.mean(ind.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Individual', marker='x',
+                     color='tab:orange')
+        ax[idx].plot(xAxis, np.mean(liu.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Liu', marker='o',
+                     color='tab:green')
+        ax[idx].plot(xAxis, np.mean(vid.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Vid', marker='^',
+                     color='tab:red')
+        ax[idx].plot(xAxis, np.mean(our.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Our Classifier', marker='v',
+                     color='tab:blue')
+        ax[idx].set_title(title)
+        ax[idx].xaxis.set_ticks(shotsSet)
+        ax[idx].set_xlabel('repetitions')
+        ax[idx].set_ylabel('accuracy')
+        ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+        # ax[idx].legend(loc='lower center', bbox_to_anchor=(1.2, -0.8), ncol=2)
+
+        idx += 1
+    fig.tight_layout(pad=1)
+    plt.savefig("largeDatabase.png", bbox_inches='tight', dpi=600)
+    plt.show()
+
+
+# %% Time Analysis
+
+def analysisTime(extractionTime, timeOurTechnique):
+    # from seconds to miliseconds
+    extractionTime = extractionTime * 1000
+
+    for featureSet in range(3):
+        for DA in ['LDA', 'QDA']:
+            print('\nOur ' + DA + ' Technique for feature set ' + str(featureSet + 1))
+            print('Feature set: ' + str(featureSet + 1))
+            print('Training Time [s]: ',
+                  round(timeOurTechnique.loc[featureSet + 1, 'meanTrain' + DA] / 1000, 2), '±',
+                  round(timeOurTechnique.loc[featureSet + 1, 'stdTrain' + DA] / 1000, 2))
+
+            print('Extraction time [ms]: ', round(extractionTime.loc[featureSet, :].mean(), 2), '±',
+                  round(extractionTime.loc[featureSet, :].std(), 2))
+            print('Classification time [ms]: ', timeOurTechnique.loc[featureSet + 1, 'meanCl' + DA], '±',
+                  timeOurTechnique.loc[featureSet + 1, 'stdCl' + DA])
+            print('Prprocessing time (min-max normalization) [µs]: ', timeOurTechnique.loc[featureSet + 1, 'meanNorm'],
+                  '±', timeOurTechnique.loc[featureSet + 1, 'stdNorm'])
+            print('Analysis time (the sum of the extraction, classification, and preprocessing times) [ms]: ',
+                  round(extractionTime.loc[featureSet, :].mean() + timeOurTechnique.loc[featureSet + 1, 'meanCl' + DA] +
+                        timeOurTechnique.loc[featureSet + 1, 'meanNorm'] / 1000, 2), '±',
+                  round(np.sqrt((extractionTime.loc[featureSet, :].var() + timeOurTechnique.loc[
+                      featureSet + 1, 'varCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'varNorm'] / 1000)), 2))
+
+
 #
 # def AnalysisFriedman2(folder):
 #     base = 'NinaPro5'
@@ -592,83 +673,6 @@ def matrixACC(folder, base):
             results.at['Vidovic classifier [%] QDA', 'FS:' + str(f) + ' Shot:' + str(s)] = np.mean(vidQ)
 
     return results
-
-
-def graphWeights(resultsNina5T, resultsCoteT, resultsEPNT):
-    fig, ax = plt.subplots(nrows=1, ncols=3, sharey='row', sharex='col', figsize=(9, 5))
-    for Data in range(3):
-
-        if Data == 0:
-            shot = np.arange(1, 5)
-            shots = 4
-            results = resultsNina5T
-
-            ax[Data].xaxis.set_ticks(np.arange(1, 4.1, 1))
-            title = 'NinaPro5'
-        elif Data == 1:
-            shot = np.arange(1, 5)
-            shots = 4
-            results = resultsCoteT
-            ax[Data].xaxis.set_ticks(np.arange(1, 4.1, 1))
-            title = 'Cote-Allard'
-        elif Data == 2:
-
-            results = resultsEPNT
-            shot = np.arange(1, 26)
-            shots = 25
-
-            ax[Data].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
-            title = 'EPN'
-
-        wm = np.array(results['wmQ'])
-        wc = np.array(results['wcQ'])
-
-        ax[Data].plot(shot, np.mean(wm.reshape((3, shots)), axis=0), label='$\hat{\omega}_c$', marker='.',
-                      color='tab:blue', markersize=5)
-        ax[Data].plot(shot, np.mean(wc.reshape((3, shots)), axis=0), label='$\hat{\lambda}_c$', marker='^',
-                      color='tab:blue', markersize=5)
-
-        ax[Data].set_title(title)
-        ax[Data].grid()
-
-    ax[0].set_xlabel('repetitions')
-    ax[1].set_xlabel('repetitions')
-    ax[2].set_xlabel('repetitions')
-    ax[0].set_ylabel('Weight value')
-    fig.tight_layout(pad=1)
-    # lgd = ax[2].legend(loc='lower center', bbox_to_anchor=(1.2, -0.8), ncol=2)
-    # plt.savefig("weights.png", bbox_inches='tight', dpi=600, bbox_extra_artists=(lgd,))
-    plt.show()
-
-
-def analysisTime(extractionT, timeM):
-    extractionT = extractionT * 1000
-
-    for featureSet in range(3):
-        print('\nFeature set: ' + str(featureSet + 1))
-        print('Training Time of Our Technique [s]: ',
-              round(timeM.loc[featureSet + 1, 'trainingTimeMean'], 2), '+-',
-              round(timeM.loc[featureSet + 1, 'trainingTimeStd'], 2))
-
-        print('LDA')
-        CL = 'LDA'
-        print('Extraction time [ms]: ', round(extractionT.loc[featureSet, :].mean(), 2),
-              round(extractionT.loc[featureSet, :].std(), 2),
-              'Classification time [ms]: ', timeM.loc[featureSet + 1, 'mean' + CL],
-              timeM.loc[featureSet + 1, 'std' + CL],
-              'Analysis time [ms]: ',
-              round(extractionT.loc[featureSet, :].mean() + timeM.loc[featureSet + 1, 'mean' + CL], 2),
-              round(np.sqrt((extractionT.loc[featureSet, :].var() + timeM.loc[featureSet + 1, 'var' + CL])), 2))
-
-        print('QDA')
-        CL = 'QDA'
-        print('Extraction time [ms]: ', round(extractionT.loc[featureSet, :].mean(), 2),
-              round(extractionT.loc[featureSet, :].std(), 2),
-              'Classification time [ms]: ', timeM.loc[featureSet + 1, 'mean' + CL],
-              timeM.loc[featureSet + 1, 'std' + CL],
-              'Analysis time [ms]: ',
-              round(extractionT.loc[featureSet, :].mean() + timeM.loc[featureSet + 1, 'mean' + CL], 2),
-              round(np.sqrt((extractionT.loc[featureSet, :].var() + timeM.loc[featureSet + 1, 'var' + CL])), 2))
 
 
 def AnalysisWilcoxon(folder, base):
