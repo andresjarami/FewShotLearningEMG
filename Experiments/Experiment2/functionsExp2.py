@@ -1,13 +1,16 @@
+# %% Libraries
 import Experiments.Experiment1.DA_BasedAdaptiveModels as adaptive
 import Experiments.Experiment1.DA_Classifiers as DA_Classifiers
-import Experiments.Experiment1.VisualizationFunctions as VF1
+import Experiments.Experiment2.VisualizationFunctions as VF2
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import random
 
 
+# %% Generator of Synthetic data
 def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, Graph=True):
+    global colors_list
     peopleDiff = people - (peopleSame + 1)
 
     classes = 2
@@ -67,7 +70,7 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
                     else:
                         markerCL = '^'
                     ax.scatter(x1, x2, s=sizeM, color=color, marker=markerCL)
-                    VF1.confidence_ellipse(x1, x2, ax, edgecolor=color, label=label)
+                    VF2.confidence_ellipse(x1, x2, ax, edgecolor=color, label=label)
                 else:
                     if person < peopleDiff:
                         color = colors_list[cl + 4]
@@ -91,10 +94,10 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
                 if person != people - 1:
                     if person == people - 2 or person == peopleDiff - 1:
                         ax.scatter(x1, x2, s=sizeM, color=color, marker=markerCL)
-                        VF1.confidence_ellipse(x1, x2, ax, edgecolor=color, label=label, linestyle=lineStyle)
+                        VF2.confidence_ellipse(x1, x2, ax, edgecolor=color, label=label, linestyle=lineStyle)
                     else:
                         ax.scatter(x1, x2, s=sizeM, color=color, marker=markerCL)
-                        VF1.confidence_ellipse(x1, x2, ax, edgecolor=color, linestyle=lineStyle)
+                        VF2.confidence_ellipse(x1, x2, ax, edgecolor=color, linestyle=lineStyle)
 
             idx += 1
 
@@ -112,6 +115,7 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
     return DataFrame
 
 
+# %% Analysis of Synthetic data
 def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, samples=500, Features=2,
                          classes=2, times=10, Graph=False, printValues=False):
     iSample = 3
@@ -154,7 +158,7 @@ def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, sample
         y_test = np.hstack((y_test, np.ones(lenTest) * cl + 1))
     x_test = x_test.T
 
-    # for t in range(times):
+    # for t in range(times): (for spliting the task)
     t = times
 
     for i in range(numberShots):
@@ -178,32 +182,37 @@ def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, sample
             pkValues.at[cl, 'cov'] = np.cov(x_Multi[:, y_Multi == cl + 1], rowvar=True)
             pkValues.at[cl, 'class'] = cl + 1
 
+        resultsData.at[idx, 'person'] = per
+        resultsData.at[idx, 'times'] = t
+        resultsData.at[idx, 'shots'] = i + iSample
+
         step = 1
         k = 1 - (np.log(i + 1) / np.log(samples + 1))
 
-        propModel, _, resultsData.at[idx, 'wTargetMeanQDA'], _, resultsData.at[idx, 'wTargetCovQDA'], resultsData.at[
-            idx, 'tPropQDA'] = adaptive.OurModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T, y_train,
-                                             step, 'QDA', k)
+        propModelLDA, _, resultsData.at[idx, 'wTargetMeanLDA'], _, resultsData.at[idx, 'wTargetCovLDA'], resultsData.at[
+            idx, 'tPropLDA'] = adaptive.OurModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T,
+                                                 y_train, step, 'LDA', k)
+        propModelQDA, _, resultsData.at[idx, 'wTargetMeanQDA'], _, resultsData.at[idx, 'wTargetCovQDA'], resultsData.at[
+            idx, 'tPropQDA'] = adaptive.OurModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T,
+                                                 y_train, step, 'QDA', k)
 
         liuModel = adaptive.LiuModel(currentValues, preTrainedDataMatrix, classes, Features)
         vidovicModelL, vidovicModelQ = adaptive.VidovicModel(currentValues, preTrainedDataMatrix, classes, Features)
 
         resultsData.at[idx, 'AccLDAInd'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, currentValues, classes)
         resultsData.at[idx, 'AccQDAInd'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, currentValues, classes)
-
         resultsData.at[idx, 'AccLDAMulti'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, pkValues, classes)
         resultsData.at[idx, 'AccQDAMulti'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, pkValues, classes)
-
-        resultsData.at[idx, 'AccLDAProp'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, propModel, classes)
-        resultsData.at[idx, 'AccQDAProp'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, propModel, classes)
         resultsData.at[idx, 'AccLDALiu'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, liuModel, classes)
         resultsData.at[idx, 'AccQDALiu'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, liuModel, classes)
-        resultsData.at[idx, 'AccLDAVidovic'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, vidovicModelL, classes)
-        resultsData.at[idx, 'AccQDAVidovic'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, vidovicModelQ, classes)
+        resultsData.at[idx, 'AccLDAVidovic'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, vidovicModelL,
+                                                                                  classes)
+        resultsData.at[idx, 'AccQDAVidovic'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, vidovicModelQ,
+                                                                                  classes)
+        resultsData.at[idx, 'AccLDAProp'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, propModelLDA, classes)
+        resultsData.at[idx, 'AccQDAProp'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, propModelQDA, classes)
 
-        resultsData.at[idx, 'person'] = per
-        resultsData.at[idx, 'times'] = t
-        resultsData.at[idx, 'shots'] = i + iSample
+
 
         if nameFile is not None:
             resultsData.to_csv(nameFile)
@@ -212,7 +221,4 @@ def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, sample
             print(per + 1, t + 1, i + 1)
 
     if Graph:
-        title = 'Accuracy vs Samples'
-        VF1.graphSyntheticData(resultsData, numberShots, iSample)
-
-
+        VF2.graphSyntheticData(resultsData, numberShots, iSample)

@@ -6,240 +6,287 @@ import Experiments.Experiment1.VisualizationFunctions as VF1
 from scipy import stats
 import ast
 
-def AnalysisCote(placeOur,placeCote):
-    bases = ['NinaPro5', 'Cote', 'EPN']
-    confidence = 0.05
-    results = pd.DataFrame()
-    featureSet = 1
-    idxD = 0
-    CoteAllardExperiment_Repetitions=20
-    for base in bases:
-        if base == 'NinaPro5':
+
+# %% Upload results of the three databases
+def uploadResults(place, samples, people, windowSize, featureSet):
+    resultsTest = pd.read_csv(place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(1) + "_endPerson_" + str(
+        people) + '_windowSize_' + windowSize + ".csv")
+    if len(resultsTest) != samples * people:
+        print('error' + ' 1')
+        print(len(resultsTest))
+    return resultsTest.drop(columns='Unnamed: 0')
+
+
+# %% Accuracy of the Cote Allard interface and our classifiers for the three databases
+def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
+    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(9, 3))
+    shotsSet = np.array([1, 2, 3, 4])
+    shots = len(shotsSet)
+
+    idx = 0
+    # the experiment with the CNN was perform 20 times to get more accurated results
+    CoteAllardExperiment_Repetitions = 20
+
+    for base in ['Nina5', 'Cote', 'EPN']:
+
+        if base == 'Nina5':
             samples = 4
             people = 10
-            shots = 5
+            title = 'NinaPro5'
         elif base == 'Cote':
             samples = 4
             people = 17
-            shots = 5
-
+            title = 'Côté-Allard'
         elif base == 'EPN':
             samples = 25
             people = 30
-            shots = 5
-        idx = 0
+            title = base
+        DataFrame260 = uploadResults(placeOur260 + base, samples, people, windowSize='260', featureSet=featureSet)
+        DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295', featureSet=featureSet)
 
-        for s in range(1, shots):
-
-            place = placeCote+"Cote_CWT_" + base + "/"
+        vectOurQDA260 = np.zeros(shots)
+        vectOurLDA260 = np.zeros(shots)
+        vectOurQDA295 = np.zeros(shots)
+        vectOurLDA295 = np.zeros(shots)
+        vectCote = np.zeros(shots)
+        for s in range(1, shots + 1):
+            place = placeCote + "Cote_CWT_" + base + "/"
             cote = pd.read_csv(place + "Pytorch_results_" + str(s) + "_cycles.csv", header=None)
             coteResults = []
 
-            if base == 'NinaPro5':
+            if base == 'Nina5':
                 for i in range(people):
                     coteResults.append(np.array(ast.literal_eval(cote.loc[0][i])).T[0].mean())
                 coteResults = np.array(coteResults)
-                place = placeOur + 'Nina5'
             elif base == 'EPN':
                 for i in range(CoteAllardExperiment_Repetitions):
                     coteResults.append(ast.literal_eval(cote.loc[0][i]))
                 coteResults = np.mean(np.array(coteResults), axis=0)
-                place = placeOur + base
             elif base == 'Cote':
                 for i in range(CoteAllardExperiment_Repetitions):
                     coteResults.append(ast.literal_eval(cote.loc[0][i]))
                     coteResults.append(ast.literal_eval(cote.loc[1][i]))
                 coteResults = np.mean(np.array(coteResults), axis=0)
-                place = placeOur+ base
-            DataFrame = VF1.uploadResults2(place, samples, people)
 
-            OurResultsQDA = DataFrame['AccQDAProp'].loc[
-                        (DataFrame['Feature Set'] == featureSet) & (DataFrame['# shots'] == s)].values * 100
-            OurResultsLDA = DataFrame['AccLDAProp'].loc[
-                                (DataFrame['Feature Set'] == featureSet) & (DataFrame['# shots'] == s)].values * 100
+            vectOurLDA260[s - 1] = np.mean(DataFrame260['AccLDAProp'].loc[(DataFrame260['# shots'] == s)].values) * 100
+            vectOurQDA260[s - 1] = np.mean(DataFrame260['AccQDAProp'].loc[(DataFrame260['# shots'] == s)].values) * 100
+            vectOurLDA295[s - 1] = np.mean(DataFrame295['AccLDAProp'].loc[(DataFrame295['# shots'] == s)].values) * 100
+            vectOurQDA295[s - 1] = np.mean(DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s)].values) * 100
+            vectCote[s - 1] = np.mean(coteResults)
 
+        ax[idx].grid(color='gainsboro', linewidth=1)
+        ax[idx].set_axisbelow(True)
 
-            OurQDAMedian = np.mean(OurResultsQDA)
-            CoteMedian = np.mean(coteResults)
+        ax[idx].plot(shotsSet, vectCote, marker='x', label='Côté-Allard', color='tab:red')
+        ax[idx].plot(shotsSet, vectOurLDA260, marker='o', label='Our classifier (LDA 260ms)', color='tab:orange')
+        ax[idx].plot(shotsSet, vectOurQDA260, marker='o', label='Our classifier (QDA 260ms)', color='tab:orange')
+        ax[idx].plot(shotsSet, vectOurLDA295, marker='^', label='Our classifier (LDA 295ms)', color='tab:blue')
+        ax[idx].plot(shotsSet, vectOurQDA295, marker='^', label='Our classifier (QDA 295ms)', color='tab:blue')
+        ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+        ax[idx].xaxis.set_ticks(np.arange(1, shots + .2, 1))
+        ax[idx].set_xlabel('repetitions')
+        ax[idx].set_ylabel('accuracy')
+        ax[idx].set_title(title)
+        idx += 1
 
-            WilcoxonMethod = 'wilcox'
-            alternativeMethod = 'greater'
-
-            results.at['Our Interface\'s accuracy [%] over database: ' + base, idx] = np.round(OurQDAMedian, 2)
-            results.at['Cote Interface\'s accuracy [%] over database: ' + base, idx] = np.round(CoteMedian, 2)
-            results.at['Difference [%] over database: ' + base, idx] = round(OurQDAMedian - CoteMedian, 2)
-            results.at['p-value over database: ' + base, idx] = 1
-            if OurQDAMedian > CoteMedian:
-                p = stats.wilcoxon(OurResultsQDA, coteResults, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                if p < confidence:
-                    results.at['p-value over database: ' + base, idx] = p
-            elif CoteMedian > OurQDAMedian:
-                p = stats.wilcoxon(coteResults, OurResultsQDA, alternative=alternativeMethod, zero_method=WilcoxonMethod)[1]
-                if p < confidence:
-                    results.at['p-value over database: ' + base, idx] = p
-
-            idx += 1
-        idxD += 2
-    return results
-
-
-def graphACC(resultsNina5T, resultsCoteT, resultsEPNT,coteFolder):
-    FeatureSetM = 3
-    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(13, 6))
-    #     shot=np.arange(1,5)
-    shots=4
-
-    databases=['NinaPro5','EPN','Cote']
-    people=[10,30,20]
-    for Data in range(FeatureSetM):
-        base=databases[Data]
-        place = coteFolder + "Cote_CWT_" + base + "/"
-        coteY=np.zeros(shots)
-        for s in range(1,shots+1):
-            cote = pd.read_csv(place + "Pytorch_results_" + str(s) + "_cycles.csv", header=None)
-            coteResults = []
-            if base == 'NinaPro5':
-                for i in range(people[Data]):
-                    coteResults.append(np.array(ast.literal_eval(cote.loc[0][i])).T[0].mean())
-
-                coteResults = np.array(coteResults)
-            elif base == 'EPN':
-                for i in range(people[Data]):
-                    coteResults.append(ast.literal_eval(cote.loc[0][i]))
-
-                coteResults = np.mean(np.array(coteResults), axis=0)
-            elif base == 'Cote':
-                for i in range(people[Data]):
-                    coteResults.append(ast.literal_eval(cote.loc[0][i]))
-                    coteResults.append(ast.literal_eval(cote.loc[1][i]))
-                coteResults = np.mean(np.array(coteResults), axis=0)
-            coteY[s-1]=np.mean(coteResults)
-        for classifier in range(2):
-            for FeatureSet in range(FeatureSetM):
-
-                if Data == 0:
-                    shot = np.arange(1, 5)
-                    results = resultsNina5T
-
-                    ax[Data, FeatureSet].yaxis.set_ticks(np.arange(30, 100, 6))
-                elif Data == 1:
-                    shot = np.arange(1, 5)
-                    results = resultsCoteT
-
-                    ax[Data, FeatureSet].yaxis.set_ticks(np.arange(74, 100, 5))
-                elif Data == 2:
-                    results = resultsEPNT
-                    shot = np.arange(1, 5)
-
-                    ax[Data, FeatureSet].yaxis.set_ticks(np.arange(50, 100, 6))
-
-                if classifier == 0:
-                    Model = 'LDA_Ind'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='x', label='Individual',
-                                                 color='tab:orange')
-
-                    Model = 'LDA_Multi'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='v', label='Multi-user',
-                                                 color='tab:purple')
-
-                    Model = 'LiuL'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='o', label='Liu',
-                                                 color='tab:green')
-
-                    Model = 'VidL'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet].scatter(shot, Y[:len(shot)], marker='^', label='Vidovic',
-                                                 color='tab:red')
-
-                    Model = 'PropQ_L'
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet].plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
-
-                    ax[Data, FeatureSet].yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1f'))
-
-                    if len(shot) == 25:
-                        ax[Data, FeatureSet].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
-                    else:
-
-                        ax[Data, FeatureSet].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
-                    ax[Data, FeatureSet].grid()
-
-
-
-
-
-
-                elif classifier == 1:
-
-                    Model = 'QDA_Ind'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='x', label='Individual',
-                                                     color='tab:orange')
-
-                    Model = 'QDA_Multi'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='v', label='Multi-user',
-                                                     color='tab:purple')
-
-                    Model = 'LiuQ'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='o', label='Liu',
-                                                     color='tab:green')
-
-                    Model = 'VidQ'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                    ax[Data, FeatureSet + 3].scatter(shot, Y[:len(shot)], marker='^', label='Vidovic',
-                                                     color='tab:red')
-
-                    Model = 'PropQ'
-
-                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-
-                    ax[Data, FeatureSet + 3].plot(shot, Y[:len(shot)], label='Our technique', color='tab:blue')
-
-                    ax[Data, FeatureSet + 3].yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1f'))
-
-                    if len(shot) == 25:
-                        ax[Data, FeatureSet + 3].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
-                    else:
-                        ax[Data, FeatureSet + 3].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
-                    ax[Data, FeatureSet + 3].grid()
-
-
-
-    ax[2, 0].set_xlabel('repetitions')
-    ax[2, 1].set_xlabel('repetitions')
-    ax[2, 2].set_xlabel('repetitions')
-    ax[2, 3].set_xlabel('repetitions')
-    ax[2, 4].set_xlabel('repetitions')
-    ax[2, 5].set_xlabel('repetitions')
-
-    ax[0, 0].set_title('LDA\n Feature Set 1')
-    ax[0, 1].set_title('LDA\n Feature Set 2')
-    ax[0, 2].set_title('LDA\n Feature Set 3')
-
-    ax[0, 3].set_title('QDA\n Feature Set 1')
-    ax[0, 4].set_title('QDA\n Feature Set 2')
-    ax[0, 5].set_title('QDA\n Feature Set 3')
-    ax[0, 0].set_ylabel('NinaPro5\naccuracy')
-    ax[1, 0].set_ylabel('Cote Allard\naccuracy')
-    ax[2, 0].set_ylabel('EPN \naccuracy')
-
-    ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
-    # ax2.legend(loc='lower center', bbox_to_anchor=(2, -1.2), ncol=5)
-
+    # ax[2].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=3)
     fig.tight_layout(pad=0.1)
-    plt.savefig("fig1.png", bbox_inches='tight', dpi=600)
+    plt.savefig("coteAcc.png", bbox_inches='tight', dpi=600)
     plt.show()
 
+    return
+
+
+# %% Friedman rank test for the Cote Allard interface and our classifiers
+
+def friedman_test(*args):
+    """
+        From: https://github.com/citiususc/stac/blob/master/stac/nonparametric_tests.py
+        Performs a Friedman ranking test.
+        Tests the hypothesis that in a set of k dependent samples groups (where k >= 2) at least two of the groups represent populations with different median values.
+
+        Parameters
+        ----------
+        sample1, sample2, ... : array_like
+            The sample measurements for each group.
+
+        Returns
+        -------
+        F-value : float
+            The computed F-value of the test.
+        p-value : float
+            The associated p-value from the F-distribution.
+        rankings : array_like
+            The ranking for each group.
+        pivots : array_like
+            The pivotal quantities for each group.
+
+        References
+        ----------
+        M. Friedman, The use of ranks to avoid the assumption of normality implicit in the analysis of variance, Journal of the American Statistical Association 32 (1937) 674–701.
+        D.J. Sheskin, Handbook of parametric and nonparametric statistical procedures. crc Press, 2003, Test 25: The Friedman Two-Way Analysis of Variance by Ranks
+    """
+    k = len(args)
+    if k < 2: raise ValueError('Less than 2 levels')
+    n = len(args[0])
+    if len(set([len(v) for v in args])) != 1: raise ValueError('Unequal number of samples')
+
+    rankings = []
+    for i in range(n):
+        row = [col[i] for col in args]
+        row_sort = sorted(row, reverse=True)
+        rankings.append([row_sort.index(v) + 1 + (row_sort.count(v) - 1) / 2. for v in row])
+
+    rankings_avg = [np.mean([case[j] for case in rankings]) for j in range(k)]
+    rankings_cmp = [r / np.sqrt(k * (k + 1) / (6. * n)) for r in rankings_avg]
+
+    chi2 = ((12 * n) / float((k * (k + 1)))) * (
+            (np.sum(r ** 2 for r in rankings_avg)) - ((k * (k + 1) ** 2) / float(4)))
+    iman_davenport = ((n - 1) * chi2) / float((n * (k - 1) - chi2))
+
+    p_value = 1 - stats.f.cdf(iman_davenport, k - 1, (k - 1) * (n - 1))
+
+    return iman_davenport, p_value, rankings_avg, rankings_cmp
+
+def holm_test(ranks, control=None):
+    """
+        From: https://github.com/citiususc/stac/blob/master/stac/nonparametric_tests.py
+        Performs a Holm post-hoc test using the pivot quantities obtained by a ranking test.
+        Tests the hypothesis that the ranking of the control method is different to each of the other methods.
+
+        Parameters
+        ----------
+        pivots : dictionary_like
+            A dictionary with format 'groupname':'pivotal quantity'
+        control : string optional
+            The name of the control method (one vs all), default None (all vs all)
+
+        Returns
+        ----------
+        Comparions : array-like
+            Strings identifier of each comparison with format 'group_i vs group_j'
+        Z-values : array-like
+            The computed Z-value statistic for each comparison.
+        p-values : array-like
+            The associated p-value from the Z-distribution wich depends on the index of the comparison
+        Adjusted p-values : array-like
+            The associated adjusted p-values wich can be compared with a significance level
+
+        References
+        ----------
+        O.J. S. Holm, A simple sequentially rejective multiple test procedure, Scandinavian Journal of Statistics 6 (1979) 65–70.
+    """
+    k = len(ranks)
+    values = list(ranks.values())
+    keys = list(ranks.keys())
+    if not control:
+        control_i = values.index(min(values))
+    else:
+        control_i = keys.index(control)
+
+    comparisons = [keys[control_i] + " vs " + keys[i] for i in range(k) if i != control_i]
+    z_values = [abs(values[control_i] - values[i]) for i in range(k) if i != control_i]
+    p_values = [2 * (1 - stats.norm.cdf(abs(z))) for z in z_values]
+    # Sort values by p_value so that p_0 < p_1
+    p_values, z_values, comparisons = map(list, zip(*sorted(zip(p_values, z_values, comparisons), key=lambda t: t[0])))
+    adj_p_values = [min(max((k - (j + 1)) * p_values[j] for j in range(i + 1)), 1) for i in range(k - 1)]
+
+    return comparisons, z_values, p_values, adj_p_values, keys[control_i]
+
+def dataFrame_Friedman_Holm(dataFrame):
+    data = np.asarray(dataFrame)
+    num_datasets, num_methods = data.shape
+    print("Number of classifiers: ", num_methods,
+          "\nNumber of evaluations (10(people NinaPro5) x 4(shots) + 17(people Cote) x 4(shots) 30(people EPN) x 7(shots)): ",
+          num_datasets, '\n')
+
+    alpha = 0.05  # Set this to the desired alpha/signifance level
+
+    stat, p = stats.friedmanchisquare(*data)
+
+    reject = p <= alpha
+    print("Should we reject H0 (i.e. is there a difference in the means) at the", (1 - alpha) * 100,
+          "% confidence level?", reject, '\n')
+
+    if not reject:
+        print(
+            "Exiting early. The rankings are only relevant if there was a difference in the means i.e. if we rejected h0 above")
+    else:
+        statistic, p_value, ranking, rank_cmp = friedman_test(*np.transpose(data))
+        ranks = {key: ranking[i] for i, key in enumerate(list(dataFrame.columns))}
+        ranksComp = {key: rank_cmp[i] for i, key in enumerate(list(dataFrame.columns))}
+
+        comparisons, z_values, p_values, adj_p_values, best = holm_test(ranksComp)
+
+        adj_p_values = np.asarray(adj_p_values)
+
+        for method, rank in ranks.items():
+            print(method + ":", "%.1f" % rank)
+        print('\n The best classifier is: ', best)
+        holm_scores = pd.DataFrame({"p": adj_p_values, "sig": adj_p_values < alpha}, index=comparisons)
+        print(holm_scores)
+
+def AnalysisFriedman(placeOur260, placeOur295, placeCote, featureSet):
+    shots = 4
+    # the experiment with the CNN was perform 20 times to get more accurated results
+    CoteAllardExperiment_Repetitions = 20
+    vectOurQDA260 = []
+    vectOurLDA260 = []
+    vectOurQDA295 = []
+    vectOurLDA295 = []
+    vectCote = []
+    for base in ['Nina5', 'Cote', 'EPN']:
+
+        if base == 'Nina5':
+            samples = 4
+            people = 10
+        elif base == 'Cote':
+            samples = 4
+            people = 17
+        elif base == 'EPN':
+            samples = 25
+            people = 30
+        DataFrame260 = uploadResults(placeOur260 + base, samples, people, windowSize='260', featureSet=featureSet)
+        DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295', featureSet=featureSet)
+
+        for s in range(1, shots + 1):
+            place = placeCote + "Cote_CWT_" + base + "/"
+            cote = pd.read_csv(place + "Pytorch_results_" + str(s) + "_cycles.csv", header=None)
+            coteResults = []
+
+            if base == 'Nina5':
+                for i in range(people):
+                    coteResults.append(np.array(ast.literal_eval(cote.loc[0][i])).T[0].mean())
+                coteResults = np.array(coteResults)
+            elif base == 'EPN':
+                for i in range(CoteAllardExperiment_Repetitions):
+                    coteResults.append(ast.literal_eval(cote.loc[0][i]))
+                coteResults = np.mean(np.array(coteResults), axis=0)
+            elif base == 'Cote':
+                for i in range(CoteAllardExperiment_Repetitions):
+                    coteResults.append(ast.literal_eval(cote.loc[0][i]))
+                    coteResults.append(ast.literal_eval(cote.loc[1][i]))
+                coteResults = np.mean(np.array(coteResults), axis=0)
+
+            vectOurLDA260 = np.hstack(
+                (vectOurLDA260, DataFrame260['AccLDAProp'].loc[(DataFrame260['# shots'] == s)].values * 100))
+            vectOurQDA260 = np.hstack(
+                (vectOurQDA260, DataFrame260['AccQDAProp'].loc[(DataFrame260['# shots'] == s)].values * 100))
+            vectOurLDA295 = np.hstack(
+                (vectOurLDA295, DataFrame295['AccLDAProp'].loc[(DataFrame295['# shots'] == s)].values * 100))
+            vectOurQDA295 = np.hstack(
+                (vectOurQDA295, DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s)].values * 100))
+            vectCote = np.hstack((vectCote, coteResults))
+    #Analysis with a window size of 260ms
+    print('\n\nANALYSIS OF WINDOW SIZE 260ms')
+    dataFrame_Friedman_Holm(pd.DataFrame(
+        data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260,'vectCote': vectCote}))
+    # Analysis with a window size of 295ms
+    print('\n\nANALYSIS OF WINDOW SIZE 295ms')
+    dataFrame_Friedman_Holm(pd.DataFrame(
+        data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260, 'vectCote': vectCote}))
+    # Analysis with all window sizes
+    print('\n\nANALYSIS OF ALL WINDOW SIZES')
+    dataFrame_Friedman_Holm(dataFrame = pd.DataFrame(
+        data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260, 'vectOurLDA295': vectOurLDA295,
+              'vectOurQDA295': vectOurQDA295, 'vectCote': vectCote}))

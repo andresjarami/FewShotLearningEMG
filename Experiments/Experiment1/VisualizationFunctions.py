@@ -1,71 +1,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.patches import Ellipse
-import matplotlib.transforms as transforms
 import matplotlib.ticker as mtick
 from scipy import stats
-
-#%% Graph a ellipse of a normal distribution
-
-#Taken from https://matplotlib.org/3.1.0/gallery/statistics/confidence_ellipse.html
-
-def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
-    """
-    Create a plot of the covariance confidence ellipse of `x` and `y`
-
-    Parameters
-    ----------
-    x, y : array_like, shape (n, )
-        Input data.
-
-    ax : matplotlib.axes.Axes
-        The axes object to draw the ellipse into.
-
-    n_std : float
-        The number of standard deviations to determine the ellipse's radiuses.
-
-    Returns
-    -------
-    matplotlib.patches.Ellipse
-
-    Other parameters
-    ----------------
-    kwargs : `~matplotlib.patches.Patch` properties
-    """
-    if x.size != y.size:
-        raise ValueError("x and y must be the same size")
-
-    cov = np.cov(x, y)
-    pearson = cov[0, 1] / np.sqrt(cov[0, 0] * cov[1, 1])
-    # Using a special case to obtain the eigenvalues of this
-    # two-dimensionl dataset.
-    ell_radius_x = np.sqrt(1 + pearson)
-    ell_radius_y = np.sqrt(1 - pearson)
-    ellipse = Ellipse((0, 0),
-                      width=ell_radius_x * 2,
-                      height=ell_radius_y * 2,
-                      facecolor=facecolor,
-                      **kwargs)
-
-    # Calculating the stdandard deviation of x from
-    # the squareroot of the variance and multiplying
-    # with the given number of standard deviations.
-    scale_x = np.sqrt(cov[0, 0]) * n_std
-    mean_x = np.mean(x)
-
-    # calculating the stdandard deviation of y ...
-    scale_y = np.sqrt(cov[1, 1]) * n_std
-    mean_y = np.mean(y)
-
-    transf = transforms.Affine2D() \
-        .rotate_deg(45) \
-        .scale(scale_x, scale_y) \
-        .translate(mean_x, mean_y)
-
-    ellipse.set_transform(transf + ax.transData)
-    return ax.add_patch(ellipse)
-
 
 # %% Upload results of the three databases
 def uploadResults(place, samples, people, windowSize):
@@ -79,11 +16,9 @@ def uploadResults(place, samples, people, windowSize):
             place + "_FeatureSet_" + str(j) + "_startPerson_" + str(1) + "_endPerson_" + str(
                 people) + '_windowSize_' + windowSize + ".csv")
         resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
-
         if len(auxFrame) != samples * people:
             print('error' + ' ' + str(j))
             print(len(auxFrame))
-
     return resultsTest.drop(columns='Unnamed: 0')
 
 def uploadResultsDatabases(folder, database, windowSize):
@@ -196,7 +131,8 @@ def analysisResults(resultDatabase, shots):
 # %%Graph of the accuracy of the all DA classifiers for the three databasese and three feature sets
 def graphACC(resultsNina5, resultsCote, resultsEPN):
     fig, ax = plt.subplots(nrows=3, ncols=6, sharey='row', sharex='col', figsize=(13, 6))
-    shot = np.arange(1, 5)
+    shotsSet = np.arange(1, 5)
+    shots = len(shotsSet)
     for Data in range(3):
         for DA in ['LDA', 'QDA']:
 
@@ -219,26 +155,26 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
 
                 Model = 'Ind' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shot, Y[:len(shot)], marker='x', label='Individual', color='tab:orange')
+                ax[Data, idx].plot(shotsSet, Y[:shots], marker='x', label='Individual', color='tab:orange')
                 Model = 'Multi' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shot, Y[:len(shot)], marker='s', label='Multi-user', color='tab:purple')
+                ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
                 Model = 'Liu' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shot, Y[:len(shot)], marker='o', label='Liu', color='tab:green')
+                ax[Data, idx].plot(shotsSet, Y[:shots], marker='o', label='Liu', color='tab:green')
                 Model = 'Vid' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shot, Y[:len(shot)], marker='^', label='Vidovic', color='tab:red')
+                ax[Data, idx].plot(shotsSet, Y[:shots], marker='^', label='Vidovic', color='tab:red')
                 Model = 'Our' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shot, Y[:len(shot)], marker='v', label='Our classifier', color='tab:blue')
+                ax[Data, idx].plot(shotsSet, Y[:shots], marker='v', label='Our classifier', color='tab:blue')
 
                 ax[Data, idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
 
-                if len(shot) == 25:
+                if shots == 25:
                     ax[Data, idx].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
                 else:
-                    ax[Data, idx].xaxis.set_ticks(np.arange(1, len(shot) + .2, 1))
+                    ax[Data, idx].xaxis.set_ticks(np.arange(1, shots + .2, 1))
 
     ax[2, 0].set_xlabel('repetitions')
     ax[2, 1].set_xlabel('repetitions')
@@ -255,7 +191,7 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
     ax[0, 4].set_title('QDA\n Feature Set 2')
     ax[0, 5].set_title('QDA\n Feature Set 3')
     ax[0, 0].set_ylabel('NinaPro5\naccuracy')
-    ax[1, 0].set_ylabel('Cote Allard\naccuracy')
+    ax[1, 0].set_ylabel('Côté-Allard\naccuracy')
     ax[2, 0].set_ylabel('EPN \naccuracy')
 
     ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
@@ -266,8 +202,11 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
 
 
 # %% Friedman rank test for all DA approaches
+
 def friedman_test(*args):
+
     """
+        From: https://github.com/citiususc/stac/blob/master/stac/nonparametric_tests.py
         Performs a Friedman ranking test.
         Tests the hypothesis that in a set of k dependent samples groups (where k >= 2) at least two of the groups represent populations with different median values.
 
@@ -317,6 +256,7 @@ def friedman_test(*args):
 
 def holm_test(ranks, control=None):
     """
+        From: https://github.com/citiususc/stac/blob/master/stac/nonparametric_tests.py
         Performs a Holm post-hoc test using the pivot quantities obtained by a ranking test.
         Tests the hypothesis that the ranking of the control method is different to each of the other methods.
 
@@ -396,7 +336,7 @@ def AnalysisFriedman(folder, windowSize):
             data = np.asarray(dataFrame)
             num_datasets, num_methods = data.shape
             print("Number of classifiers: ", num_methods,
-                  "Number of evaluations (3(feature sets) x [10(people NinaPro5) x 4(shots) + 17(people Cote) x 4(shots) 30(people EPN) x 7(shots)]): ",
+                  "\nNumber of evaluations (10(people NinaPro5) x 4(shots) + 17(people Cote) x 4(shots) 30(people EPN) x 7(shots)): ",
                   num_datasets, '\n')
 
             alpha = 0.05  # Set this to the desired alpha/signifance level
@@ -473,7 +413,7 @@ def largeDatabase(results):
                      color='tab:green')
         ax[idx].plot(xAxis, np.mean(vid.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Vid', marker='^',
                      color='tab:red')
-        ax[idx].plot(xAxis, np.mean(our.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Our Classifier', marker='v',
+        ax[idx].plot(xAxis, np.mean(our.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Our classifier', marker='v',
                      color='tab:blue')
         ax[idx].set_title(title)
         ax[idx].xaxis.set_ticks(shotsSet)

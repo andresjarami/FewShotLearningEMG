@@ -1,8 +1,8 @@
+#%% Libraries
 import sys
 import Experiments.Experiment2.functionsExp2 as functionsExp2
 
-
-## Input Variables
+#%% Input Variables
 
 peopleSame = int(sys.argv[1])
 place = str(sys.argv[2])
@@ -15,6 +15,7 @@ nameFileR = place + 'resultsSynthetic_peopleSimilar_' + str(peopleSame) + 'time_
 # times = 25
 # nameFileR = None
 
+#%% Generator of Synthetic data
 seed = 1
 samples = 1000
 people = 21
@@ -22,6 +23,7 @@ Graph = False
 
 generatedData = functionsExp2.DataGenerator_TwoCL_TwoFeat(seed, samples, people, peopleSame, Graph)
 
+#%% Analysis of Synthetic data
 shots = 50
 peoplePK = 20
 Features = 2
