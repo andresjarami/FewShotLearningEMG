@@ -1,4 +1,4 @@
-#%% Libraries
+# %% Libraries
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,7 +6,8 @@ from matplotlib.patches import Ellipse
 import matplotlib.transforms as transforms
 import random
 
-#%% Generartor of an example of one user for each user's type
+
+# %% Generartor of an example of one user for each user's type
 def DataGenerator_TwoCL_TwoFeat_EXAMPLE(seed=1, samples=50, people=3, peopleSame=1):
     peopleDiff = people - (peopleSame + 1)
 
@@ -106,7 +107,8 @@ def DataGenerator_TwoCL_TwoFeat_EXAMPLE(seed=1, samples=50, people=3, peopleSame
     plt.show()
     return
 
-#%% Graphs of the Synthetic data
+
+# %% Graphs of the Synthetic data
 def graphSyntheticDataALL(place):
     samples = 50
     for j in [0, 1, 3, 5, 10, 15, 20]:
@@ -134,20 +136,20 @@ def graphSyntheticDataALL(place):
             resultsData, numberShots, iSample)
         ax[idx, 0].grid(color='gainsboro', linewidth=1)
         ax[idx, 0].set_axisbelow(True)
-        ax[idx, 0].plot(xAxis, AccLDAInd[shotsSet],marker='x', label='Individual',  color='tab:orange')
+        ax[idx, 0].plot(xAxis, AccLDAInd[shotsSet], marker='x', label='Individual', color='tab:orange')
         ax[idx, 0].plot(xAxis, AccLDALiu[shotsSet], marker='o', label='Liu', color='tab:green')
-        ax[idx, 0].plot(xAxis, AccLDAVidovic[shotsSet],marker='^', label='Vidovic', color='tab:red')
-        ax[idx, 0].plot(xAxis, AccLDAProp[shotsSet], label='Our classifier', color='tab:blue')
-        ax[idx, 0].set_ylabel('accuracy')
+        ax[idx, 0].plot(xAxis, AccLDAVidovic[shotsSet], marker='^', label='Vidovic', color='tab:red')
+        ax[idx, 0].plot(xAxis, AccLDAProp[shotsSet], marker='v', label='Our classifier', color='tab:blue')
+        ax[idx, 0].set_ylabel('accuracy [%]')
         ax[idx, 0].xaxis.set_ticks([3, 5, 7, 10, 15])
         ax[idx, 0].yaxis.set_ticks(np.arange(50, 90, 10))
 
         ax[idx, 1].grid(color='gainsboro', linewidth=1)
         ax[idx, 1].set_axisbelow(True)
-        ax[idx, 1].plot(xAxis, AccQDAInd[shotsSet],marker='x', label='Individual',  color='tab:orange')
+        ax[idx, 1].plot(xAxis, AccQDAInd[shotsSet], marker='x', label='Individual', color='tab:orange')
         ax[idx, 1].plot(xAxis, AccQDALiu[shotsSet], marker='o', label='Liu', color='tab:green')
-        ax[idx, 1].plot(xAxis, AccQDAVidovic[shotsSet],marker='^', label='Vidovic', color='tab:red')
-        ax[idx, 1].plot(xAxis, AccQDAProp[shotsSet], label='Our classifier', color='tab:blue')
+        ax[idx, 1].plot(xAxis, AccQDAVidovic[shotsSet], marker='^', label='Vidovic', color='tab:red')
+        ax[idx, 1].plot(xAxis, AccQDAProp[shotsSet], marker='v', label='Our classifier', color='tab:blue')
         ax[idx, 1].xaxis.set_ticks([3, 5, 7, 10, 15])
         ax[idx, 1].yaxis.set_ticks(np.arange(50, 90, 10))
 
@@ -275,9 +277,9 @@ def graphSyntheticData(resultsData, numberShots, iSample):
     plt.show()
 
 
-#%% Graph a ellipse of a normal distribution
+# %% Graph a ellipse of a normal distribution
 
-#Taken from https://matplotlib.org/3.1.0/gallery/statistics/confidence_ellipse.html
+# Taken from https://matplotlib.org/3.1.0/gallery/statistics/confidence_ellipse.html
 
 def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
     """

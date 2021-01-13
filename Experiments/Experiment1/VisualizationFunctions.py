@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 from scipy import stats
 
+
 # %% Upload results of the three databases
 def uploadResults(place, samples, people, windowSize):
     resultsTest = pd.read_csv(place + "_FeatureSet_1_startPerson_" + str(1) + "_endPerson_" + str(
@@ -20,6 +21,7 @@ def uploadResults(place, samples, people, windowSize):
             print('error' + ' ' + str(j))
             print(len(auxFrame))
     return resultsTest.drop(columns='Unnamed: 0')
+
 
 def uploadResultsDatabases(folder, database, windowSize):
     if database == 'Nina5':
@@ -73,15 +75,25 @@ def analysisResults(resultDatabase, shots):
             OurQDA = resultDatabase['AccQDAProp'].loc[
                 (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
             results.at[idx, 'IndLDA'] = IndLDA.mean(axis=0)
+            results.at[idx, 'IndLDAstd'] = IndLDA.std(axis=0)
             results.at[idx, 'IndQDA'] = IndQDA.mean(axis=0)
+            results.at[idx, 'IndQDAstd'] = IndQDA.std(axis=0)
             results.at[idx, 'MultiLDA'] = MultiLDA.mean(axis=0)
+            results.at[idx, 'MultiLDAstd'] = MultiLDA.std(axis=0)
             results.at[idx, 'MultiQDA'] = MultiQDA.mean(axis=0)
+            results.at[idx, 'MultiQDAstd'] = MultiQDA.std(axis=0)
             results.at[idx, 'LiuLDA'] = LiuLDA.mean(axis=0)
+            results.at[idx, 'LiuLDAstd'] = LiuLDA.std(axis=0)
             results.at[idx, 'LiuQDA'] = LiuQDA.mean(axis=0)
+            results.at[idx, 'LiuQDAstd'] = LiuQDA.std(axis=0)
             results.at[idx, 'VidLDA'] = VidLDA.mean(axis=0)
+            results.at[idx, 'VidLDAstd'] = VidLDA.std(axis=0)
             results.at[idx, 'VidQDA'] = VidQDA.mean(axis=0)
+            results.at[idx, 'VidQDAstd'] = VidQDA.std(axis=0)
             results.at[idx, 'OurLDA'] = OurLDA.mean(axis=0)
+            results.at[idx, 'OurLDAstd'] = OurLDA.std(axis=0)
             results.at[idx, 'OurQDA'] = OurQDA.mean(axis=0)
+            results.at[idx, 'OurQDAstd'] = OurQDA.std(axis=0)
 
             # the weights λ and w for our LDA and QDA adaptive classifiers
             wLDA = resultDatabase['wTargetMeanLDA'].loc[
@@ -190,9 +202,9 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
     ax[0, 3].set_title('QDA\n Feature Set 1')
     ax[0, 4].set_title('QDA\n Feature Set 2')
     ax[0, 5].set_title('QDA\n Feature Set 3')
-    ax[0, 0].set_ylabel('NinaPro5\naccuracy')
-    ax[1, 0].set_ylabel('Côté-Allard\naccuracy')
-    ax[2, 0].set_ylabel('EPN \naccuracy')
+    ax[0, 0].set_ylabel('NinaPro5\naccuracy [%]')
+    ax[1, 0].set_ylabel('Côté-Allard\naccuracy [%]')
+    ax[2, 0].set_ylabel('EPN \naccuracy [%]')
 
     ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
 
@@ -204,7 +216,6 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
 # %% Friedman rank test for all DA approaches
 
 def friedman_test(*args):
-
     """
         From: https://github.com/citiususc/stac/blob/master/stac/nonparametric_tests.py
         Performs a Friedman ranking test.
@@ -369,7 +380,7 @@ def AnalysisFriedman(folder, windowSize):
 
 
 # %% Analysis using a large database (EPN)
-def largeDatabase(results):
+def largeDatabase(results, featureSet):
     fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(9, 3))
     shotsTotal = 25
     shotsSet = np.array([0, 4, 9, 14, 19, 24])
@@ -394,11 +405,12 @@ def largeDatabase(results):
     ax[idx].set_title(title)
     ax[idx].xaxis.set_ticks(shotsSet)
     ax[idx].set_xlabel('repetitions')
-    ax[idx].set_ylabel('Weight value')
-    ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+    ax[idx].set_ylabel('weight value')
+    ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1f'))
     # ax[idx].legend(loc='lower center', bbox_to_anchor=(1.2, -0.8), ncol=2)
 
     idx = 0
+    shotsSet_featureSet = (featureSet - 1) * shotsTotal + shotsSet
     for DA in ['LDA', 'QDA']:
         title = DA
         ind = np.array(results['Ind' + DA]) * 100
@@ -407,22 +419,22 @@ def largeDatabase(results):
         our = np.array(results['Our' + DA]) * 100
         ax[idx].grid(color='gainsboro', linewidth=1)
         ax[idx].set_axisbelow(True)
-        ax[idx].plot(xAxis, np.mean(ind.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Individual', marker='x',
+        ax[idx].plot(xAxis, ind[shotsSet_featureSet], label='Individual', marker='x',
                      color='tab:orange')
-        ax[idx].plot(xAxis, np.mean(liu.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Liu', marker='o',
+        ax[idx].plot(xAxis, liu[shotsSet_featureSet], label='Liu', marker='o',
                      color='tab:green')
-        ax[idx].plot(xAxis, np.mean(vid.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Vid', marker='^',
+        ax[idx].plot(xAxis, vid[shotsSet_featureSet], label='Vid', marker='^',
                      color='tab:red')
-        ax[idx].plot(xAxis, np.mean(our.reshape((3, shotsTotal)), axis=0)[shotsSet], label='Our classifier', marker='v',
+        ax[idx].plot(xAxis, our[shotsSet_featureSet], label='Our classifier', marker='v',
                      color='tab:blue')
         ax[idx].set_title(title)
         ax[idx].xaxis.set_ticks(shotsSet)
         ax[idx].set_xlabel('repetitions')
-        ax[idx].set_ylabel('accuracy')
+        ax[idx].set_ylabel('accuracy [%]')
         ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
-        # ax[idx].legend(loc='lower center', bbox_to_anchor=(1.2, -0.8), ncol=2)
-
         idx += 1
+    # ax[0].legend(loc='lower center', bbox_to_anchor=(1.2, -1.2), ncol=2)
+
     fig.tight_layout(pad=1)
     plt.savefig("largeDatabase.png", bbox_inches='tight', dpi=600)
     plt.show()
@@ -439,8 +451,8 @@ def analysisTime(extractionTime, timeOurTechnique):
             print('\nOur ' + DA + ' Technique for feature set ' + str(featureSet + 1))
             print('Feature set: ' + str(featureSet + 1))
             print('Training Time [s]: ',
-                  round(timeOurTechnique.loc[featureSet + 1, 'meanTrain' + DA] / 1000, 2), '±',
-                  round(timeOurTechnique.loc[featureSet + 1, 'stdTrain' + DA] / 1000, 2))
+                  round(timeOurTechnique.loc[featureSet + 1, 'meanTrain' + DA] / (60 * 1000), 1), '±',
+                  round(timeOurTechnique.loc[featureSet + 1, 'stdTrain' + DA] / (60 * 1000), 1))
 
             print('Extraction time [ms]: ', round(extractionTime.loc[featureSet, :].mean(), 2), '±',
                   round(extractionTime.loc[featureSet, :].std(), 2))
@@ -453,3 +465,112 @@ def analysisTime(extractionTime, timeOurTechnique):
                         timeOurTechnique.loc[featureSet + 1, 'meanNorm'] / 1000, 2), '±',
                   round(np.sqrt((extractionTime.loc[featureSet, :].var() + timeOurTechnique.loc[
                       featureSet + 1, 'varCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'varNorm'] / 1000)), 2))
+
+def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeOurTechniqueC, extractionTimeE,
+                      timeOurTechniqueE):
+
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 3))
+    classifiers=6
+    vectTrainingTime = np.zeros(classifiers)
+    vectTrainingTimeSTD = np.zeros(classifiers)
+    vectExtractionTime = np.zeros(classifiers)
+    vectExtractionTimeSTD = np.zeros(classifiers)
+    vectClassificationTime = np.zeros(classifiers)
+    vectClassificationTimeSTD = np.zeros(classifiers)
+    vectPreprocessingTime = np.zeros(classifiers)
+    vectPreprocessingTimeSTD = np.zeros(classifiers)
+    vectAnalysisTime = np.zeros(classifiers)
+    vectAnalysisTimeSTD = np.zeros(classifiers)
+    idx=0
+    for BD in ['Nina5', 'Cote', 'EPN']:
+        if BD == 'Nina5':
+            extractionTime = extractionTimeN
+            timeOurTechnique = timeOurTechniqueN
+        elif BD == 'Cote':
+            extractionTime = extractionTimeC
+            timeOurTechnique = timeOurTechniqueC
+        elif BD == 'EPN':
+            extractionTime = extractionTimeE
+            timeOurTechnique = timeOurTechniqueE
+        # from seconds to miliseconds
+        extractionTime = extractionTime * 1000
+        for DA in ['LDA', 'QDA']:
+            TrainingTime = 0
+            TrainingTimeSTD = 0
+            ExtractionTime = 0
+            ExtractionTimeSTD = 0
+            ClassificationTime = 0
+            ClassificationTimeSTD = 0
+            PreprocessingTime = 0
+            PreprocessingTimeSTD = 0
+            AnalysisTime = 0
+            AnalysisTimeVAR = 0
+            for featureSet in range(3):
+                TrainingTime += timeOurTechnique.loc[featureSet + 1, 'meanTrain' + DA] / (60*1000)
+                TrainingTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdTrain' + DA] / (60*1000)
+                ExtractionTime += extractionTime.loc[featureSet, :].mean()
+                ExtractionTimeSTD += extractionTime.loc[featureSet, :].std()
+                ClassificationTime += timeOurTechnique.loc[featureSet + 1, 'meanCl' + DA]
+                ClassificationTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdCl' + DA]
+                PreprocessingTime += timeOurTechnique.loc[featureSet + 1, 'meanNorm'] /1000
+                PreprocessingTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdNorm']
+                AnalysisTime += extractionTime.loc[featureSet, :].mean() + timeOurTechnique.loc[
+                    featureSet + 1, 'meanCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'meanNorm'] / 1000
+                AnalysisTimeVAR += np.sqrt((extractionTime.loc[featureSet, :].var() + timeOurTechnique.loc[
+                    featureSet + 1, 'varCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'varNorm'] / 1000))
+            vectTrainingTime[idx] = TrainingTime/3
+            vectTrainingTimeSTD[idx] = TrainingTimeSTD/3
+            vectExtractionTime[idx] = ExtractionTime/3
+            vectExtractionTimeSTD[idx] = ExtractionTimeSTD/3
+            vectClassificationTime[idx] = ClassificationTime/3
+            vectClassificationTimeSTD[idx] = ClassificationTimeSTD/3
+            vectPreprocessingTime[idx] = PreprocessingTime/3
+            vectPreprocessingTimeSTD[idx] = PreprocessingTimeSTD/3
+            vectAnalysisTime[idx] = AnalysisTime/3
+            vectAnalysisTimeSTD[idx] = AnalysisTimeVAR/3
+            idx+=1
+
+    print('Training Time [min]',vectTrainingTime)
+    print('Training Time [min] STD',vectTrainingTimeSTD,'\n\n\n')
+    print('Feature extraction Time [ms]',vectExtractionTime)
+    print('Feature extraction Time [ms] STD',vectExtractionTimeSTD)
+    print('Pre-processing Time [ms]',vectPreprocessingTime)
+    print('Pre-processing Time [ms] STD',vectPreprocessingTimeSTD)
+    print('Classification Time [ms]',vectClassificationTime)
+    print('Classification Time [ms] STD',vectClassificationTimeSTD)
+    print('Data-Analysis Time [ms]',vectAnalysisTime)
+    print('Data-Analysis Time [ms] STD',vectAnalysisTimeSTD,'\n')
+
+    xAxis = np.arange(classifiers)  # the x locations for the groups
+    width = 0.5  # the width of the bars: can also be len(x) sequence
+    ax[0].grid(color='gainsboro', linewidth=1)
+    ax[0].set_axisbelow(True)
+
+    vectPreprocessingTime*=300
+    ax[0].bar(xAxis, vectExtractionTime, width, label='Feature extraction Time')
+    ax[0].bar(xAxis, vectPreprocessingTime, width, bottom=vectExtractionTime, label='Pre-processing Time')
+    ax[0].bar(xAxis, vectClassificationTime, width, bottom=vectExtractionTime+vectPreprocessingTime, yerr=vectAnalysisTimeSTD, label='Classification Time')
+
+    ax[0].set_xlabel('Our classifiers over the three databases')
+    ax[0].set_ylabel('time (ms)')
+    ax[0].set_title('Data-Analysis Time')
+    ax[0].set_xticks(xAxis)
+    ax[0].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN','QDA_EPN'],rotation=20)
+    # ax[0].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
+
+
+    ax[1].grid(color='gainsboro', linewidth=1)
+    ax[1].set_axisbelow(True)
+
+    ax[1].bar(xAxis, vectTrainingTime, width,yerr=vectTrainingTimeSTD, label='Training Time',color='tab:red')
+    ax[1].set_xlabel('Our classifiers over the three databases')
+    ax[1].set_ylabel('time (min)')
+    ax[1].set_title('Training Time using our technique')
+    ax[1].set_xticks(xAxis)
+    ax[1].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN','QDA_EPN'],rotation=20)
+    # ax[1].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
+
+    fig.tight_layout(pad=1)
+    plt.savefig("times.png", bbox_inches='tight', dpi=600)
+
+    plt.show()

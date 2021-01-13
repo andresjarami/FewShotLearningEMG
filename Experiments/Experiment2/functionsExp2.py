@@ -46,10 +46,9 @@ def DataGenerator_TwoCL_TwoFeat(seed=None, samples=100, people=5, peopleSame=0, 
 
         for cl in range(classes):
 
-            DataFrame.at[idx, 'data'] = np.random.multivariate_normal(meanSet[cl, :] + auxPoint,
-                                                                      covSet[(cl + 1) * Features -
-                                                                             Features:(cl + 1) * Features,
-                                                                      0:Features], samples).T
+            DataFrame.at[idx, 'data'] = np.random.multivariate_normal(
+                meanSet[cl, :] + auxPoint, covSet[(cl + 1) * Features - Features:(cl + 1) * Features, 0:Features],
+                samples).T
             DataFrame.at[idx, 'mean'] = np.mean(DataFrame.loc[idx, 'data'], axis=1)
             DataFrame.at[idx, 'cov'] = np.cov(DataFrame.loc[idx, 'data'])
 
@@ -211,8 +210,6 @@ def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, sample
                                                                                   classes)
         resultsData.at[idx, 'AccLDAProp'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, propModelLDA, classes)
         resultsData.at[idx, 'AccQDAProp'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, propModelQDA, classes)
-
-
 
         if nameFile is not None:
             resultsData.to_csv(nameFile)
