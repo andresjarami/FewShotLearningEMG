@@ -19,34 +19,15 @@ def format_data_to_train_cwt(vector_to_format, number_of_vector_per_example=52, 
     data_calculated = calculate_wavelet.calculate_wavelet_dataset(dataset_example_formatted)
     return np.array(data_calculated)
 
-# def format_data_to_train_spectrogram(vector_to_format, number_of_vector_per_example=52, size_non_overlap=5):
-#     dataset_example_formatted = []
-#     example = []
-#     for value_armband in vector_to_format:
-#         if (example == []):
-#             example = value_armband
-#         else:
-#             example = np.row_stack((example, value_armband))
-#         if len(example) >= number_of_vector_per_example:
-#             example = example.transpose()
-#             dataset_example_formatted.append(example)
-#             example = example.transpose()
-#             example = example[size_non_overlap:]
-#     data_calculated = calculate_spectrogram.calculate_spectrogram_dataset(dataset_example_formatted)
-#     return np.array(data_calculated)
 
 def read_data(path, modality="cwt"):
     print(os.walk(path))
     all_subjects_train_examples = []
     all_subjects_train_labels = []
-    # all_subjects_test_examples = []
-    # all_subjects_test_labels = []
     for subject_index in range(1, 11):
         paths_data = [path + 's' + str(subject_index) + '/S' + str(subject_index) + '_E2_A1.mat']
         train_examples = []
         train_labels = []
-        # test_examples = []
-        # test_labels = []
         for k, path_data in enumerate(paths_data):
             mat_contents = sio.loadmat(path_data)
             emg_data = mat_contents['emg'][:, 8::]  # Get the data from the second EMG
@@ -83,24 +64,13 @@ def read_data(path, modality="cwt"):
                     # Calculate the examples and labels according to the required window
                     if modality == "cwt":
                         dataset_example = format_data_to_train_cwt(examples)
-                    # elif modality == "spectrogram":
-                    #     dataset_example = format_data_to_train_spectrogram(examples)
                     else:
                         dataset_example = format_data_to_train_cwt(examples)
-                    # if i in [0, 1, 2, 3]:  # To follow the NinaPro article
-                    #     train_examples.append(dataset_example)
-                    #     train_labels.append(key+np.zeros(len(dataset_example)))
-                    # else:
-                    #     test_examples.append(dataset_example)
-                    #     test_labels.append(key+np.zeros(len(dataset_example)))
-                    #     print(key+np.zeros(len(dataset_example)))
                     train_examples.append(dataset_example)
                     train_labels.append(key + np.zeros(len(dataset_example)))
         print(np.shape(train_examples))
         all_subjects_train_examples.append(train_examples)
         all_subjects_train_labels.append(train_labels)
-        # all_subjects_test_examples.append(test_examples)
-        # all_subjects_test_labels.append(test_labels)
 
     return all_subjects_train_examples, all_subjects_train_labels
 

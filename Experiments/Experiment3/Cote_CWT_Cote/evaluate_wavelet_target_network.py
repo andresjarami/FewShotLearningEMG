@@ -225,8 +225,7 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
                       labels_test_1, cycles):
     accuracy_test0 = []
     accuracy_test1 = []
-    # AJ
-    CLaccuracy_test = []
+    cl_time = []  # Changes AJ
 
     # initialized_weights = np.load("initialized_weights.npy")
     for dataset_index in range(0, 17):
@@ -301,13 +300,7 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
         cnn.eval()
         total = 0
         correct_prediction_test_0 = 0
-
-        # CHANGES AJ
-        idx = 0
-        rp = 0
-        auxVect = []
-        correct_prediction_CL_test = 0
-        total_prediction = 0
+        since = time.time()  # CHANGES AJ
 
         for k, data_test_0 in enumerate(test_0_loader, 0):
             # get the inputs
@@ -323,16 +316,9 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
                                           ground_truth_test_0.data.cpu().numpy()).sum()
             total += ground_truth_test_0.size(0)
 
-            # CHANGES AJ
-            rp += 1
-            auxVect.append(mode(predicted.cpu().numpy())[0][0])
-            if rp == repetitions[idx]:
-                total_prediction += 1
-                if mode(auxVect)[0][0] == ground_truth_test_0.data.cpu().numpy()[0]:
-                    correct_prediction_CL_test += 1
-                auxVect = []
-                rp = 0
-                idx += 1
+        auxTime = float(time.time() - since) / float(total)  # CHANGES AJ
+        print("AVERAGE CLASSIFICATION TIME: %.5f " % (auxTime))  # CHANGES AJ
+        cl_time.append(auxTime)  # CHANGES AJ
 
         print("ACCURACY TEST_0 FINAL : %.3f %%" % (100 * float(correct_prediction_test_0) / float(total)))
         accuracy_test0.append(100 * float(correct_prediction_test_0) / float(total))
@@ -340,9 +326,7 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
         total = 0
         correct_prediction_test_1 = 0
 
-        # CHANGES AJ
-        rp = 0
-        auxVect = []
+        since = time.time()  # CHANGES AJ
 
         for k, data_test_1 in enumerate(test_1_loader, 0):
             # get the inputs
@@ -358,27 +342,16 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
                                           ground_truth_test_1.data.cpu().numpy()).sum()
             total += ground_truth_test_1.size(0)
 
-            # CHANGES AJ
-            rp += 1
-            auxVect.append(mode(predicted.cpu().numpy())[0][0])
-            if rp == repetitions[idx]:
-                total_prediction += 1
-                if mode(auxVect)[0][0] == ground_truth_test_1.data.cpu().numpy()[0]:
-                    correct_prediction_CL_test += 1
-                auxVect = []
-                rp = 0
-                idx += 1
+        auxTime = float(time.time() - since) / float(total)  # CHANGES AJ
+        print("AVERAGE CLASSIFICATION TIME: %.5f " % (auxTime))  # CHANGES AJ
+        cl_time.append(auxTime)  # CHANGES AJ
 
         print("ACCURACY TEST_1 FINAL : %.3f %%" % (100 * float(correct_prediction_test_1) / float(total)))
         accuracy_test1.append(100 * float(correct_prediction_test_1) / float(total))
 
-        # CHANGES AJ
-        print('Classification Accuracy: ', 100 * correct_prediction_CL_test / total_prediction)
-        CLaccuracy_test.append(100 * correct_prediction_CL_test / total_prediction)
-
     print("AVERAGE ACCURACY TEST 0 %.3f" % np.array(accuracy_test0).mean())
     print("AVERAGE ACCURACY TEST 1 %.3f" % np.array(accuracy_test1).mean())
-    return accuracy_test0, accuracy_test1, CLaccuracy_test
+    return accuracy_test0, accuracy_test1, cl_time
 
 
 def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=500, precision=1e-8):
@@ -524,10 +497,12 @@ if __name__ == '__main__':
 
     # Comment between here
     '''
-    datasets_pre_training = np.load("saved_pre_training_dataset.npy", encoding="bytes", allow_pickle=True)
+    datasets_pre_training = np.load("data/saved_pre_training_dataset.npy", encoding="bytes", allow_pickle=True)
     examples_pre_training, labels_pre_training = datasets_pre_training
+
     
     calculate_pre_training(examples_pre_training, labels_pre_training)
+    
     '''
     # And here if the pre-training of the network was already completed.
 
@@ -547,35 +522,33 @@ if __name__ == '__main__':
 
     test_0 = []
     test_1 = []
-
-    # CHANGES AJ
-    classification_test = []
-    for cycles in range(1,5):
+    classificationTime = []  # CHANGE AJ
+    for cycles in range(1, 5):
 
         for i in range(20):
-            accuracy_test_0, accuracy_test_1, cl_accuracy_test = calculate_fitness(examples_training, labels_training,
-                                                                                   examples_validation0, labels_validation0,
-                                                                                   examples_validation1, labels_validation1,
-                                                                                   cycles)
+            accuracy_test_0, accuracy_test_1, cl_time = calculate_fitness(examples_training, labels_training,
+                                                                          examples_validation0, labels_validation0,
+                                                                          examples_validation1, labels_validation1,
+                                                                          cycles)
             print(accuracy_test_0)
 
             test_0.append(accuracy_test_0)
             test_1.append(accuracy_test_1)
-            classification_test.append(cl_accuracy_test)
+            classificationTime.append(cl_time)
             print("TEST 0 SO FAR: ", test_0)
             print("TEST 1 SO FAR: ", test_1)
-            print("TEST 0 SO FAR CL accuracy: ", classification_test)
+            print("CLASSIFICATION TIME SO FAR: ", classificationTime)
             print("CURRENT AVERAGE : ", (np.mean(test_0) + np.mean(test_1)) / 2.)
+            print("CURRENT AVERAGE CLASSIFICATION TIME: ", np.mean(classificationTime))
 
         print("ACCURACY FINAL TEST 0: ", test_0)
         print("ACCURACY FINAL TEST 0: ", np.mean(test_0))
         print("ACCURACY FINAL TEST 1: ", test_1)
         print("ACCURACY FINAL TEST 1: ", np.mean(test_1))
-        print("CL ACCURACY FINAL TEST 0: ", classification_test)
-        print("CL ACCURACY FINAL TEST 0: ", np.mean(classification_test))
+        print("CLASSIFICATION TIMES: ", classificationTime)  # CHANGE AJ
+        print("AVERAGE FINAL CLASSIFICATION TIME 0: ", np.mean(classificationTime))  # CHANGE AJ
 
-        save_results = [test_0, test_1, classification_test]
+        save_results = [test_0, test_1, classificationTime]
         with open('Pytorch_results_' + str(cycles) + '_cycles.csv', 'w', newline='') as myfile:
             writer = csv.writer(myfile)
             writer.writerows(save_results)
-

@@ -77,11 +77,11 @@ def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
         ax[idx].grid(color='gainsboro', linewidth=1)
         ax[idx].set_axisbelow(True)
 
-        ax[idx].plot(shotsSet, vectCote, marker='x', label='Côté-Allard', color='tab:red')
-        ax[idx].plot(shotsSet, vectOurLDA260, marker='o', label='Our LDA classifier (window size 260ms)', color='tab:orange')
-        ax[idx].plot(shotsSet, vectOurQDA260, marker='^', label='Our QDA classifier (window size  260ms)', color='tab:orange')
-        ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window size  295ms)', color='tab:blue')
-        ax[idx].plot(shotsSet, vectOurQDA295, marker='^', label='Our QDA classifier (window size  295ms)', color='tab:blue')
+        ax[idx].plot(shotsSet, vectCote, marker='x', label='Côté-Allard approach (window 260ms)', color='tab:green')
+        ax[idx].plot(shotsSet, vectOurLDA260, marker='o', label='Our LDA classifier (window 260ms)', color='tab:orange')
+        ax[idx].plot(shotsSet, vectOurQDA260, marker='^', label='Our QDA classifier (window 260ms)', color='tab:orange')
+        ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)', color='tab:blue')
+        ax[idx].plot(shotsSet, vectOurQDA295, marker='^', label='Our QDA classifier (window295ms)', color='tab:blue')
         ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
         ax[idx].xaxis.set_ticks(np.arange(1, shots + .2, 1))
         ax[idx].set_xlabel('repetitions')
@@ -89,7 +89,7 @@ def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
         ax[idx].set_title(title)
         idx += 1
 
-    ax[2].legend(loc='lower center', bbox_to_anchor=(2, -1.2), ncol=3)
+    ax[2].legend(loc='lower center', bbox_to_anchor=(2, -1.5), ncol=3)
     fig.tight_layout(pad=0.1)
     plt.savefig("coteAcc.png", bbox_inches='tight', dpi=600)
     plt.show()
@@ -284,7 +284,7 @@ def AnalysisFriedman(placeOur260, placeOur295, placeCote, featureSet):
     # Analysis with a window size of 295ms
     print('\n\nANALYSIS OF WINDOW SIZE 295ms')
     dataFrame_Friedman_Holm(pd.DataFrame(
-        data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260, 'vectCote': vectCote}))
+        data={'vectOurLDA295': vectOurLDA295, 'vectOurQDA295': vectOurQDA295, 'vectCote': vectCote}))
     # Analysis with all window sizes
     print('\n\nANALYSIS OF ALL WINDOW SIZES')
     dataFrame_Friedman_Holm(dataFrame = pd.DataFrame(

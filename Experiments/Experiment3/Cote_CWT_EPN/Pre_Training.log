@@ -1,0 +1,1720 @@
+(4494, 12, 8, 7)
+Shape training :  (4494, 12, 8, 7)
+Shape valid :  (1389, 12, 8, 7)
+(5433, 12, 8, 7)
+Shape training :  (5433, 12, 8, 7)
+Shape valid :  (1500, 12, 8, 7)
+(3159, 12, 8, 7)
+Shape training :  (3159, 12, 8, 7)
+Shape valid :  (927, 12, 8, 7)
+(2871, 12, 8, 7)
+Shape training :  (2871, 12, 8, 7)
+Shape valid :  (897, 12, 8, 7)
+(5232, 12, 8, 7)
+Shape training :  (5232, 12, 8, 7)
+Shape valid :  (1626, 12, 8, 7)
+(7632, 12, 8, 7)
+Shape training :  (7632, 12, 8, 7)
+Shape valid :  (2250, 12, 8, 7)
+(12903, 12, 8, 7)
+Shape training :  (12903, 12, 8, 7)
+Shape valid :  (4383, 12, 8, 7)
+(5703, 12, 8, 7)
+Shape training :  (5703, 12, 8, 7)
+Shape valid :  (1965, 12, 8, 7)
+(5112, 12, 8, 7)
+Shape training :  (5112, 12, 8, 7)
+Shape valid :  (1662, 12, 8, 7)
+(3594, 12, 8, 7)
+Shape training :  (3594, 12, 8, 7)
+Shape valid :  (1137, 12, 8, 7)
+(3705, 12, 8, 7)
+Shape training :  (3705, 12, 8, 7)
+Shape valid :  (1191, 12, 8, 7)
+(4278, 12, 8, 7)
+Shape training :  (4278, 12, 8, 7)
+Shape valid :  (1512, 12, 8, 7)
+(3918, 12, 8, 7)
+Shape training :  (3918, 12, 8, 7)
+Shape valid :  (1197, 12, 8, 7)
+(4041, 12, 8, 7)
+Shape training :  (4041, 12, 8, 7)
+Shape valid :  (1305, 12, 8, 7)
+(5553, 12, 8, 7)
+Shape training :  (5553, 12, 8, 7)
+Shape valid :  (1818, 12, 8, 7)
+(3105, 12, 8, 7)
+Shape training :  (3105, 12, 8, 7)
+Shape valid :  (858, 12, 8, 7)
+(3372, 12, 8, 7)
+Shape training :  (3372, 12, 8, 7)
+Shape valid :  (1017, 12, 8, 7)
+(5001, 12, 8, 7)
+Shape training :  (5001, 12, 8, 7)
+Shape valid :  (1569, 12, 8, 7)
+(6621, 12, 8, 7)
+Shape training :  (6621, 12, 8, 7)
+Shape valid :  (1848, 12, 8, 7)
+(6093, 12, 8, 7)
+Shape training :  (6093, 12, 8, 7)
+Shape valid :  (1554, 12, 8, 7)
+(4878, 12, 8, 7)
+Shape training :  (4878, 12, 8, 7)
+Shape valid :  (1524, 12, 8, 7)
+(5370, 12, 8, 7)
+Shape training :  (5370, 12, 8, 7)
+Shape valid :  (2121, 12, 8, 7)
+(13326, 12, 8, 7)
+Shape training :  (13326, 12, 8, 7)
+Shape valid :  (4170, 12, 8, 7)
+(3720, 12, 8, 7)
+Shape training :  (3720, 12, 8, 7)
+Shape valid :  (1203, 12, 8, 7)
+(8238, 12, 8, 7)
+Shape training :  (8238, 12, 8, 7)
+Shape valid :  (2568, 12, 8, 7)
+(4146, 12, 8, 7)
+Shape training :  (4146, 12, 8, 7)
+Shape valid :  (1281, 12, 8, 7)
+(4158, 12, 8, 7)
+Shape training :  (4158, 12, 8, 7)
+Shape valid :  (1359, 12, 8, 7)
+(4461, 12, 8, 7)
+Shape training :  (4461, 12, 8, 7)
+Shape valid :  (1536, 12, 8, 7)
+(3633, 12, 8, 7)
+Shape training :  (3633, 12, 8, 7)
+Shape valid :  (1149, 12, 8, 7)
+(5541, 12, 8, 7)
+Shape training :  (5541, 12, 8, 7)
+Shape valid :  (1644, 12, 8, 7)
+Number Parameters:  29229
+Epoch 0/499
+----------
+train Loss: 1.62449646 Acc: 0.34516901
+Epoch 1 of 500 took 2.163s
+val Loss: 6141.32226562 Acc: 0.2287911
+New best validation loss: tensor(6141.3223, device='cuda:0')
+Epoch 1 of 500 took 4.121s
+Epoch 1/499
+----------
+train Loss: 1.31737924 Acc: 0.43781385
+Epoch 2 of 500 took 1.825s
+val Loss: 225.23313904 Acc: 0.38050109
+New best validation loss: tensor(225.2331, device='cuda:0')
+Epoch 2 of 500 took 3.630s
+Epoch 2/499
+----------
+train Loss: 1.26367211 Acc: 0.47139561
+Epoch 3 of 500 took 1.835s
+val Loss: 54.52246094 Acc: 0.41668877
+New best validation loss: tensor(54.5225, device='cuda:0')
+Epoch 3 of 500 took 3.617s
+Epoch 3/499
+----------
+train Loss: 1.17989266 Acc: 0.51627183
+Epoch 4 of 500 took 1.764s
+val Loss: 12.20965958 Acc: 0.4553619
+New best validation loss: tensor(12.2097, device='cuda:0')
+Epoch 4 of 500 took 3.965s
+Epoch 4/499
+----------
+train Loss: 1.15017498 Acc: 0.53784049
+Epoch 5 of 500 took 1.751s
+val Loss: 14.55235577 Acc: 0.42315087
+Epoch 5 of 500 took 3.266s
+Epoch 5/499
+----------
+train Loss: 1.15644419 Acc: 0.52979326
+Epoch 6 of 500 took 1.789s
+val Loss: 9.63957500 Acc: 0.48051435
+New best validation loss: tensor(9.6396, device='cuda:0')
+Epoch 6 of 500 took 3.557s
+Epoch 6/499
+----------
+train Loss: 1.07687116 Acc: 0.56878716
+Epoch 7 of 500 took 1.852s
+val Loss: 5.26024199 Acc: 0.48840141
+New best validation loss: tensor(5.2602, device='cuda:0')
+Epoch 7 of 500 took 3.712s
+Epoch 7/499
+----------
+train Loss: 1.04916573 Acc: 0.57985979
+Epoch 8 of 500 took 1.780s
+val Loss: 3.75479913 Acc: 0.53254247
+New best validation loss: tensor(3.7548, device='cuda:0')
+Epoch 8 of 500 took 3.638s
+Epoch 8/499
+----------
+train Loss: 1.03095102 Acc: 0.58924675
+Epoch 9 of 500 took 1.798s
+val Loss: 2.78459883 Acc: 0.5445056
+New best validation loss: tensor(2.7846, device='cuda:0')
+Epoch 9 of 500 took 3.345s
+Epoch 9/499
+----------
+train Loss: 0.98432124 Acc: 0.60873038
+Epoch 10 of 500 took 1.831s
+val Loss: 1.76818991 Acc: 0.56319594
+New best validation loss: tensor(1.7682, device='cuda:0')
+Epoch 10 of 500 took 4.020s
+Epoch 10/499
+----------
+train Loss: 0.99024338 Acc: 0.61022979
+Epoch 11 of 500 took 1.806s
+val Loss: 1.77268279 Acc: 0.59626859
+Epoch 11 of 500 took 3.691s
+Epoch 11/499
+----------
+train Loss: 0.97870255 Acc: 0.60905868
+Epoch 12 of 500 took 1.773s
+val Loss: 1.57764935 Acc: 0.58848095
+New best validation loss: tensor(1.5776, device='cuda:0')
+Epoch 12 of 500 took 3.591s
+Epoch 12/499
+----------
+train Loss: 0.92991334 Acc: 0.63534737
+Epoch 13 of 500 took 1.780s
+val Loss: 1.65707588 Acc: 0.59331924
+Epoch 13 of 500 took 3.953s
+Epoch 13/499
+----------
+train Loss: 0.90693492 Acc: 0.63981014
+Epoch 14 of 500 took 1.807s
+val Loss: 1.51743937 Acc: 0.61777574
+New best validation loss: tensor(1.5174, device='cuda:0')
+Epoch 14 of 500 took 4.156s
+Epoch 14/499
+----------
+train Loss: 0.90056807 Acc: 0.64922369
+Epoch 15 of 500 took 1.785s
+val Loss: 1.22388470 Acc: 0.62059253
+New best validation loss: tensor(1.2239, device='cuda:0')
+Epoch 15 of 500 took 3.650s
+Epoch 15/499
+----------
+train Loss: 0.86758614 Acc: 0.66066009
+Epoch 16 of 500 took 1.826s
+val Loss: 1.08859158 Acc: 0.65923256
+New best validation loss: tensor(1.0886, device='cuda:0')
+Epoch 16 of 500 took 3.748s
+Epoch 16/499
+----------
+train Loss: 0.84679669 Acc: 0.66398722
+Epoch 17 of 500 took 1.859s
+val Loss: 1.07920933 Acc: 0.64143693
+New best validation loss: tensor(1.0792, device='cuda:0')
+Epoch 17 of 500 took 3.779s
+Epoch 17/499
+----------
+train Loss: 0.84749919 Acc: 0.66791767
+Epoch 18 of 500 took 1.806s
+val Loss: 1.07407284 Acc: 0.66665566
+New best validation loss: tensor(1.0741, device='cuda:0')
+Epoch 18 of 500 took 3.329s
+Epoch 18/499
+----------
+train Loss: 0.83233750 Acc: 0.67351609
+Epoch 19 of 500 took 1.781s
+val Loss: 1.05097389 Acc: 0.67812175
+New best validation loss: tensor(1.0510, device='cuda:0')
+Epoch 19 of 500 took 3.824s
+Epoch 19/499
+----------
+train Loss: 0.82549340 Acc: 0.67577857
+Epoch 20 of 500 took 1.806s
+val Loss: 1.06370366 Acc: 0.6591
+Epoch 20 of 500 took 3.722s
+Epoch 20/499
+----------
+train Loss: 0.80511862 Acc: 0.68118179
+Epoch 21 of 500 took 1.862s
+val Loss: 1.19373214 Acc: 0.64031023
+Epoch 21 of 500 took 3.675s
+Epoch 21/499
+----------
+train Loss: 0.79654193 Acc: 0.68722385
+Epoch 22 of 500 took 1.835s
+val Loss: 0.97913533 Acc: 0.67397934
+New best validation loss: tensor(0.9791, device='cuda:0')
+Epoch 22 of 500 took 3.338s
+Epoch 22/499
+----------
+train Loss: 0.78699338 Acc: 0.69302636
+Epoch 23 of 500 took 1.781s
+val Loss: 1.03786302 Acc: 0.68216467
+Epoch 23 of 500 took 3.700s
+Epoch 23/499
+----------
+train Loss: 0.77245802 Acc: 0.69767547
+Epoch 24 of 500 took 1.790s
+val Loss: 0.87046325 Acc: 0.72040701
+New best validation loss: tensor(0.8705, device='cuda:0')
+Epoch 24 of 500 took 3.605s
+Epoch 24/499
+----------
+train Loss: 0.77346218 Acc: 0.69582117
+Epoch 25 of 500 took 1.764s
+val Loss: 0.93883187 Acc: 0.69469118
+Epoch 25 of 500 took 3.282s
+Epoch 25/499
+----------
+train Loss: 0.75429517 Acc: 0.70647681
+Epoch 26 of 500 took 1.792s
+val Loss: 0.88881969 Acc: 0.70337355
+Epoch 26 of 500 took 3.603s
+Epoch 26/499
+----------
+train Loss: 0.75948954 Acc: 0.70204949
+Epoch 27 of 500 took 1.811s
+val Loss: 0.96852940 Acc: 0.69730914
+Epoch 27 of 500 took 3.728s
+Epoch 27/499
+----------
+train Loss: 0.75008714 Acc: 0.70534116
+Epoch 28 of 500 took 1.848s
+val Loss: 0.86815196 Acc: 0.72425109
+New best validation loss: tensor(0.8682, device='cuda:0')
+Epoch 28 of 500 took 4.111s
+Epoch 28/499
+----------
+train Loss: 0.72580314 Acc: 0.71724778
+Epoch 29 of 500 took 1.861s
+val Loss: 0.93751001 Acc: 0.70370495
+Epoch 29 of 500 took 3.786s
+Epoch 29/499
+----------
+train Loss: 0.73204625 Acc: 0.71505636
+Epoch 30 of 500 took 1.859s
+val Loss: 0.87252468 Acc: 0.71338153
+Epoch 30 of 500 took 3.611s
+Epoch 30/499
+----------
+train Loss: 0.72319490 Acc: 0.71795762
+Epoch 31 of 500 took 1.777s
+val Loss: 0.87228799 Acc: 0.7179547
+Epoch 31 of 500 took 3.754s
+Epoch 31/499
+----------
+train Loss: 0.71471763 Acc: 0.72271317
+Epoch 32 of 500 took 1.833s
+val Loss: 0.79625005 Acc: 0.74436641
+New best validation loss: tensor(0.7963, device='cuda:0')
+Epoch 32 of 500 took 3.838s
+Epoch 32/499
+----------
+train Loss: 0.69998133 Acc: 0.72588944
+Epoch 33 of 500 took 1.832s
+val Loss: 0.81958997 Acc: 0.72809523
+Epoch 33 of 500 took 3.643s
+Epoch 33/499
+----------
+train Loss: 0.68840748 Acc: 0.73184282
+Epoch 34 of 500 took 1.873s
+val Loss: 0.77493620 Acc: 0.75202149
+New best validation loss: tensor(0.7749, device='cuda:0')
+Epoch 34 of 500 took 3.855s
+Epoch 34/499
+----------
+train Loss: 0.67798907 Acc: 0.73469079
+Epoch 35 of 500 took 1.832s
+val Loss: 0.76994896 Acc: 0.74824369
+New best validation loss: tensor(0.7699, device='cuda:0')
+Epoch 35 of 500 took 3.335s
+Epoch 35/499
+----------
+train Loss: 0.67335314 Acc: 0.738985
+Epoch 36 of 500 took 1.758s
+val Loss: 0.79971176 Acc: 0.73926306
+Epoch 36 of 500 took 3.571s
+Epoch 36/499
+----------
+train Loss: 0.68448311 Acc: 0.73348415
+Epoch 37 of 500 took 1.776s
+val Loss: 0.77399749 Acc: 0.746885
+Epoch 37 of 500 took 3.275s
+Epoch 37/499
+----------
+train Loss: 0.67575991 Acc: 0.73592407
+Epoch 38 of 500 took 1.813s
+val Loss: 0.78155327 Acc: 0.7495361
+Epoch 38 of 500 took 3.677s
+Epoch 38/499
+----------
+train Loss: 0.67336440 Acc: 0.73860347
+Epoch 39 of 500 took 1.829s
+val Loss: 0.80585992 Acc: 0.74678558
+Epoch 39 of 500 took 3.426s
+Epoch 39/499
+----------
+train Loss: 0.65761137 Acc: 0.7439003
+Epoch 40 of 500 took 1.806s
+val Loss: 0.76097500 Acc: 0.74996692
+New best validation loss: tensor(0.7610, device='cuda:0')
+Epoch 40 of 500 took 4.007s
+Epoch 40/499
+----------
+train Loss: 0.66264659 Acc: 0.74330586
+Epoch 41 of 500 took 1.820s
+val Loss: 0.84487355 Acc: 0.7258749
+Epoch 41 of 500 took 4.086s
+Epoch 41/499
+----------
+train Loss: 0.66865253 Acc: 0.74114096
+Epoch 42 of 500 took 1.762s
+val Loss: 0.80352932 Acc: 0.74854195
+Epoch 42 of 500 took 3.259s
+Epoch 42/499
+----------
+train Loss: 0.65820235 Acc: 0.74412209
+Epoch 43 of 500 took 1.806s
+val Loss: 0.78993565 Acc: 0.73356313
+Epoch 43 of 500 took 3.665s
+Epoch 43/499
+----------
+train Loss: 0.64187080 Acc: 0.75226688
+Epoch 44 of 500 took 1.830s
+val Loss: 0.72931695 Acc: 0.77210373
+New best validation loss: tensor(0.7293, device='cuda:0')
+Epoch 44 of 500 took 3.646s
+Epoch 44/499
+----------
+train Loss: 0.63782382 Acc: 0.75419217
+Epoch 45 of 500 took 1.723s
+val Loss: 0.79173344 Acc: 0.74817741
+Epoch 45 of 500 took 3.243s
+Epoch 45/499
+----------
+train Loss: 0.62579757 Acc: 0.75746608
+Epoch 46 of 500 took 1.740s
+val Loss: 0.79915518 Acc: 0.73787117
+Epoch 46 of 500 took 3.267s
+Epoch 46/499
+----------
+train Loss: 0.62733507 Acc: 0.75831783
+Epoch 47 of 500 took 1.778s
+val Loss: 0.71188784 Acc: 0.78234363
+New best validation loss: tensor(0.7119, device='cuda:0')
+Epoch 47 of 500 took 3.757s
+Epoch 47/499
+----------
+train Loss: 0.62922078 Acc: 0.7573241
+Epoch 48 of 500 took 1.748s
+val Loss: 0.79772037 Acc: 0.74966866
+Epoch 48 of 500 took 3.559s
+Epoch 48/499
+----------
+train Loss: 0.62206930 Acc: 0.76155621
+Epoch 49 of 500 took 1.766s
+val Loss: 0.69648051 Acc: 0.78784466
+New best validation loss: tensor(0.6965, device='cuda:0')
+Epoch 49 of 500 took 4.033s
+Epoch 49/499
+----------
+train Loss: 0.62200898 Acc: 0.760598
+Epoch 50 of 500 took 1.711s
+val Loss: 0.73778540 Acc: 0.77051306
+Epoch 50 of 500 took 3.820s
+Epoch 50/499
+----------
+train Loss: 0.61823547 Acc: 0.76405823
+Epoch 51 of 500 took 1.853s
+val Loss: 0.70378226 Acc: 0.78857374
+Epoch 51 of 500 took 3.354s
+Epoch 51/499
+----------
+train Loss: 0.60515743 Acc: 0.76640052
+Epoch 52 of 500 took 1.763s
+val Loss: 0.72060901 Acc: 0.78516042
+Epoch 52 of 500 took 3.510s
+Epoch 52/499
+----------
+train Loss: 0.60271448 Acc: 0.76993167
+Epoch 53 of 500 took 1.797s
+val Loss: 0.73015207 Acc: 0.76497883
+Epoch 53 of 500 took 3.980s
+Epoch 53/499
+----------
+train Loss: 0.60090554 Acc: 0.77098751
+Epoch 54 of 500 took 1.860s
+val Loss: 0.71745259 Acc: 0.78612149
+Epoch 54 of 500 took 3.671s
+Epoch 54/499
+----------
+train Loss: 0.59892303 Acc: 0.77214974
+Epoch 55 of 500 took 1.830s
+val Loss: 0.68904960 Acc: 0.79288179
+New best validation loss: tensor(0.6890, device='cuda:0')
+Epoch 55 of 500 took 3.699s
+Epoch 55/499
+----------
+train Loss: 0.60654670 Acc: 0.76612544
+Epoch 56 of 500 took 1.817s
+val Loss: 0.74998015 Acc: 0.76862413
+Epoch 56 of 500 took 4.083s
+Epoch 56/499
+----------
+train Loss: 0.60955393 Acc: 0.76701272
+Epoch 57 of 500 took 1.846s
+val Loss: 0.72277915 Acc: 0.7809518
+Epoch 57 of 500 took 3.660s
+Epoch 57/499
+----------
+train Loss: 0.59603280 Acc: 0.77361369
+Epoch 58 of 500 took 1.819s
+val Loss: 0.69916600 Acc: 0.79510212
+Epoch 58 of 500 took 3.685s
+Epoch 58/499
+----------
+train Loss: 0.58845556 Acc: 0.77497119
+Epoch 59 of 500 took 1.800s
+val Loss: 0.65551198 Acc: 0.80802631
+New best validation loss: tensor(0.6555, device='cuda:0')
+Epoch 59 of 500 took 3.363s
+Epoch 59/499
+----------
+train Loss: 0.57777584 Acc: 0.7790702
+Epoch 60 of 500 took 1.811s
+val Loss: 0.65364248 Acc: 0.80766177
+New best validation loss: tensor(0.6536, device='cuda:0')
+Epoch 60 of 500 took 3.682s
+Epoch 60/499
+----------
+train Loss: 0.58203936 Acc: 0.7781297
+Epoch 61 of 500 took 1.806s
+val Loss: 0.75692952 Acc: 0.77157348
+Epoch 61 of 500 took 3.623s
+Epoch 61/499
+----------
+train Loss: 0.57276046 Acc: 0.7828232
+Epoch 62 of 500 took 1.828s
+val Loss: 0.70084316 Acc: 0.79646081
+Epoch 62 of 500 took 3.806s
+Epoch 62/499
+----------
+train Loss: 0.58393395 Acc: 0.77638185
+Epoch 63 of 500 took 1.808s
+val Loss: 0.78849703 Acc: 0.75619704
+Epoch 63 of 500 took 3.318s
+Epoch 63/499
+----------
+train Loss: 0.58223152 Acc: 0.77907908
+Epoch 64 of 500 took 1.835s
+val Loss: 0.71571440 Acc: 0.79042953
+Epoch 64 of 500 took 3.875s
+Epoch 64/499
+----------
+train Loss: 0.57083040 Acc: 0.78244168
+Epoch 65 of 500 took 1.834s
+val Loss: 0.66143340 Acc: 0.81067741
+Epoch 65 of 500 took 3.511s
+Epoch 65/499
+----------
+train Loss: 0.57068640 Acc: 0.78218436
+Epoch 66 of 500 took 1.768s
+val Loss: 0.66362983 Acc: 0.80676699
+Epoch 66 of 500 took 3.834s
+Epoch 66/499
+----------
+train Loss: 0.57174724 Acc: 0.78300065
+Epoch 67 of 500 took 1.793s
+val Loss: 0.68929052 Acc: 0.79407483
+Epoch 67 of 500 took 3.657s
+Epoch 67/499
+----------
+train Loss: 0.56865329 Acc: 0.78250378
+Epoch 68 of 500 took 1.826s
+val Loss: 0.68850225 Acc: 0.80381763
+Epoch 68 of 500 took 3.692s
+Epoch 68/499
+----------
+train Loss: 0.56546646 Acc: 0.78753436
+Epoch 69 of 500 took 1.828s
+val Loss: 0.70990646 Acc: 0.7771408
+Epoch 69 of 500 took 3.935s
+Epoch 69/499
+----------
+train Loss: 0.57013899 Acc: 0.7806583
+Epoch 70 of 500 took 1.828s
+val Loss: 0.75744706 Acc: 0.77724022
+Epoch 70 of 500 took 3.637s
+Epoch 70/499
+----------
+train Loss: 0.57752621 Acc: 0.78202468
+Epoch 71 of 500 took 1.776s
+val Loss: 0.67807519 Acc: 0.7991119
+Epoch 71 of 500 took 3.960s
+Epoch 71/499
+----------
+train Loss: 0.58020592 Acc: 0.77883953
+Epoch 72 of 500 took 1.770s
+val Loss: 0.81564665 Acc: 0.76050508
+Epoch 72 of 500 took 3.582s
+Epoch 72/499
+----------
+train Loss: 0.57208371 Acc: 0.78196257
+Epoch 73 of 500 took 1.776s
+val Loss: 0.64494759 Acc: 0.81150585
+New best validation loss: tensor(0.6449, device='cuda:0')
+Epoch 73 of 500 took 3.986s
+Epoch 73/499
+----------
+train Loss: 0.56085813 Acc: 0.78743678
+Epoch 74 of 500 took 1.819s
+val Loss: 0.67734987 Acc: 0.7959637
+Epoch 74 of 500 took 4.005s
+Epoch 74/499
+----------
+train Loss: 0.55464363 Acc: 0.78863454
+Epoch 75 of 500 took 1.832s
+val Loss: 0.65516353 Acc: 0.81399131
+Epoch 75 of 500 took 3.941s
+Epoch 75/499
+----------
+train Loss: 0.55932951 Acc: 0.78825307
+Epoch 76 of 500 took 1.815s
+val Loss: 0.66986781 Acc: 0.8123675
+Epoch 76 of 500 took 3.380s
+Epoch 76/499
+----------
+train Loss: 0.55143195 Acc: 0.79239643
+Epoch 77 of 500 took 1.797s
+val Loss: 0.68121570 Acc: 0.8020944
+Epoch 77 of 500 took 3.662s
+Epoch 77/499
+----------
+train Loss: 0.54389256 Acc: 0.79370952
+Epoch 78 of 500 took 1.844s
+val Loss: 0.65797734 Acc: 0.81448835
+Epoch 78 of 500 took 3.389s
+Epoch 78/499
+----------
+train Loss: 0.54646242 Acc: 0.79224557
+Epoch 79 of 500 took 1.794s
+val Loss: 0.63574886 Acc: 0.81747091
+New best validation loss: tensor(0.6357, device='cuda:0')
+Epoch 79 of 500 took 3.613s
+Epoch 79/499
+----------
+train Loss: 0.54407591 Acc: 0.79284006
+Epoch 80 of 500 took 1.802s
+val Loss: 0.63509655 Acc: 0.81435585
+New best validation loss: tensor(0.6351, device='cuda:0')
+Epoch 80 of 500 took 3.696s
+Epoch 80/499
+----------
+train Loss: 0.54655677 Acc: 0.79365629
+Epoch 81 of 500 took 1.757s
+val Loss: 0.70383525 Acc: 0.80030495
+Epoch 81 of 500 took 3.679s
+Epoch 81/499
+----------
+train Loss: 0.54034585 Acc: 0.79585665
+Epoch 82 of 500 took 1.814s
+val Loss: 0.63974673 Acc: 0.82346904
+Epoch 82 of 500 took 3.631s
+Epoch 82/499
+----------
+train Loss: 0.54662383 Acc: 0.79364741
+Epoch 83 of 500 took 1.825s
+val Loss: 0.66691124 Acc: 0.80766177
+Epoch 83 of 500 took 3.750s
+Epoch 83/499
+----------
+train Loss: 0.54157180 Acc: 0.79519123
+Epoch 84 of 500 took 1.820s
+val Loss: 0.71150774 Acc: 0.7950027
+Epoch 84 of 500 took 4.002s
+Epoch 84/499
+----------
+train Loss: 0.56760305 Acc: 0.78365719
+Epoch 85 of 500 took 1.782s
+val Loss: 0.74084294 Acc: 0.79642767
+Epoch 85 of 500 took 3.595s
+Epoch 85/499
+----------
+train Loss: 0.55571252 Acc: 0.7909236
+Epoch 86 of 500 took 1.747s
+val Loss: 0.70889658 Acc: 0.80769491
+Epoch 86 of 500 took 3.635s
+Epoch 86/499
+----------
+train Loss: 0.55055010 Acc: 0.79181087
+Epoch 87 of 500 took 1.727s
+val Loss: 0.76138926 Acc: 0.78608835
+Epoch 87 of 500 took 3.667s
+Epoch 87/499
+----------
+train Loss: 0.53548342 Acc: 0.79779083
+Epoch 88 of 500 took 1.760s
+val Loss: 0.65600747 Acc: 0.80716467
+Epoch 88 of 500 took 3.867s
+Epoch 88/499
+----------
+train Loss: 0.52600449 Acc: 0.80073643
+Epoch 89 of 500 took 1.822s
+val Loss: 0.66078097 Acc: 0.81365991
+Epoch 89 of 500 took 3.865s
+Epoch 89/499
+----------
+train Loss: 0.52366179 Acc: 0.80133975
+Epoch 90 of 500 took 1.843s
+val Loss: 0.61040050 Acc: 0.82963288
+New best validation loss: tensor(0.6104, device='cuda:0')
+Epoch 90 of 500 took 3.661s
+Epoch 90/499
+----------
+train Loss: 0.52801037 Acc: 0.80089611
+Epoch 91 of 500 took 1.793s
+val Loss: 0.63771904 Acc: 0.80885476
+Epoch 91 of 500 took 3.341s
+Epoch 91/499
+----------
+train Loss: 0.52729684 Acc: 0.80021292
+Epoch 92 of 500 took 1.733s
+val Loss: 0.65809995 Acc: 0.81674182
+Epoch 92 of 500 took 3.665s
+Epoch 92/499
+----------
+train Loss: 0.52143711 Acc: 0.80286574
+Epoch 93 of 500 took 1.794s
+val Loss: 0.63997185 Acc: 0.81617844
+Epoch 93 of 500 took 3.319s
+Epoch 93/499
+----------
+train Loss: 0.53578234 Acc: 0.79667288
+Epoch 94 of 500 took 1.772s
+val Loss: 0.65223002 Acc: 0.81531686
+Epoch 94 of 500 took 4.033s
+Epoch 94/499
+----------
+train Loss: 0.53758639 Acc: 0.79744476
+Epoch 95 of 500 took 1.794s
+val Loss: 0.64443368 Acc: 0.8192935
+Epoch 95 of 500 took 3.657s
+Epoch 95/499
+----------
+train Loss: 0.54968113 Acc: 0.79158014
+Epoch 96 of 500 took 1.783s
+val Loss: 0.74643755 Acc: 0.79752123
+Epoch 96 of 500 took 3.965s
+Epoch 96/499
+----------
+train Loss: 0.59356719 Acc: 0.77529055
+Epoch 97 of 500 took 1.828s
+val Loss: 0.79796696 Acc: 0.78807664
+Epoch 97 of 500 took 4.089s
+Epoch 97/499
+----------
+train Loss: 0.56163257 Acc: 0.78896284
+Epoch 98 of 500 took 1.797s
+val Loss: 0.77069283 Acc: 0.78797722
+Epoch 98 of 500 took 3.839s
+Epoch 98/499
+----------
+train Loss: 0.54003906 Acc: 0.79737377
+Epoch 99 of 500 took 1.816s
+val Loss: 0.70807308 Acc: 0.81087625
+Epoch 99 of 500 took 3.681s
+Epoch 99/499
+----------
+train Loss: 0.53365511 Acc: 0.79878449
+Epoch 100 of 500 took 1.868s
+val Loss: 0.69151336 Acc: 0.81041229
+Epoch 100 of 500 took 3.929s
+Epoch 100/499
+----------
+train Loss: 0.52216583 Acc: 0.80385947
+Epoch 101 of 500 took 1.812s
+val Loss: 0.71223897 Acc: 0.79443932
+Epoch 101 of 500 took 3.311s
+Epoch 101/499
+----------
+train Loss: 0.53290540 Acc: 0.79735607
+Epoch 102 of 500 took 1.710s
+val Loss: 0.66752756 Acc: 0.81422329
+Epoch 102 of 500 took 3.210s
+Epoch 102/499
+----------
+train Loss: 0.53632599 Acc: 0.79621154
+Epoch 103 of 500 took 1.792s
+val Loss: 0.66742420 Acc: 0.81216866
+Epoch 103 of 500 took 3.291s
+Epoch 103/499
+----------
+train Loss: 0.52950954 Acc: 0.80050576
+Epoch 104 of 500 took 1.747s
+val Loss: 0.66647536 Acc: 0.81591338
+Epoch 104 of 500 took 3.548s
+Epoch 104/499
+----------
+train Loss: 0.52521956 Acc: 0.80106467
+Epoch 105 of 500 took 1.777s
+val Loss: 0.68275028 Acc: 0.8083908
+Epoch 105 of 500 took 3.817s
+Epoch 105/499
+----------
+train Loss: 0.52760005 Acc: 0.80260849
+Epoch 106 of 500 took 1.797s
+val Loss: 0.65415984 Acc: 0.82452947
+Epoch   105: reducing learning rate of group 0 to 8.0942e-03.
+Epoch 106 of 500 took 3.661s
+Epoch 106/499
+----------
+train Loss: 0.51452798 Acc: 0.80565166
+Epoch 107 of 500 took 1.792s
+val Loss: 0.59213340 Acc: 0.83828211
+New best validation loss: tensor(0.5921, device='cuda:0')
+Epoch 107 of 500 took 4.004s
+Epoch 107/499
+----------
+train Loss: 0.49043554 Acc: 0.81589037
+Epoch 108 of 500 took 1.782s
+val Loss: 0.56947374 Acc: 0.84391576
+New best validation loss: tensor(0.5695, device='cuda:0')
+Epoch 108 of 500 took 3.539s
+Epoch 108/499
+----------
+train Loss: 0.48280522 Acc: 0.81947476
+Epoch 109 of 500 took 1.799s
+val Loss: 0.56199545 Acc: 0.84603661
+New best validation loss: tensor(0.5620, device='cuda:0')
+Epoch 109 of 500 took 3.994s
+Epoch 109/499
+----------
+train Loss: 0.47921380 Acc: 0.82042408
+Epoch 110 of 500 took 1.849s
+val Loss: 0.55594850 Acc: 0.84898597
+New best validation loss: tensor(0.5559, device='cuda:0')
+Epoch 110 of 500 took 3.774s
+Epoch 110/499
+----------
+train Loss: 0.48144099 Acc: 0.81948364
+Epoch 111 of 500 took 1.821s
+val Loss: 0.54951334 Acc: 0.84958249
+New best validation loss: tensor(0.5495, device='cuda:0')
+Epoch 111 of 500 took 4.012s
+Epoch 111/499
+----------
+train Loss: 0.48045078 Acc: 0.8206104
+Epoch 112 of 500 took 1.804s
+val Loss: 0.54626215 Acc: 0.85163713
+New best validation loss: tensor(0.5463, device='cuda:0')
+Epoch 112 of 500 took 3.792s
+Epoch 112/499
+----------
+train Loss: 0.47459540 Acc: 0.8218348
+Epoch 113 of 500 took 1.781s
+val Loss: 0.54401833 Acc: 0.85279697
+New best validation loss: tensor(0.5440, device='cuda:0')
+Epoch 113 of 500 took 3.620s
+Epoch 113/499
+----------
+train Loss: 0.47367281 Acc: 0.8222518
+Epoch 114 of 500 took 1.800s
+val Loss: 0.54125905 Acc: 0.85412252
+New best validation loss: tensor(0.5413, device='cuda:0')
+Epoch 114 of 500 took 3.641s
+Epoch 114/499
+----------
+train Loss: 0.47800970 Acc: 0.82101858
+Epoch 115 of 500 took 1.791s
+val Loss: 0.54270065 Acc: 0.85292953
+Epoch 115 of 500 took 3.713s
+Epoch 115/499
+----------
+train Loss: 0.47284114 Acc: 0.82303256
+Epoch 116 of 500 took 1.784s
+val Loss: 0.53887898 Acc: 0.85422194
+New best validation loss: tensor(0.5389, device='cuda:0')
+Epoch 116 of 500 took 4.137s
+Epoch 116/499
+----------
+train Loss: 0.47496778 Acc: 0.8230769
+Epoch 117 of 500 took 1.795s
+val Loss: 0.54536444 Acc: 0.85190225
+Epoch 117 of 500 took 3.903s
+Epoch 117/499
+----------
+train Loss: 0.46816245 Acc: 0.82446098
+Epoch 118 of 500 took 1.784s
+val Loss: 0.54258436 Acc: 0.85273069
+Epoch 118 of 500 took 3.285s
+Epoch 118/499
+----------
+train Loss: 0.47218141 Acc: 0.82342297
+Epoch 119 of 500 took 1.758s
+val Loss: 0.54048216 Acc: 0.85455334
+Epoch 119 of 500 took 3.938s
+Epoch 119/499
+----------
+train Loss: 0.47136053 Acc: 0.82189691
+Epoch 120 of 500 took 1.844s
+val Loss: 0.53574109 Acc: 0.85505044
+New best validation loss: tensor(0.5357, device='cuda:0')
+Epoch 120 of 500 took 3.686s
+Epoch 120/499
+----------
+train Loss: 0.46703950 Acc: 0.8250466
+Epoch 121 of 500 took 1.815s
+val Loss: 0.54061788 Acc: 0.85415566
+Epoch 121 of 500 took 4.101s
+Epoch 121/499
+----------
+train Loss: 0.47204232 Acc: 0.82284623
+Epoch 122 of 500 took 1.824s
+val Loss: 0.53992128 Acc: 0.85408938
+Epoch 122 of 500 took 4.004s
+Epoch 122/499
+----------
+train Loss: 0.46623239 Acc: 0.82459408
+Epoch 123 of 500 took 1.850s
+val Loss: 0.53944337 Acc: 0.85720444
+Epoch 123 of 500 took 3.349s
+Epoch 123/499
+----------
+train Loss: 0.47120786 Acc: 0.82423919
+Epoch 124 of 500 took 1.789s
+val Loss: 0.53778780 Acc: 0.85518295
+Epoch 124 of 500 took 3.968s
+Epoch 124/499
+----------
+train Loss: 0.46926147 Acc: 0.82397306
+Epoch 125 of 500 took 1.819s
+val Loss: 0.54007500 Acc: 0.85660797
+Epoch 125 of 500 took 3.859s
+Epoch 125/499
+----------
+train Loss: 0.46905634 Acc: 0.8249135
+Epoch 126 of 500 took 1.811s
+val Loss: 0.53838289 Acc: 0.85299581
+Epoch 126 of 500 took 3.854s
+Epoch 126/499
+----------
+train Loss: 0.46530750 Acc: 0.82639515
+Epoch 127 of 500 took 1.777s
+val Loss: 0.53965288 Acc: 0.85322779
+Epoch 127 of 500 took 3.847s
+Epoch 127/499
+----------
+train Loss: 0.46712172 Acc: 0.82397306
+Epoch 128 of 500 took 1.755s
+val Loss: 0.54247922 Acc: 0.85223359
+Epoch 128 of 500 took 3.252s
+Epoch 128/499
+----------
+train Loss: 0.46505731 Acc: 0.82492238
+Epoch 129 of 500 took 1.833s
+val Loss: 0.54196608 Acc: 0.85442078
+Epoch 129 of 500 took 3.645s
+Epoch 129/499
+----------
+train Loss: 0.47018000 Acc: 0.82423031
+Epoch 130 of 500 took 1.840s
+val Loss: 0.53578240 Acc: 0.85604459
+Epoch 130 of 500 took 3.759s
+Epoch 130/499
+----------
+train Loss: 0.46576479 Acc: 0.82549018
+Epoch 131 of 500 took 1.769s
+val Loss: 0.54264545 Acc: 0.85279697
+Epoch 131 of 500 took 3.635s
+Epoch 131/499
+----------
+train Loss: 0.46314901 Acc: 0.82557893
+Epoch 132 of 500 took 1.753s
+val Loss: 0.54470992 Acc: 0.85130572
+Epoch 132 of 500 took 3.516s
+Epoch 132/499
+----------
+train Loss: 0.46258312 Acc: 0.82568538
+Epoch 133 of 500 took 1.817s
+val Loss: 0.53594166 Acc: 0.85594517
+Epoch 133 of 500 took 3.316s
+Epoch 133/499
+----------
+train Loss: 0.46241742 Acc: 0.82582736
+Epoch 134 of 500 took 1.733s
+val Loss: 0.53587174 Acc: 0.85720444
+Epoch 134 of 500 took 3.622s
+Epoch 134/499
+----------
+train Loss: 0.46625522 Acc: 0.8251797
+Epoch 135 of 500 took 1.796s
+val Loss: 0.53633434 Acc: 0.85405624
+Epoch 135 of 500 took 3.978s
+Epoch 135/499
+----------
+train Loss: 0.46418497 Acc: 0.82541037
+Epoch 136 of 500 took 1.856s
+val Loss: 0.53618467 Acc: 0.85737014
+Epoch   135: reducing learning rate of group 0 to 1.6188e-03.
+Epoch 136 of 500 took 3.835s
+Epoch 136/499
+----------
+train Loss: 0.46212387 Acc: 0.82681221
+Epoch 137 of 500 took 1.753s
+val Loss: 0.53471267 Acc: 0.85737014
+New best validation loss: tensor(0.5347, device='cuda:0')
+Epoch 137 of 500 took 4.020s
+Epoch 137/499
+----------
+train Loss: 0.46121475 Acc: 0.82659924
+Epoch 138 of 500 took 1.790s
+val Loss: 0.53336203 Acc: 0.858298
+New best validation loss: tensor(0.5334, device='cuda:0')
+Epoch 138 of 500 took 3.716s
+Epoch 138/499
+----------
+train Loss: 0.46072474 Acc: 0.82682991
+Epoch 139 of 500 took 1.805s
+val Loss: 0.52917057 Acc: 0.85819864
+New best validation loss: tensor(0.5292, device='cuda:0')
+Epoch 139 of 500 took 3.853s
+Epoch 139/499
+----------
+train Loss: 0.45849088 Acc: 0.8276639
+Epoch 140 of 500 took 1.755s
+val Loss: 0.53210366 Acc: 0.85561377
+Epoch 140 of 500 took 3.966s
+Epoch 140/499
+----------
+train Loss: 0.45875728 Acc: 0.82748646
+Epoch 141 of 500 took 1.789s
+val Loss: 0.53231031 Acc: 0.8570056
+Epoch 141 of 500 took 3.993s
+Epoch 141/499
+----------
+train Loss: 0.45867759 Acc: 0.82729131
+Epoch 142 of 500 took 1.786s
+val Loss: 0.53227627 Acc: 0.85737014
+Epoch 142 of 500 took 3.828s
+Epoch 142/499
+----------
+train Loss: 0.45711496 Acc: 0.8278591
+Epoch 143 of 500 took 1.778s
+val Loss: 0.52869558 Acc: 0.85862941
+New best validation loss: tensor(0.5287, device='cuda:0')
+Epoch 143 of 500 took 3.282s
+Epoch 143/499
+----------
+train Loss: 0.45931217 Acc: 0.82674122
+Epoch 144 of 500 took 1.727s
+val Loss: 0.52828622 Acc: 0.85786724
+New best validation loss: tensor(0.5283, device='cuda:0')
+Epoch 144 of 500 took 3.543s
+Epoch 144/499
+----------
+train Loss: 0.45998186 Acc: 0.8276462
+Epoch 145 of 500 took 1.768s
+val Loss: 0.52373081 Acc: 0.86088288
+New best validation loss: tensor(0.5237, device='cuda:0')
+Epoch 145 of 500 took 3.693s
+Epoch 145/499
+----------
+train Loss: 0.45717433 Acc: 0.82773489
+Epoch 146 of 500 took 1.846s
+val Loss: 0.52862513 Acc: 0.85803294
+Epoch 146 of 500 took 3.797s
+Epoch 146/499
+----------
+train Loss: 0.45663103 Acc: 0.82946503
+Epoch 147 of 500 took 1.799s
+val Loss: 0.53044087 Acc: 0.85823178
+Epoch 147 of 500 took 3.799s
+Epoch 147/499
+----------
+train Loss: 0.45755115 Acc: 0.82829386
+Epoch 148 of 500 took 1.767s
+val Loss: 0.52512306 Acc: 0.85889453
+Epoch 148 of 500 took 3.657s
+Epoch 148/499
+----------
+train Loss: 0.45762834 Acc: 0.82833821
+Epoch 149 of 500 took 1.813s
+val Loss: 0.52260387 Acc: 0.8603195
+New best validation loss: tensor(0.5226, device='cuda:0')
+Epoch 149 of 500 took 3.859s
+Epoch 149/499
+----------
+train Loss: 0.45508301 Acc: 0.82902139
+Epoch 150 of 500 took 1.828s
+val Loss: 0.53148353 Acc: 0.85723758
+Epoch 150 of 500 took 3.331s
+Epoch 150/499
+----------
+train Loss: 0.45632687 Acc: 0.82962471
+Epoch 151 of 500 took 1.774s
+val Loss: 0.52953529 Acc: 0.85813236
+Epoch 151 of 500 took 3.881s
+Epoch 151/499
+----------
+train Loss: 0.45677197 Acc: 0.82903916
+Epoch 152 of 500 took 1.833s
+val Loss: 0.52610701 Acc: 0.86025321
+Epoch 152 of 500 took 3.874s
+Epoch 152/499
+----------
+train Loss: 0.46023211 Acc: 0.82808977
+Epoch 153 of 500 took 1.778s
+val Loss: 0.52782440 Acc: 0.85727072
+Epoch 153 of 500 took 3.594s
+Epoch 153/499
+----------
+train Loss: 0.45632711 Acc: 0.82796556
+Epoch 154 of 500 took 1.780s
+val Loss: 0.52875715 Acc: 0.85876197
+Epoch 154 of 500 took 3.459s
+Epoch 154/499
+----------
+train Loss: 0.45733291 Acc: 0.82735342
+Epoch 155 of 500 took 1.808s
+val Loss: 0.52759129 Acc: 0.85985553
+Epoch 155 of 500 took 3.973s
+Epoch 155/499
+----------
+train Loss: 0.45451954 Acc: 0.82928753
+Epoch 156 of 500 took 1.799s
+val Loss: 0.52821726 Acc: 0.85942477
+Epoch 156 of 500 took 3.612s
+Epoch 156/499
+----------
+train Loss: 0.45741397 Acc: 0.82844466
+Epoch 157 of 500 took 1.823s
+val Loss: 0.52603763 Acc: 0.85932535
+Epoch 157 of 500 took 4.004s
+Epoch 157/499
+----------
+train Loss: 0.45957774 Acc: 0.82855117
+Epoch 158 of 500 took 1.764s
+val Loss: 0.52797961 Acc: 0.85707188
+Epoch 158 of 500 took 3.745s
+Epoch 158/499
+----------
+train Loss: 0.45879701 Acc: 0.82800996
+Epoch 159 of 500 took 1.761s
+val Loss: 0.52909374 Acc: 0.85793352
+Epoch 159 of 500 took 3.809s
+Epoch 159/499
+----------
+train Loss: 0.45562723 Acc: 0.82926095
+Epoch 160 of 500 took 1.783s
+val Loss: 0.52541220 Acc: 0.86051834
+Epoch 160 of 500 took 3.899s
+Epoch 160/499
+----------
+train Loss: 0.45408702 Acc: 0.82996184
+Epoch 161 of 500 took 1.704s
+val Loss: 0.52557635 Acc: 0.858298
+Epoch 161 of 500 took 3.597s
+Epoch 161/499
+----------
+train Loss: 0.45773509 Acc: 0.82790345
+Epoch 162 of 500 took 1.775s
+val Loss: 0.52423996 Acc: 0.86005437
+Epoch 162 of 500 took 3.756s
+Epoch 162/499
+----------
+train Loss: 0.45381951 Acc: 0.82918996
+Epoch 163 of 500 took 1.806s
+val Loss: 0.52515411 Acc: 0.85896081
+Epoch 163 of 500 took 3.672s
+Epoch 163/499
+----------
+train Loss: 0.45832750 Acc: 0.82734454
+Epoch 164 of 500 took 1.816s
+val Loss: 0.52251410 Acc: 0.86041892
+New best validation loss: tensor(0.5225, device='cuda:0')
+Epoch 164 of 500 took 3.799s
+Epoch 164/499
+----------
+train Loss: 0.45524937 Acc: 0.82884395
+Epoch 165 of 500 took 1.794s
+val Loss: 0.52723747 Acc: 0.85922593
+Epoch 165 of 500 took 3.294s
+Epoch 165/499
+----------
+train Loss: 0.45265779 Acc: 0.83070713
+Epoch 166 of 500 took 1.777s
+val Loss: 0.52992195 Acc: 0.85614401
+Epoch 166 of 500 took 4.035s
+Epoch 166/499
+----------
+train Loss: 0.45685071 Acc: 0.8287552
+Epoch 167 of 500 took 1.747s
+val Loss: 0.52510548 Acc: 0.86058462
+Epoch 167 of 500 took 3.667s
+Epoch 167/499
+----------
+train Loss: 0.45616385 Acc: 0.82851565
+Epoch 168 of 500 took 1.809s
+val Loss: 0.52684557 Acc: 0.85882825
+Epoch 168 of 500 took 3.579s
+Epoch 168/499
+----------
+train Loss: 0.45383298 Acc: 0.8299796
+Epoch 169 of 500 took 1.770s
+val Loss: 0.52460819 Acc: 0.85998809
+Epoch 169 of 500 took 3.586s
+Epoch 169/499
+----------
+train Loss: 0.45401272 Acc: 0.8309378
+Epoch 170 of 500 took 1.800s
+val Loss: 0.52174640 Acc: 0.85978931
+New best validation loss: tensor(0.5217, device='cuda:0')
+Epoch 170 of 500 took 4.155s
+Epoch 170/499
+----------
+train Loss: 0.45614734 Acc: 0.8282584
+Epoch 171 of 500 took 1.811s
+val Loss: 0.52326339 Acc: 0.85849684
+Epoch 171 of 500 took 3.728s
+Epoch 171/499
+----------
+train Loss: 0.45989364 Acc: 0.82694525
+Epoch 172 of 500 took 1.779s
+val Loss: 0.52541363 Acc: 0.86002123
+Epoch 172 of 500 took 3.593s
+Epoch 172/499
+----------
+train Loss: 0.45223716 Acc: 0.83051193
+Epoch 173 of 500 took 1.811s
+val Loss: 0.52561539 Acc: 0.85932535
+Epoch 173 of 500 took 3.853s
+Epoch 173/499
+----------
+train Loss: 0.45817274 Acc: 0.828143
+Epoch 174 of 500 took 1.805s
+val Loss: 0.52564073 Acc: 0.8613137
+Epoch 174 of 500 took 3.726s
+Epoch 174/499
+----------
+train Loss: 0.45572835 Acc: 0.82920772
+Epoch 175 of 500 took 1.751s
+val Loss: 0.52773708 Acc: 0.85896081
+Epoch 175 of 500 took 3.752s
+Epoch 175/499
+----------
+train Loss: 0.45651278 Acc: 0.82978439
+Epoch 176 of 500 took 1.754s
+val Loss: 0.52733654 Acc: 0.85763526
+Epoch 176 of 500 took 3.520s
+Epoch 176/499
+----------
+train Loss: 0.45406339 Acc: 0.82976669
+Epoch 177 of 500 took 1.779s
+val Loss: 0.52661675 Acc: 0.85995495
+Epoch 177 of 500 took 3.758s
+Epoch 177/499
+----------
+train Loss: 0.45449054 Acc: 0.82909238
+Epoch 178 of 500 took 1.833s
+val Loss: 0.52460754 Acc: 0.85896081
+Epoch 178 of 500 took 4.015s
+Epoch 178/499
+----------
+train Loss: 0.45473963 Acc: 0.83063614
+Epoch 179 of 500 took 1.770s
+val Loss: 0.52450413 Acc: 0.86051834
+Epoch 179 of 500 took 4.030s
+Epoch 179/499
+----------
+train Loss: 0.45436928 Acc: 0.82928753
+Epoch 180 of 500 took 1.774s
+val Loss: 0.52340609 Acc: 0.86061776
+Epoch 180 of 500 took 3.699s
+Epoch 180/499
+----------
+train Loss: 0.45640510 Acc: 0.82849795
+Epoch 181 of 500 took 1.738s
+val Loss: 0.52043349 Acc: 0.85942477
+New best validation loss: tensor(0.5204, device='cuda:0')
+Epoch 181 of 500 took 3.351s
+Epoch 181/499
+----------
+train Loss: 0.45498276 Acc: 0.82859552
+Epoch 182 of 500 took 1.722s
+val Loss: 0.52383095 Acc: 0.85869569
+Epoch 182 of 500 took 3.494s
+Epoch 182/499
+----------
+train Loss: 0.45578250 Acc: 0.82897705
+Epoch 183 of 500 took 1.753s
+val Loss: 0.52412027 Acc: 0.8604852
+Epoch 183 of 500 took 3.794s
+Epoch 183/499
+----------
+train Loss: 0.45467776 Acc: 0.82905686
+Epoch 184 of 500 took 1.785s
+val Loss: 0.52475804 Acc: 0.85972303
+Epoch 184 of 500 took 3.530s
+Epoch 184/499
+----------
+train Loss: 0.45583034 Acc: 0.82848018
+Epoch 185 of 500 took 1.830s
+val Loss: 0.52443308 Acc: 0.85945791
+Epoch 185 of 500 took 3.934s
+Epoch 185/499
+----------
+train Loss: 0.45356813 Acc: 0.83010381
+Epoch 186 of 500 took 1.793s
+val Loss: 0.52774084 Acc: 0.85856313
+Epoch 186 of 500 took 3.712s
+Epoch 186/499
+----------
+train Loss: 0.45426497 Acc: 0.83028126
+Epoch 187 of 500 took 1.750s
+val Loss: 0.52606380 Acc: 0.85770154
+Epoch 187 of 500 took 3.615s
+Epoch 187/499
+----------
+train Loss: 0.45464778 Acc: 0.82924318
+Epoch 188 of 500 took 1.760s
+val Loss: 0.52335554 Acc: 0.85968989
+Epoch 188 of 500 took 3.966s
+Epoch 188/499
+----------
+train Loss: 0.45409903 Acc: 0.82927871
+Epoch 189 of 500 took 1.732s
+val Loss: 0.52584797 Acc: 0.85975617
+Epoch 189 of 500 took 3.797s
+Epoch 189/499
+----------
+train Loss: 0.45626998 Acc: 0.82905686
+Epoch 190 of 500 took 1.738s
+val Loss: 0.52545613 Acc: 0.85906023
+Epoch 190 of 500 took 4.091s
+Epoch 190/499
+----------
+train Loss: 0.45357263 Acc: 0.8298465
+Epoch 191 of 500 took 1.815s
+val Loss: 0.52478492 Acc: 0.86025321
+Epoch 191 of 500 took 3.712s
+Epoch 191/499
+----------
+train Loss: 0.45143422 Acc: 0.83110636
+Epoch 192 of 500 took 1.730s
+val Loss: 0.52072459 Acc: 0.85992181
+Epoch 192 of 500 took 3.261s
+Epoch 192/499
+----------
+train Loss: 0.45018619 Acc: 0.83079582
+Epoch 193 of 500 took 1.668s
+val Loss: 0.51751584 Acc: 0.8616119
+New best validation loss: tensor(0.5175, device='cuda:0')
+Epoch 193 of 500 took 3.439s
+Epoch 193/499
+----------
+train Loss: 0.45402643 Acc: 0.83024579
+Epoch 194 of 500 took 1.751s
+val Loss: 0.52305692 Acc: 0.85839742
+Epoch 194 of 500 took 3.390s
+Epoch 194/499
+----------
+train Loss: 0.45178261 Acc: 0.83068937
+Epoch 195 of 500 took 1.695s
+val Loss: 0.52268320 Acc: 0.8608166
+Epoch 195 of 500 took 4.070s
+Epoch 195/499
+----------
+train Loss: 0.45768580 Acc: 0.82895929
+Epoch 196 of 500 took 1.700s
+val Loss: 0.52676082 Acc: 0.85939163
+Epoch 196 of 500 took 3.589s
+Epoch 196/499
+----------
+train Loss: 0.45126843 Acc: 0.83050305
+Epoch 197 of 500 took 1.709s
+val Loss: 0.52793366 Acc: 0.85760212
+Epoch 197 of 500 took 3.208s
+Epoch 197/499
+----------
+train Loss: 0.45365238 Acc: 0.83150566
+Epoch 198 of 500 took 1.699s
+val Loss: 0.52443808 Acc: 0.85703874
+Epoch 198 of 500 took 3.200s
+Epoch 198/499
+----------
+train Loss: 0.45064765 Acc: 0.83268565
+Epoch 199 of 500 took 1.690s
+val Loss: 0.52377182 Acc: 0.86051834
+Epoch 199 of 500 took 3.192s
+Epoch 199/499
+----------
+train Loss: 0.45049649 Acc: 0.83192265
+Epoch 200 of 500 took 1.698s
+val Loss: 0.52487820 Acc: 0.85886139
+Epoch 200 of 500 took 3.512s
+Epoch 200/499
+----------
+train Loss: 0.45229003 Acc: 0.83048534
+Epoch 201 of 500 took 1.699s
+val Loss: 0.52571404 Acc: 0.8581655
+Epoch 201 of 500 took 3.512s
+Epoch 201/499
+----------
+train Loss: 0.45277268 Acc: 0.8304587
+Epoch 202 of 500 took 1.765s
+val Loss: 0.52260607 Acc: 0.86025321
+Epoch 202 of 500 took 3.553s
+Epoch 202/499
+----------
+train Loss: 0.45450115 Acc: 0.83005947
+Epoch 203 of 500 took 1.817s
+val Loss: 0.52299309 Acc: 0.86075032
+Epoch 203 of 500 took 3.859s
+Epoch 203/499
+----------
+train Loss: 0.45309117 Acc: 0.83052969
+Epoch 204 of 500 took 1.828s
+val Loss: 0.51575094 Acc: 0.86406422
+New best validation loss: tensor(0.5158, device='cuda:0')
+Epoch 204 of 500 took 3.941s
+Epoch 204/499
+----------
+train Loss: 0.45202234 Acc: 0.8293674
+Epoch 205 of 500 took 1.787s
+val Loss: 0.52138364 Acc: 0.86022007
+Epoch 205 of 500 took 3.828s
+Epoch 205/499
+----------
+train Loss: 0.45369667 Acc: 0.83010381
+Epoch 206 of 500 took 1.859s
+val Loss: 0.51954240 Acc: 0.86075032
+Epoch 206 of 500 took 3.457s
+Epoch 206/499
+----------
+train Loss: 0.44828057 Acc: 0.83209121
+Epoch 207 of 500 took 1.780s
+val Loss: 0.52270752 Acc: 0.85896081
+Epoch 207 of 500 took 3.757s
+Epoch 207/499
+----------
+train Loss: 0.45170563 Acc: 0.8298288
+Epoch 208 of 500 took 1.727s
+val Loss: 0.52168757 Acc: 0.86071718
+Epoch 208 of 500 took 3.911s
+Epoch 208/499
+----------
+train Loss: 0.45352766 Acc: 0.83002394
+Epoch 209 of 500 took 1.776s
+val Loss: 0.51986313 Acc: 0.86250669
+Epoch 209 of 500 took 4.063s
+Epoch 209/499
+----------
+train Loss: 0.44916627 Acc: 0.83075148
+Epoch 210 of 500 took 1.806s
+val Loss: 0.51997244 Acc: 0.8606509
+Epoch 210 of 500 took 3.619s
+Epoch 210/499
+----------
+train Loss: 0.45183089 Acc: 0.83065391
+Epoch 211 of 500 took 1.734s
+val Loss: 0.52449298 Acc: 0.85945791
+Epoch 211 of 500 took 3.917s
+Epoch 211/499
+----------
+train Loss: 0.44917855 Acc: 0.8316831
+Epoch 212 of 500 took 1.786s
+val Loss: 0.52085388 Acc: 0.86244041
+Epoch 212 of 500 took 4.046s
+Epoch 212/499
+----------
+train Loss: 0.44869322 Acc: 0.83145243
+Epoch 213 of 500 took 1.775s
+val Loss: 0.52315909 Acc: 0.86045206
+Epoch 213 of 500 took 3.642s
+Epoch 213/499
+----------
+train Loss: 0.45024243 Acc: 0.8313548
+Epoch 214 of 500 took 1.778s
+val Loss: 0.52473253 Acc: 0.85985553
+Epoch 214 of 500 took 3.966s
+Epoch 214/499
+----------
+train Loss: 0.44939676 Acc: 0.83258808
+Epoch 215 of 500 took 1.835s
+val Loss: 0.52648771 Acc: 0.85803294
+Epoch 215 of 500 took 3.649s
+Epoch 215/499
+----------
+train Loss: 0.45395377 Acc: 0.82989085
+Epoch 216 of 500 took 1.725s
+val Loss: 0.52066082 Acc: 0.86028636
+Epoch 216 of 500 took 3.246s
+Epoch 216/499
+----------
+train Loss: 0.45036563 Acc: 0.83177179
+Epoch 217 of 500 took 1.749s
+val Loss: 0.52277386 Acc: 0.86012065
+Epoch 217 of 500 took 3.251s
+Epoch 217/499
+----------
+train Loss: 0.45315504 Acc: 0.83029902
+Epoch 218 of 500 took 1.764s
+val Loss: 0.52027923 Acc: 0.86038578
+Epoch 218 of 500 took 3.738s
+Epoch 218/499
+----------
+train Loss: 0.44870782 Acc: 0.83152336
+Epoch 219 of 500 took 1.804s
+val Loss: 0.52097857 Acc: 0.85975617
+Epoch 219 of 500 took 3.625s
+Epoch 219/499
+----------
+train Loss: 0.45238006 Acc: 0.83079582
+Epoch 220 of 500 took 1.762s
+val Loss: 0.52106076 Acc: 0.8619433
+Epoch   219: reducing learning rate of group 0 to 3.2377e-04.
+Epoch 220 of 500 took 3.715s
+Epoch 220/499
+----------
+train Loss: 0.44799882 Acc: 0.83130157
+Epoch 221 of 500 took 1.724s
+val Loss: 0.52391672 Acc: 0.86025321
+Epoch 221 of 500 took 3.651s
+Epoch 221/499
+----------
+train Loss: 0.45155585 Acc: 0.83108866
+Epoch 222 of 500 took 1.700s
+val Loss: 0.52487808 Acc: 0.86028636
+Epoch 222 of 500 took 3.225s
+Epoch 222/499
+----------
+train Loss: 0.45119166 Acc: 0.83130157
+Epoch 223 of 500 took 1.695s
+val Loss: 0.52334452 Acc: 0.86091602
+Epoch 223 of 500 took 3.216s
+Epoch 223/499
+----------
+train Loss: 0.44973245 Acc: 0.83225977
+Epoch 224 of 500 took 1.716s
+val Loss: 0.52456677 Acc: 0.85849684
+Epoch 224 of 500 took 3.757s
+Epoch 224/499
+----------
+train Loss: 0.45027983 Acc: 0.83332449
+Epoch 225 of 500 took 1.729s
+val Loss: 0.52014750 Acc: 0.86217529
+Epoch 225 of 500 took 3.837s
+Epoch 225/499
+----------
+train Loss: 0.45403951 Acc: 0.83014816
+Epoch 226 of 500 took 1.773s
+val Loss: 0.52125812 Acc: 0.86181074
+Epoch 226 of 500 took 3.749s
+Epoch 226/499
+----------
+train Loss: 0.44902101 Acc: 0.831967
+Epoch 227 of 500 took 1.720s
+val Loss: 0.51684999 Acc: 0.86386538
+Epoch 227 of 500 took 3.638s
+Epoch 227/499
+----------
+train Loss: 0.44771093 Acc: 0.83171856
+Epoch 228 of 500 took 1.752s
+val Loss: 0.52503633 Acc: 0.86137992
+Epoch 228 of 500 took 3.670s
+Epoch 228/499
+----------
+train Loss: 0.44889233 Acc: 0.83189601
+Epoch 229 of 500 took 1.756s
+val Loss: 0.52164608 Acc: 0.86181074
+Epoch 229 of 500 took 3.962s
+Epoch 229/499
+----------
+train Loss: 0.44798109 Acc: 0.83211786
+Epoch 230 of 500 took 1.755s
+val Loss: 0.51568782 Acc: 0.86353397
+New best validation loss: tensor(0.5157, device='cuda:0')
+Epoch 230 of 500 took 3.941s
+Epoch 230/499
+----------
+train Loss: 0.45266896 Acc: 0.8310709
+Epoch 231 of 500 took 1.786s
+val Loss: 0.52236867 Acc: 0.86167818
+Epoch 231 of 500 took 3.555s
+Epoch 231/499
+----------
+train Loss: 0.45286644 Acc: 0.83042324
+Epoch 232 of 500 took 1.771s
+val Loss: 0.51702356 Acc: 0.86323571
+Epoch 232 of 500 took 3.304s
+Epoch 232/499
+----------
+train Loss: 0.45082802 Acc: 0.83153224
+Epoch 233 of 500 took 1.805s
+val Loss: 0.52453631 Acc: 0.85945791
+Epoch 233 of 500 took 3.986s
+Epoch 233/499
+----------
+train Loss: 0.45166042 Acc: 0.83086681
+Epoch 234 of 500 took 1.731s
+val Loss: 0.52139968 Acc: 0.86137992
+Epoch 234 of 500 took 3.542s
+Epoch 234/499
+----------
+train Loss: 0.44997090 Acc: 0.8324461
+Epoch 235 of 500 took 1.819s
+val Loss: 0.51636332 Acc: 0.86340141
+Epoch 235 of 500 took 3.633s
+Epoch 235/499
+----------
+train Loss: 0.44728604 Acc: 0.83265907
+Epoch 236 of 500 took 1.796s
+val Loss: 0.51778603 Acc: 0.8606509
+Epoch 236 of 500 took 3.632s
+Epoch 236/499
+----------
+train Loss: 0.45049751 Acc: 0.83079582
+Epoch 237 of 500 took 1.756s
+val Loss: 0.51778591 Acc: 0.86310315
+Epoch 237 of 500 took 3.347s
+Epoch 237/499
+----------
+train Loss: 0.44919753 Acc: 0.83083135
+Epoch 238 of 500 took 1.739s
+val Loss: 0.52103198 Acc: 0.86141306
+Epoch 238 of 500 took 3.602s
+Epoch 238/499
+----------
+train Loss: 0.45262539 Acc: 0.83079582
+Epoch 239 of 500 took 1.710s
+val Loss: 0.51912671 Acc: 0.86002123
+Epoch 239 of 500 took 3.442s
+Epoch 239/499
+----------
+train Loss: 0.45045999 Acc: 0.83131933
+Epoch 240 of 500 took 1.748s
+val Loss: 0.52257895 Acc: 0.85975617
+Epoch 240 of 500 took 3.791s
+Epoch 240/499
+----------
+train Loss: 0.44813073 Acc: 0.83116847
+Epoch 241 of 500 took 1.804s
+val Loss: 0.52074474 Acc: 0.86045206
+Epoch 241 of 500 took 3.724s
+Epoch 241/499
+----------
+train Loss: 0.44791791 Acc: 0.83215332
+Epoch 242 of 500 took 1.840s
+val Loss: 0.52172863 Acc: 0.86088288
+Epoch 242 of 500 took 3.820s
+Epoch 242/499
+----------
+train Loss: 0.44998649 Acc: 0.83147901
+Epoch 243 of 500 took 1.801s
+val Loss: 0.51926810 Acc: 0.8617776
+Epoch 243 of 500 took 3.802s
+Epoch 243/499
+----------
+train Loss: 0.44862589 Acc: 0.83241951
+Epoch 244 of 500 took 1.802s
+val Loss: 0.52328736 Acc: 0.86071718
+Epoch 244 of 500 took 3.342s
+Epoch 244/499
+----------
+train Loss: 0.44741797 Acc: 0.83272117
+Epoch 245 of 500 took 1.759s
+val Loss: 0.51796657 Acc: 0.86015379
+Epoch 245 of 500 took 3.866s
+Epoch 245/499
+----------
+train Loss: 0.44705865 Acc: 0.83127499
+Epoch 246 of 500 took 1.798s
+val Loss: 0.52307582 Acc: 0.86025321
+Epoch   245: reducing learning rate of group 0 to 6.4753e-05.
+Epoch 246 of 500 took 3.613s
+Epoch 246/499
+----------
+train Loss: 0.44728270 Acc: 0.83214444
+Epoch 247 of 500 took 1.790s
+val Loss: 0.51835072 Acc: 0.8614462
+Epoch 247 of 500 took 3.770s
+Epoch 247/499
+----------
+train Loss: 0.44784677 Acc: 0.83328009
+Epoch 248 of 500 took 1.744s
+val Loss: 0.52090657 Acc: 0.85998809
+Epoch 248 of 500 took 3.930s
+Epoch 248/499
+----------
+train Loss: 0.44933742 Acc: 0.83296955
+Epoch 249 of 500 took 1.782s
+val Loss: 0.51832145 Acc: 0.86214215
+Epoch 249 of 500 took 3.290s
+Epoch 249/499
+----------
+train Loss: 0.44853401 Acc: 0.83090234
+Epoch 250 of 500 took 1.760s
+val Loss: 0.52465272 Acc: 0.85965675
+Epoch 250 of 500 took 3.965s
+Epoch 250/499
+----------
+train Loss: 0.44999886 Acc: 0.83198476
+Epoch 251 of 500 took 1.816s
+val Loss: 0.51946908 Acc: 0.86320257
+Epoch 251 of 500 took 3.997s
+Epoch 251/499
+----------
+train Loss: 0.45030621 Acc: 0.8297134
+Epoch 252 of 500 took 1.862s
+val Loss: 0.52156609 Acc: 0.86121428
+Epoch 252 of 500 took 3.363s
+Epoch 252/499
+----------
+train Loss: 0.44916898 Acc: 0.83167422
+Epoch 253 of 500 took 1.816s
+val Loss: 0.52083176 Acc: 0.86071718
+Epoch 253 of 500 took 4.076s
+Epoch 253/499
+----------
+train Loss: 0.44818407 Acc: 0.83233076
+Epoch 254 of 500 took 1.813s
+val Loss: 0.51947391 Acc: 0.8616119
+Epoch 254 of 500 took 3.626s
+Epoch 254/499
+----------
+train Loss: 0.44648275 Acc: 0.83331561
+Epoch 255 of 500 took 1.838s
+val Loss: 0.52020103 Acc: 0.86101544
+Epoch 255 of 500 took 3.654s
+Epoch 255/499
+----------
+train Loss: 0.44952711 Acc: 0.83151454
+Epoch 256 of 500 took 1.766s
+val Loss: 0.51755363 Acc: 0.86230785
+Epoch 256 of 500 took 3.632s
+Epoch 256/499
+----------
+train Loss: 0.44905052 Acc: 0.83261466
+Epoch 257 of 500 took 1.782s
+val Loss: 0.51791757 Acc: 0.86181074
+Epoch 257 of 500 took 3.621s
+Epoch 257/499
+----------
+train Loss: 0.44987291 Acc: 0.83139914
+Epoch 258 of 500 took 1.780s
+val Loss: 0.51846123 Acc: 0.86227471
+Epoch 258 of 500 took 3.280s
+Epoch 258/499
+----------
+train Loss: 0.44748259 Acc: 0.8329252
+Epoch 259 of 500 took 1.751s
+val Loss: 0.52098930 Acc: 0.86277181
+Epoch 259 of 500 took 3.565s
+Epoch 259/499
+----------
+train Loss: 0.45083508 Acc: 0.83193153
+Epoch 260 of 500 took 1.806s
+val Loss: 0.52126545 Acc: 0.86104858
+Epoch 260 of 500 took 3.672s
+Epoch 260/499
+----------
+train Loss: 0.44726172 Acc: 0.83288085
+Epoch 261 of 500 took 1.838s
+val Loss: 0.51865745 Acc: 0.86360025
+Epoch 261 of 500 took 3.878s
+
+Training complete in 16m 4s
+Best val loss: 0.515688

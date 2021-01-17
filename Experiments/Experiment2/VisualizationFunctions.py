@@ -256,7 +256,7 @@ def graphSyntheticData(resultsData, numberShots, iSample):
     ax1.plot(shot + iSample, AccLDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
     ax1.plot(shot + iSample, AccLDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
              linestyle=(0, (3, 3, 1, 3)))
-    ax1.plot(shot + iSample, AccLDAProp, label='Our technique', color='tab:blue')
+    ax1.plot(shot + iSample, AccLDAProp, label='Our classifier', color='tab:blue')
     ax1.set_title('LDA')
     ax1.grid()
     ax1.set_ylabel('accuracy')
@@ -266,7 +266,7 @@ def graphSyntheticData(resultsData, numberShots, iSample):
     ax2.plot(shot + iSample, AccQDALiu, label='Liu', markersize=sizeM, color='tab:green', linestyle=':')
     ax2.plot(shot + iSample, AccQDAVidovic, label='Vidovic', markersize=sizeM, color='tab:red',
              linestyle=(0, (3, 3, 1, 3)))
-    ax2.plot(shot + iSample, AccQDAProp, label='Our technique', color='tab:blue')
+    ax2.plot(shot + iSample, AccQDAProp, label='Our classifier', color='tab:blue')
     ax2.set_title('QDA')
     ax2.grid()
     ax2.set_ylabel('accuracy')
