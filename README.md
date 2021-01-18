@@ -29,7 +29,7 @@ Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 This database should import to the folder [data](Databases/CollectedData/allUsers_data/data). 
 
 
-In addition, the file [main](Databases/CollectedData) 
+In addition, the file [main](Databases/CollectedData/Detect muscle activity/main.m) 
 should be executed to only segment the gesture data using the detect-muscle-activity's technique proposed by the authors of 
 this [work](https://ieeexplore.ieee.org/document/8247458). 
 
