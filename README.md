@@ -27,7 +27,9 @@ Random [https://pypi.org/project/random2/](https://pypi.org/project/random2/)
 2. [Côté-Allard](https://github.com/UlysseCoteAllard/MyoArmbandDataset). This database should import to the folder [MyoArmbandDataset-master](Databases/MyoArmbandDataset-master).
 3. [EPN](https://ieeexplore.ieee.org/abstract/document/8903136/?casa_token=RYo5viuh6S8AAAAA:lizIpEqM4rK5eeo1Wxm-aPuDB20da2PngeRRnrC7agqSK1j26mqmtq5YJFLive7uW083m9tT). 
 This database should import to the folder [data](Databases/CollectedData/allUsers_data/data). 
-In addition, the file [main](Databases/CollectedData/Detect muscle activity) 
+
+
+In addition, the file [main](Databases/CollectedData) 
 should be executed to only segment the gesture data using the detect-muscle-activity's technique proposed by the authors of 
 this [work](https://ieeexplore.ieee.org/document/8247458). 
 
