@@ -43,7 +43,7 @@ The next steps were performed over a supercomputer in [NCI Gadi](http://nci.org.
 
 3. For the experiment 2, we run over Gadi one batch files ([Synthetic Data](Experiments/Experiment2/SyntheticRand_script.sh))
 
-4. For the experiment 3, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment3/Cote_CWT_NinaPro5/EVALUATE.sh), [CoteAllard](Experiments/Experiment3/Cote_CWT_Cote/EVALUATE.sh), and [EPN](Experiments/Experiment3/Cote_CWT_EPN/EVALUATE.sh).
+4. For the experiment 3, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment3/Cote_CWT_Nina5/EVALUATE.sh), [CoteAllard](Experiments/Experiment3/Cote_CWT_Cote/EVALUATE.sh), and [EPN](Experiments/Experiment3/Cote_CWT_EPN/EVALUATE.sh).
 
 #### NOTE
 
