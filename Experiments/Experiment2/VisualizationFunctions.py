@@ -103,7 +103,7 @@ def DataGenerator_TwoCL_TwoFeat_EXAMPLE(seed=1, samples=50, people=3, peopleSame
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
     fig1.tight_layout(pad=0.1)
-    plt.savefig("UserDistribution.png", bbox_inches='tight', dpi=600)
+    plt.savefig("FiguresPaper/UserDistribution.png", bbox_inches='tight', dpi=600)
     plt.show()
     return
 
@@ -129,6 +129,7 @@ def graphSyntheticDataALL(place):
     numberShots = 13
     iSample = 3
     idx = 0
+    figures = ['a', 'b', 'c', 'd']
     for peopleSimilar in [0, 1, 3, 5]:
         resultsData = pd.read_csv(place + 'Synthetic_peopleSimilar_' + str(peopleSimilar) + '.csv')
 
@@ -140,7 +141,7 @@ def graphSyntheticDataALL(place):
         ax[idx, 0].plot(xAxis, AccLDALiu[shotsSet], marker='o', label='Liu', color='tab:green')
         ax[idx, 0].plot(xAxis, AccLDAVidovic[shotsSet], marker='^', label='Vidovic', color='tab:red')
         ax[idx, 0].plot(xAxis, AccLDAProp[shotsSet], marker='v', label='Our classifier', color='tab:blue')
-        ax[idx, 0].set_ylabel('accuracy [%]')
+        ax[idx, 0].set_ylabel('figure ' + figures[idx] + '\n' + 'accuracy [%]')
         ax[idx, 0].xaxis.set_ticks([3, 5, 7, 10, 15])
         ax[idx, 0].yaxis.set_ticks(np.arange(50, 90, 10))
 
@@ -163,7 +164,7 @@ def graphSyntheticDataALL(place):
     ax[3, 1].set_xlabel('samples')
 
     fig.tight_layout()
-    plt.savefig("synthetic.png", bbox_inches='tight', dpi=600)
+    plt.savefig("FiguresPaper/synthetic.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 

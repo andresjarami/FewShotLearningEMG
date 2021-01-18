@@ -50,7 +50,7 @@ def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
         vectOurLDA295 = np.zeros(shots)
         vectCote = np.zeros(shots)
         for s in range(1, shots + 1):
-            place = placeCote + "Cote_CWT_" + base + "/"
+            place = placeCote + "Cote_CWT_" + base + "/results/"
             cote = pd.read_csv(place + "Pytorch_results_" + str(s) + "_cycles.csv", header=None)
             coteResults = []
 
@@ -89,9 +89,9 @@ def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
         ax[idx].set_title(title)
         idx += 1
 
-    ax[2].legend(loc='lower center', bbox_to_anchor=(2, -1.5), ncol=3)
+    # ax[2].legend(loc='lower center', bbox_to_anchor=(2, -1.5), ncol=3)
     fig.tight_layout(pad=0.1)
-    plt.savefig("coteAcc.png", bbox_inches='tight', dpi=600)
+    plt.savefig("FiguresPaper/coteAcc.png", bbox_inches='tight', dpi=600)
     plt.show()
 
     return
@@ -250,7 +250,7 @@ def AnalysisFriedman(placeOur260, placeOur295, placeCote, featureSet):
         DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295', featureSet=featureSet)
 
         for s in range(1, shots + 1):
-            place = placeCote + "Cote_CWT_" + base + "/"
+            place = placeCote + "Cote_CWT_" + base + "/results/"
             cote = pd.read_csv(place + "Pytorch_results_" + str(s) + "_cycles.csv", header=None)
             coteResults = []
 
@@ -278,15 +278,15 @@ def AnalysisFriedman(placeOur260, placeOur295, placeCote, featureSet):
                 (vectOurQDA295, DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s)].values * 100))
             vectCote = np.hstack((vectCote, coteResults))
     #Analysis with a window size of 260ms
-    print('\n\nANALYSIS OF WINDOW SIZE 260ms')
+    print('\n\nANALYSIS OF WINDOW 260ms')
     dataFrame_Friedman_Holm(pd.DataFrame(
         data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260,'vectCote': vectCote}))
     # Analysis with a window size of 295ms
-    print('\n\nANALYSIS OF WINDOW SIZE 295ms')
+    print('\n\nANALYSIS OF WINDOW 295ms')
     dataFrame_Friedman_Holm(pd.DataFrame(
         data={'vectOurLDA295': vectOurLDA295, 'vectOurQDA295': vectOurQDA295, 'vectCote': vectCote}))
     # Analysis with all window sizes
-    print('\n\nANALYSIS OF ALL WINDOW SIZES')
+    print('\n\nANALYSIS BOTH WINDOWS (260ms AND 295ms)')
     dataFrame_Friedman_Holm(dataFrame = pd.DataFrame(
         data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260, 'vectOurLDA295': vectOurLDA295,
               'vectOurQDA295': vectOurQDA295, 'vectCote': vectCote}))
