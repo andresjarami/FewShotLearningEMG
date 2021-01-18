@@ -189,7 +189,7 @@ for database in ['Nina5', 'Cote', 'EPN']:
         incrmentSamples = windowSamples - int(overlap * sampleRate / 1000)
 
         for person in range(1, people + 1):
-            aux = scipy.io.loadmat('../data/ninaDB5/s' + str(person) + '/S' + str(person) + '_E2_A1.mat')
+            aux = scipy.io.loadmat('../Databases/ninaDB5/s' + str(person) + '/S' + str(person) + '_E2_A1.mat')
             auxEMG = aux['emg']
             auxRestimulus = aux['restimulus']
 
@@ -345,7 +345,7 @@ for database in ['Nina5', 'Cote', 'EPN']:
 
         def emgMatrix(ty, gender, person, carpet, number):
             myarray = np.fromfile(
-                '../data/MyoArmbandDataset-master/' + ty + '/' + gender + str(person) + '/' + carpet + '/classe_' + str(
+                '../Databases/MyoArmbandDataset-master/' + ty + '/' + gender + str(person) + '/' + carpet + '/classe_' + str(
                     number) + '.dat', dtype=np.int16)
             myarray = np.array(myarray, dtype=np.float32)
             emg = np.reshape(myarray, (int(len(myarray) / 8), 8))
@@ -498,7 +498,7 @@ for database in ['Nina5', 'Cote', 'EPN']:
                 for cl in range(1, classes + 1):
                     for rp in range(1, rpt + 1):
                         aux = scipy.io.loadmat(
-                            '../data/CollectedData/detectedData/emg_person' + str(person) + '_class' + str(
+                            '../Databases/CollectedData/detectedData/emg_person' + str(person) + '_class' + str(
                                 cl) + '_rpt' + str(
                                 rp) + '_type' + str(ty) + '.mat')
                         auxEMG = aux['emg']
