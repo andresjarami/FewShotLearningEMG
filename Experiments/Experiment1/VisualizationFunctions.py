@@ -206,10 +206,10 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
     ax[1, 0].set_ylabel('Côté-Allard\naccuracy [%]')
     ax[2, 0].set_ylabel('EPN \naccuracy [%]')
 
-    ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
+    # ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
 
     fig.tight_layout(pad=0.1)
-    plt.savefig("acc.png", bbox_inches='tight', dpi=600)
+    plt.savefig("FiguresPaper/acc.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -436,7 +436,7 @@ def largeDatabase(results, featureSet):
     # ax[0].legend(loc='lower center', bbox_to_anchor=(1.2, -1.2), ncol=2)
 
     fig.tight_layout(pad=1)
-    plt.savefig("largeDatabase.png", bbox_inches='tight', dpi=600)
+    plt.savefig("FiguresPaper/largeDatabase.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -547,7 +547,7 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
     ax[0].set_axisbelow(True)
 
     vectPreprocessingTime*=300
-    ax[0].bar(xAxis, vectExtractionTime, width, label='Feature extraction Time')
+    ax[0].bar(xAxis, vectExtractionTime, width, label='Feature-extraction Time')
     ax[0].bar(xAxis, vectPreprocessingTime, width, bottom=vectExtractionTime, label='Pre-processing Time')
     ax[0].bar(xAxis, vectClassificationTime, width, bottom=vectExtractionTime+vectPreprocessingTime, yerr=vectAnalysisTimeSTD, label='Classification Time')
 
@@ -565,7 +565,7 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
     ax[1].bar(xAxis, vectTrainingTime, width,yerr=vectTrainingTimeSTD, label='Training Time',color='tab:red')
     ax[1].set_xlabel('Our classifiers over the three databases')
     ax[1].set_ylabel('time (min)')
-    ax[1].set_title('Training Time using our technique')
+    ax[1].set_title('Our classifiers\' Training Time')
     ax[1].set_xticks(xAxis)
     ax[1].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN','QDA_EPN'],rotation=20)
     # ax[1].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
