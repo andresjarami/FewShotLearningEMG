@@ -1,6 +1,6 @@
 # ignore these folders:
-/.ipynb_checkpoints
-/.idea
+**/.ipynb_checkpoints
+**/.idea
 **/__pycache__
 **/results/**
 **/data/**
