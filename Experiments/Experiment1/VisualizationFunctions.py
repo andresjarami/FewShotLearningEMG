@@ -466,6 +466,7 @@ def analysisTime(extractionTime, timeOurTechnique):
                   round(np.sqrt((extractionTime.loc[featureSet, :].var() + timeOurTechnique.loc[
                       featureSet + 1, 'varCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'varNorm'] / 1000)), 2))
 
+
 def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeOurTechniqueC, extractionTimeE,
                       timeOurTechniqueE):
 
@@ -531,7 +532,7 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
             idx+=1
 
     print('Training Time [min]',vectTrainingTime)
-    print('Training Time [min] STD',vectTrainingTimeSTD,'\n\n\n')
+    print('Training Time [min] STD',vectTrainingTimeSTD,'\n')
     print('Feature extraction Time [ms]',vectExtractionTime)
     print('Feature extraction Time [ms] STD',vectExtractionTimeSTD)
     print('Pre-processing Time [ms]',vectPreprocessingTime)
@@ -556,7 +557,7 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
     ax[0].set_title('Data-Analysis Time')
     ax[0].set_xticks(xAxis)
     ax[0].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN','QDA_EPN'],rotation=20)
-    # ax[0].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
+    # ax[0].legend(loc='lower center', bbox_to_anchor=(2, -1), ncol=5)
 
 
     ax[1].grid(color='gainsboro', linewidth=1)
@@ -568,9 +569,9 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
     ax[1].set_title('Our classifiers\' Training Time')
     ax[1].set_xticks(xAxis)
     ax[1].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN','QDA_EPN'],rotation=20)
-    # ax[1].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
+    # ax[1].legend(loc='lower center', bbox_to_anchor=(2, -1), ncol=5)
 
     fig.tight_layout(pad=1)
-    plt.savefig("times.png", bbox_inches='tight', dpi=600)
+    plt.savefig("FiguresPaper/times.png", bbox_inches='tight', dpi=600)
 
     plt.show()
