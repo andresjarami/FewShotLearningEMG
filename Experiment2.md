@@ -1,41 +1,71 @@
 # Experiment 2
 
-We use a synthetic database to evaluate how negative transfer learning affects the accuracy of DA classifiers using adaptation techniques. Using prior knowledge, the adaptation techniques, shown in the previous experiment, assist in training a DA classifier (target classifier) for a new user (target user). The prior knowledge is given by DA classifiers (source classifiers) trained by other users (source users). We develop a synthetic database using a Gaussian random number generator to simulate a classification problem of two classes and two features for each user.
-The following figure shows the data to train the target classifier and the source classifiers. The data from a different user are not overlapped to the target user’s data. Different users represent negative transfer learning because their data is divergent to the target user’s data. The data from a similar user contribute to the target classifier’s training because they are overlapped to the target user’s data.
+To evaluate how negative transfer learning affects the three
+adaptive classifiers' accuracy, we use a synthetic database
+to simulate source and target users. Each user is represented
+as a binary classification problem (two classes and two
+features) using Gaussian random data generators, as
+illustrated an example in the following figure.
 
-## Import the library developed to visualize the results
+We group the source users into users who contribute
+(similar users) and do not contribute (different users)
+to the classifier's training for a target user. We assume
+that the different-user data represent negative transfer
+learning because they are not overlapped to the target-user
+data, whereas the similar-user data are.
+
+ Import the library developed to visualize the results
 
 
 ```python
 import Experiments.Experiment2.VisualizationFunctions as VF2
 ```
 
-## Gaussian Randomly Generated Data for a Different, Similar, and Target user (2 Classes and 2 Features)
+*Gaussian Randomly Generated Data for a Different, Similar,
+and Target user (2 Classes and 2 Features)*
 
 
 ```python
-VF2.DataGenerator_TwoCL_TwoFeatEXAMPLE()
+VF2.DataGenerator_TwoCL_TwoFeat_EXAMPLE()
 ```
 
 
 ![png](output_4_0.png)
 
 
-## Adaptation techniques’ Accuracy vs. the Number of samples in the Target Training Set.
+*Adaptation techniques’ Accuracy vs. the Number of samples
+in the Target Training Set*
 
-For a target user and 20 source users, the following figure shows the accuracy of DA classifiers using the adaptation techniques and the accuracy of a non-adaptive DA classifier (individual classifier). When the prior-learned knowledge is obtained
-by 20 classifiers trained only by different users (zero similar users), our adaptation technique’s accuracy is equal to the
-accuracy of the individual classifier. However, when there is at least one classifier trained by one similar user in the
-prior-learned knowledge, the accuracy of our adaptation technique is higher than the accuracy of all other classifiers.
-Therefore, our technique minimises negative transfer learning because its accuracy is not affected by classifiers trained
-by different users. Techniques by [Liu](https://ieeexplore.ieee.org/abstract/document/6985518/?casa_token=H9vZpl9IcF8AAAAA:Iom6Q55n9FSn-G9CqqS6bxQzzho7vvb0OtQPdgZMQBOuNo5HwCHZSh0wddgdSp6V3q_pFsSJ) and [Vidovic](https://ieeexplore.ieee.org/abstract/document/7302056/?casa_token=3KVFZed5PzoAAAAA:rQJutibAYMQ_Za4ZSNEee6VIR59ZlWlt9o6_MKLFY2GKq2_zgYBkFPqs5UhrFCvMyP41SBbJ) are affected by negative transfer learning, with their accuracy close to a random classifier, in some cases.
+The following figure illustrates the accuracy of the individual
+classifier and the three adaptive classifiers, which take
+advantage of 20 source classifiers trained with source-user
+data from 20 simulated users. When all source users are
+different, as illustrated in the figure(a), our classifier's
+accuracy is equal to the individual classifier's one.
+Therefore, our technique avoids negative transfer learning.
+By contrast, Liu and Vidovic classifiers' accuracy is
+negatively affected; even their performance is close to
+a random classifier. For example, we can notice the Liu
+and Vidovic classifiers also fail to avoid the negative
+transfer learning because their accuracy in some cases is
+less than the individual classifier's accuracy.
+
+Additionally, when some source users are similar,
+as shown in the figures (b-d), our classifier's performance
+is better than the other three classifiers' ones because
+our technique takes advantage of similar users to assist the
+training.
+
+Legend of the next figure: individual classifier (orange),
+Liu classifier (green), Vidovic classifier (red), and
+our classifier (blue).
 
 
 ```python
-placeDataSyntheticResults = 'Experiments/Experiment2/ResultsExp2/results'
+placeDataSyntheticResults = 'Experiments/Experiment2/results/results'
 VF2.graphSyntheticDataALL(placeDataSyntheticResults)
 ```
 
 
-![png](output_6_0.png)
+![png](output_8_0.png)
 
