@@ -498,7 +498,7 @@ for database in ['Nina5', 'Cote', 'EPN']:
                 for cl in range(1, classes + 1):
                     for rp in range(1, rpt + 1):
                         aux = scipy.io.loadmat(
-                            '../Databases/CollectedData/detectedData/emg_person' + str(person) + '_class' + str(
+                            '../Databases/CollectedData/allUsers_data/detectedData/emg_person' + str(person) + '_class' + str(
                                 cl) + '_rpt' + str(
                                 rp) + '_type' + str(ty) + '.mat')
                         auxEMG = aux['emg']
