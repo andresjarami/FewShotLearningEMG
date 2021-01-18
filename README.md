@@ -39,7 +39,7 @@ To reproduce our experiments, please perform the following steps:
 
 The next steps were performed over a supercomputer in [NCI Gadi](http://nci.org.au/our-services/supercomputing). The characteristics of Gadi are Intel Xeon Platinum 8274 (Cascade Lake), two physical processors per node, 3.2 GHz clock speed, and 48 cores per node. Documentation for NCI Gadi can be found [here](https://opus.nci.org.au/display/Help/Gadi+User+Guide)
 
-2. For the experiment 1, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment1/Nina5_scriptNew.sh), [CoteAllard](Experiments/Experiment1/Cote_script.sh), and [EPN](Experiments/Experiment1/EPN_script.sh).
+2. For the experiment 1, we run over Gadi three batch files (one per database): [NinaPro5](Experiments/Experiment1/Nina5_PBS.sh), [CoteAllard](Experiments/Experiment1/Cote_PBS.sh), and [EPN](Experiments/Experiment1/EPN_PBS.sh).
 
 3. For the experiment 2, we run over Gadi one batch files ([Synthetic Data](Experiments/Experiment2/SyntheticRand_script.sh))
 
