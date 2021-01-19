@@ -7,7 +7,7 @@
 #PBS -l software=python
 #PBS -l wd
 
-folder="Results/"
+folder="results/"
 database="EPN"
 windowSize="295"
 for j in {1..3}
