@@ -52,7 +52,7 @@ The next three steps were performed over a supercomputer in [NCI Gadi](http://nc
 The implementations of our adaptation technique, and the [Liu](https://ieeexplore.ieee.org/abstract/document/6985518/?casa_token=H9vZpl9IcF8AAAAA:Iom6Q55n9FSn-G9CqqS6bxQzzho7vvb0OtQPdgZMQBOuNo5HwCHZSh0wddgdSp6V3q_pFsSJ) and [Vidovic](https://ieeexplore.ieee.org/abstract/document/7302056/?casa_token=3KVFZed5PzoAAAAA:rQJutibAYMQ_Za4ZSNEee6VIR59ZlWlt9o6_MKLFY2GKq2_zgYBkFPqs5UhrFCvMyP41SBbJ) methods are in the [DA_BasedAdaptiveModels](Experiments/Experiment1/DA_BasedAdaptiveModels.py) python file. In addition, the [CoteAllard implementation](Experiments/Experiment3) used in experiment 3 is a version of the original one, which you can find [here](https://github.com/UlysseCoteAllard/MyoArmbandDataset). We only modified the files used to load the data in order to use the three databases and evaluate using the Friedman rank and Holm Post-Hoc tests (the convolutional neural networks and the transfer learning technique did not modify).
 
 ## Visualization of the three experiments:
-After the experiments' execution, we use Jupyter notebooks to analyze and develop the graphs presented in the paper. In the anonymous git repository, the Jupyter notebooks may not render correctly, so we include markdown files of the three notebooks.
+After the experiments' execution, we use Jupyter notebooks to analyze and develop the graphs presented in the paper. In the anonymous git repository, the Jupyter notebooks do not render correctly, so we include markdown files of the three notebooks.
 
 [Experiment 1](Experiment1.ipynb) (jupyter notebook) or [Experiment 1](MarkdownExperiments/Experiment1.md) (markdown file)
 
