@@ -7,7 +7,7 @@
 #PBS -l software=python
 #PBS -l wd
  
-folder="ResultsExp2/"
+folder="results/"
 for i in {0,1,3,5,10,15,20}
 do	
 	for j in {0..99}
