@@ -123,7 +123,7 @@ def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFea
             personCov = preTrainedMatrix_Class['cov'].loc[i]
             wPeopleMean[i] = weightPerPersonMean(currentValues, personMean, cla, classes
                                                       , trainFeatures, trainLabels, step, typeModel)
-            wPeopleCov[i] = weightPerPersonMeanCov(currentValues, personCov, cla, classes
+            wPeopleCov[i] = weightPerPersonCov(currentValues, personCov, cla, classes
                                                     , trainFeatures, trainLabels, step, typeModel)
 
         sumWMean = np.sum(wPeopleMean)
@@ -168,7 +168,7 @@ def weightPerPersonMean(currentValues, personMean, currentClass, classes, trainF
     return weight
 
 
-def weightPerPersonMeanCov(currentValues, personCov, currentClass, classes, trainFeatures, trainLabels, step,
+def weightPerPersonCov(currentValues, personCov, currentClass, classes, trainFeatures, trainLabels, step,
                             typeModel):
     personValues = currentValues.copy()
     personValues['cov'].at[currentClass] = personCov
