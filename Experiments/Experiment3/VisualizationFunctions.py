@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-import Experiments.Experiment1.VisualizationFunctions as VF1
 from scipy import stats
 import ast
 
