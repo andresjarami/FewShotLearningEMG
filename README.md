@@ -53,8 +53,8 @@ The implementations of our adaptation technique, and the [Liu](https://ieeexplor
 ## Visualization of the three experiments:
 After the experiments' execution, we use Jupyter notebooks to analyze and develop the graphs presented in the paper. In the anonymous git repository, the Jupyter notebooks do not render correctly, so we include markdown files of the three notebooks.
 
-[Experiment 1](Experiment1.ipynb) (jupyter notebook) or [Experiment 1](MarkdownExperiments/Experiment1.md) (markdown file)
+[Experiment 1](Experiment1.ipynb) (jupyter notebook) or [Experiment 1](Experiments_in_Markdown/Experiment1.md) (markdown file)
 
-[Experiment 2](Experiment2.ipynb) (jupyter notebook) or [Experiment 2](MarkdownExperiments/Experiment2.md) (markdown file)
+[Experiment 2](Experiment2.ipynb) (jupyter notebook) or [Experiment 2](Experiments_in_Markdown/Experiment2.md) (markdown file)
 
-[Experiment 3](Experiment3.ipynb) (jupyter notebook) or [Experiment 3](MarkdownExperiments/Experiment3.md) (markdown file)
+[Experiment 3](Experiment3.ipynb) (jupyter notebook) or [Experiment 3](Experiments_in_Markdown/Experiment3.md) (markdown file)
