@@ -5,9 +5,7 @@
 **/results/**
 **/data/**
 **/detectedData/**
-**/ExtractedDataCollectedData/**
-**/ExtractedDataCoteAllard/**
-**/ExtractedDataNinaDB5/**
+**/examples/**
 **/FiguresPaper/**
 **.log
 **.pt

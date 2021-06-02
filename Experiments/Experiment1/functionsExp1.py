@@ -1,40 +1,62 @@
-#%% Libraries
+# %% Libraries
 import Experiments.Experiment1.DA_BasedAdaptiveModels as adaptive
 import Experiments.Experiment1.DA_Classifiers as DA_Classifiers
 import numpy as np
 import pandas as pd
 import math
 from sklearn import preprocessing
+from sklearn.decomposition import PCA
 
 
-#%% Upload Databases
+# %% Upload Databases
 
 def uploadDatabases(Database, featureSet, windowSize):
     # Setting general variables
     path = '../../'
-    CH = 8
 
     if Database == 'EPN':
         carpet = 'ExtractedDataCollectedData'
         classes = 5
         peoplePriorK = 30
         peopleTest = 30
-        combinationSet = list(range(1, 26))
-        numberShots = 25
+        numberShots = 50
+        CH = 8
     elif Database == 'Nina5':
         carpet = 'ExtractedDataNinaDB5'
         classes = 18
         peoplePriorK = 10
         peopleTest = 10
-        combinationSet = list(range(1, 5))
-        numberShots = 4
+        numberShots = 6
+        CH = 8
+    elif Database == 'Nina3':
+        carpet = 'ExtractedDataNinaDB3'
+        classes = 18
+        peoplePriorK = 11
+        peopleTest = 11
+        numberShots = 6
+        CH = 8
     elif Database == 'Cote':
         carpet = 'ExtractedDataCoteAllard'
         classes = 7
         peoplePriorK = 19
         peopleTest = 17
-        combinationSet = list(range(1, 5))
         numberShots = 4
+        CH = 8
+    elif Database == 'Capgmyo_dba':
+        carpet = 'ExtractedDataCapgmyo_dba'
+        classes = 8
+        peoplePriorK = 18
+        peopleTest = 18
+        numberShots = 10
+        CH = 128
+    elif Database == 'Capgmyo_dbc':
+        carpet = 'ExtractedDataCapgmyo_dbc'
+        classes = 12
+        peoplePriorK = 10
+        peopleTest = 10
+        numberShots = 10
+        CH = 128
+    combinationSet = list(range(1, numberShots + 1))
 
     if featureSet == 1:
         # Setting variables
@@ -55,6 +77,9 @@ def uploadDatabases(Database, featureSet, windowSize):
             dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
             dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
             labelsDataMatrix = dataMatrix[:, allFeatures + 3]
+        elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc':
+            dataMatrix = logvarMatrix[:, :]
+            labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
     elif featureSet == 2:
         # Setting variables
@@ -86,6 +111,9 @@ def uploadDatabases(Database, featureSet, windowSize):
             dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
             dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
             labelsDataMatrix = dataMatrix[:, allFeatures + 3]
+        elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc':
+            dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:]))
+            labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
     elif featureSet == 3:
         # Setting variables
@@ -119,11 +147,14 @@ def uploadDatabases(Database, featureSet, windowSize):
             dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
             dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
             labelsDataMatrix = dataMatrix[:, allFeatures + 3]
+        elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc':
+            dataMatrix = np.hstack((lscaleMatrix[:, 0:CH], mflMatrix[:, 0:CH], msrMatrix[:, 0:CH], wampMatrix[:, 0:]))
+            labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
     return dataMatrix, numberFeatures, CH, classes, peoplePriorK, peopleTest, numberShots, combinationSet, allFeatures, labelsDataMatrix
 
 
-#%% EVALUATION OVER THE THREE DATABASES
+# %% EVALUATION OVER THE THREE DATABASES
 
 
 def evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
@@ -133,15 +164,118 @@ def evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameF
     if typeDatabase == 'EPN':
         evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                       allFeatures, printR, scaler)
-    elif typeDatabase == 'Nina5':
-        evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
+    elif typeDatabase == 'Nina5' or typeDatabase == 'Nina3':
+        evaluationNina(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                         allFeatures, printR, scaler)
     elif typeDatabase == 'Cote':
         evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                        allFeatures, printR, scaler)
+    elif typeDatabase == 'Capgmyo_dba' or typeDatabase == 'Capgmyo_dbc':
+        evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
+                          allFeatures, printR, scaler)
 
 
-#%% EPN
+# %% Capgmyo
+def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
+                      startPerson, endPerson, allFeatures, printR, scaler):
+    # Creating Variables
+
+    results = pd.DataFrame(
+        columns=['person', 'subset', '# shots', 'Feature Set'])
+
+    idx = 0
+
+    for person in range(startPerson, endPerson + 1):
+
+        trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), 0:allFeatures][0]
+        trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), allFeatures + 1][0]
+
+        # 4 cycles - cross_validation for 4 cycles
+        numberShots2Test = 7
+        for shot in range(1, numberShots2Test + 1):
+            for seed in range(20):
+                np.random.seed(seed)
+                testGestures = []
+                trainGestures = []
+
+                for cla in range(1, classes + 1):
+                    repetitions = np.random.choice(numberShots, numberShots, replace=False) + 1
+                    testGestures += [[shot, cla] for shot in repetitions[shot:]]
+                    trainGestures += [[shot, cla] for shot in repetitions[:shot]]
+
+                trainFeatures = np.empty((0, allFeatures))
+                trainLabels = []
+                for rand in list(trainGestures):
+                    trainFeatures = np.vstack((
+                        trainFeatures, dataMatrix[(dataMatrix[:, allFeatures] == person) & (
+                                dataMatrix[:, allFeatures + 1] == rand[1]) & (
+                                                          dataMatrix[:, allFeatures + 2] == rand[0]),
+                                       0:allFeatures]))
+                    trainLabels = np.hstack((trainLabels, dataMatrix[(dataMatrix[:, allFeatures] == person) & (
+                            dataMatrix[:, allFeatures + 1] == rand[1]) & (dataMatrix[:, allFeatures + 2] == rand[0]),
+                                                                     allFeatures + 1].T))
+
+                testFeatures = np.empty((0, allFeatures))
+                testLabels = []
+                for rand in list(testGestures):
+                    testFeatures = np.vstack((
+                        testFeatures, dataMatrix[(dataMatrix[:, allFeatures] == person) & (
+                                dataMatrix[:, allFeatures + 1] == rand[1]) & (
+                                                         dataMatrix[:, allFeatures + 2] == rand[0]),
+                                      0:allFeatures]))
+                    testLabels = np.hstack((testLabels, dataMatrix[(dataMatrix[:, allFeatures] == person) & (
+                            dataMatrix[:, allFeatures + 1] == rand[1]) & (dataMatrix[:, allFeatures + 2] == rand[0]),
+                                                                   allFeatures + 1].T))
+
+                trainFeaturesGen = np.vstack((trainFeaturesGenPre, trainFeatures))
+                trainLabelsGen = np.hstack((trainLabelsGenPre, trainLabels))
+
+                k = 1 - (np.log(shot) / np.log(numberShots + 1))
+
+                trainFeatures = scaler.fit_transform(trainFeatures)
+                trainFeaturesGen = scaler.transform(trainFeaturesGen)
+                testFeatures = scaler.transform(testFeatures)
+
+                print('features before', np.size(dataMatrix[:, 0:allFeatures], axis=1))
+                pca = PCA(n_components=0.99, svd_solver='full')
+                trainFeatures = pca.fit_transform(trainFeatures)
+                trainFeaturesGen = pca.transform(trainFeaturesGen)
+                testFeatures = pca.transform(testFeatures)
+
+                dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca)
+                print('features after', allFeaturesPK)
+                preTrainedDataMatrix = preTrainedDataCapgmyo(dataPK, classes, peoplePriorK, person, allFeaturesPK)
+                currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
+                pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
+                results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
+                                                classes, allFeaturesPK, results, testFeatures, testLabels, idx,
+                                                person, trainGestures, featureSet, nameFile, printR, k, pkValues)
+
+    return results
+
+
+def preTrainedDataCapgmyo(dataMatrix, classes, peoplePriorK, evaluatedPerson, allFeatures):
+    preTrainedDataMatrix = pd.DataFrame(columns=['mean', 'cov', 'class', 'person'])
+
+    indx = 0
+    for cl in range(1, classes + 1):
+
+        for person in range(1, peoplePriorK + 1):
+            if evaluatedPerson != person:
+                preTrainedDataMatrix.at[indx, 'cov'] = np.cov(dataMatrix[np.where(
+                    (dataMatrix[:, allFeatures] == person) * (dataMatrix[:, allFeatures + 1] == cl)), 0:allFeatures][0],
+                                                              rowvar=False)
+                preTrainedDataMatrix.at[indx, 'mean'] = np.mean(dataMatrix[np.where(
+                    (dataMatrix[:, allFeatures] == person) * (dataMatrix[:, allFeatures + 1] == cl)), 0:allFeatures][0],
+                                                                axis=0)
+                preTrainedDataMatrix.at[indx, 'class'] = cl
+                preTrainedDataMatrix.at[indx, 'person'] = person
+                indx += 1
+
+    return preTrainedDataMatrix
+
+
+# %% EPN
 def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                   allFeatures, printR, scaler):
     results = pd.DataFrame(
@@ -160,7 +294,8 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, na
                 dataMatrix[:, allFeatures + 1] == person)), allFeatures + 2][0]
 
         typeData = 0
-        for shot in range(1, numberShots + 1):
+        numberShots2Test = 25
+        for shot in range(1, numberShots2Test + 1):
 
             subset = tuple(range(1, shot + 1))
 
@@ -190,7 +325,7 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, na
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
             testFeaturesTransform = scaler.transform(testFeatures)
 
-            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
+            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca=0)
 
             preTrainedDataMatrix = preTrainedDataEPN(dataPK, classes, peoplePriorK, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -222,7 +357,7 @@ def preTrainedDataEPN(dataMatrix, classes, peoplePriorK, allFeatures):
     return preTrainedDataMatrix
 
 
-#%% Cote-Allard
+# %% Cote-Allard
 
 def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                    allFeatures, printR, scaler):
@@ -249,7 +384,8 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, n
 
         carpet = 1
         # 4 cycles - cross_validation for 4 cycles or shots
-        for shot in range(1, numberShots + 1):
+        numberShots2Test=4
+        for shot in range(1, numberShots2Test + 1):
 
             subset = tuple(range(1, shot + 1))
 
@@ -282,7 +418,7 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, n
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
             testFeaturesTransform = scaler.transform(testFeatures)
 
-            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
+            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca=0)
 
             preTrainedDataMatrix = preTrainedDataCote(dataPK, classes, peoplePriorK, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -314,10 +450,10 @@ def preTrainedDataCote(dataMatrix, classes, peoplePriorK, allFeatures):
     return preTrainedDataMatrix
 
 
-#%% Nina Pro 5
+# %% Nina Pro
 
-def evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
-                    startPerson, endPerson, allFeatures, printR, scaler):
+def evaluationNina(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
+                   startPerson, endPerson, allFeatures, printR, scaler):
     # Creating Variables
 
     results = pd.DataFrame(
@@ -337,12 +473,10 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, 
             np.where((dataMatrix[:, allFeatures] == person) * (dataMatrix[:, allFeatures + 2] >= 5)), allFeatures + 1][
             0].T
 
-        # 4 cycles - cross_validation for 4 cycles
-        for shot in range(1, numberShots + 1):
-            # shot = 4
-            subset = tuple(range(1, shot + 1))
-            # for subset in itertools.combinations(combinationSet, shot):
 
+        numberShots2Test = 4
+        for shot in range(1, numberShots2Test + 1):
+            subset = tuple(range(1, shot + 1))
             trainFeatures = np.empty((0, allFeatures))
             trainLabels = []
             for auxIndex in range(np.size(subset)):
@@ -365,9 +499,9 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, 
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
             testFeaturesTransform = scaler.transform(testFeatures)
 
-            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
+            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca=0)
 
-            preTrainedDataMatrix = preTrainedDataNina5(dataPK, classes, peoplePriorK, person, allFeaturesPK)
+            preTrainedDataMatrix = preTrainedDataNina(dataPK, classes, peoplePriorK, person, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
             pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
             results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
@@ -377,7 +511,7 @@ def evaluationNina5(dataMatrix, classes, peoplePriorK, featureSet, numberShots, 
     return results
 
 
-def preTrainedDataNina5(dataMatrix, classes, peoplePriorK, evaluatedPerson, allFeatures):
+def preTrainedDataNina(dataMatrix, classes, peoplePriorK, evaluatedPerson, allFeatures):
     preTrainedDataMatrix = pd.DataFrame(columns=['mean', 'cov', 'class', 'person'])
 
     indx = 0
@@ -398,13 +532,16 @@ def preTrainedDataNina5(dataMatrix, classes, peoplePriorK, evaluatedPerson, allF
     return preTrainedDataMatrix
 
 
-#%% Auxiliar functions of the evaluation
+# %% Auxiliar functions of the evaluation
 
 def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels, classes, allFeatures,
                      results, testFeatures, testLabels, idx, person, subset, featureSet, nameFile, printR, k, pkValues):
     # Amount of Training data
-    minSamplesClass = 20
-    step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
+    numSamples = 20
+    trainFeatures, trainLabels = subsetTraining(trainFeatures, trainLabels, numSamples, classes)
+
+    # step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
+    step = 1
     print('step: ', np.shape(trainLabels)[0], step)
 
     liuModel = adaptive.LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
@@ -478,6 +615,25 @@ def currentDistributionValues(trainFeatures, trainLabels, classes, allFeatures):
     return currentValues
 
 
-def preprocessingPK(dataMatrix, allFeatures, scaler):
+def preprocessingPK(dataMatrix, allFeatures, scaler, pca):
     dataMatrixFeatures = scaler.transform(dataMatrix[:, 0:allFeatures])
+    if pca != 0:
+        dataMatrixFeatures = pca.transform(dataMatrixFeatures)
     return np.hstack((dataMatrixFeatures, dataMatrix[:, allFeatures:])), np.size(dataMatrixFeatures, axis=1)
+
+
+def subsetTraining(trainFeatures, trainLabels, numSamples, classes):
+    idx = []
+    for cla in range(classes):
+        aux = np.where(trainLabels == cla + 1)[0]
+
+        if len(aux) > numSamples:
+            modNumber = np.ceil(len(aux) / numSamples)
+            idxAux = []
+            [idxAux.append(a) for a in aux if a % modNumber == 1 and len(idxAux) < numSamples]
+            if len(idxAux) < numSamples:
+                [idxAux.append(a) for a in aux if a % modNumber == 2 and len(idxAux) < numSamples]
+            idx.extend(idxAux)
+        else:
+            idx.extend(list(aux))
+    return trainFeatures[idx], trainLabels[idx]
