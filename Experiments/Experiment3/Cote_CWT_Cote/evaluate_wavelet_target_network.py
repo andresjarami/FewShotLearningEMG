@@ -468,30 +468,30 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
 
 if __name__ == '__main__':
     '''
-    examples, labels = load_evaluation_dataset.read_data('../../../data/MyoArmbandDataset-master/EvaluationDataset',
+    examples, labels = load_evaluation_dataset.read_data('../../../Databases/MyoArmbandDataset-master/EvaluationDataset',
                                                          type='training0')
 
     datasets = [examples, labels]
-    np.save("saved_dataset_training.npy", datasets)
+    np.save("data/saved_dataset_training.npy", datasets)
 
-    examples, labels = load_evaluation_dataset.read_data('../../../data/MyoArmbandDataset-master/EvaluationDataset',
+    examples, labels = load_evaluation_dataset.read_data('../../../Databases/MyoArmbandDataset-master/EvaluationDataset',
                                                          type='Test0')
 
     datasets = [examples, labels]
-    np.save("saved_dataset_test0.npy", datasets)
+    np.save("data/saved_dataset_test0.npy", datasets)
 
-    examples, labels = load_evaluation_dataset.read_data('../../../data/MyoArmbandDataset-master/EvaluationDataset',
+    examples, labels = load_evaluation_dataset.read_data('../../../Databases/MyoArmbandDataset-master/EvaluationDataset',
                                                          type='Test1')
 
     datasets = [examples, labels]
-    np.save("saved_dataset_test1.npy", datasets)
+    np.save("data/saved_dataset_test1.npy", datasets)
     '''
     # Comment between here
     '''
-    examples, labels = load_pre_training_dataset.read_data('../../../data/MyoArmbandDataset-master/PreTrainingDataset')
+    examples, labels = load_pre_training_dataset.read_data('../../../Databases/MyoArmbandDataset-master/PreTrainingDataset')
     datasets = [examples, labels]
 
-    np.save("saved_pre_training_dataset.npy", datasets)
+    np.save("data/saved_pre_training_dataset.npy", datasets)
     '''
     # And here if the pre-training dataset was already processed and saved
 

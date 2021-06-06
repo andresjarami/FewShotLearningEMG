@@ -36,6 +36,14 @@ def uploadResultsDatabases(folder, database, windowSize):
         samples = 25
         people = 30
         shots = 25
+    elif database == 'Capgmyo_dba':
+        samples = 9
+        people = 18
+        shots = 9
+    elif database == 'Capgmyo_dbc':
+        samples = 9
+        people = 18
+        shots = 9
 
     place = folder + database
 
@@ -49,31 +57,31 @@ def analysisResults(resultDatabase, shots):
     idx = 0
     for j in range(1, 4):
         for i in range(1, shots + 1):
-            subset = str(tuple(range(1, i + 1)))
+            # subset = str(tuple(range(1, i + 1)))
             results.at[idx, 'Feature Set'] = j
             results.at[idx, '# shots'] = i
 
             # the accuracy for all LDA and QDA approaches
             IndLDA = resultDatabase['AccLDAInd'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             IndQDA = resultDatabase['AccQDAInd'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             MultiLDA = resultDatabase['AccLDAMulti'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             MultiQDA = resultDatabase['AccQDAMulti'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             LiuLDA = resultDatabase['AccLDALiu'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             LiuQDA = resultDatabase['AccQDALiu'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             VidLDA = resultDatabase['AccLDAVidovic'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             VidQDA = resultDatabase['AccQDAVidovic'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             OurLDA = resultDatabase['AccLDAProp'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             OurQDA = resultDatabase['AccQDAProp'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             results.at[idx, 'IndLDA'] = IndLDA.mean(axis=0)
             results.at[idx, 'IndLDAstd'] = IndLDA.std(axis=0)
             results.at[idx, 'IndQDA'] = IndQDA.mean(axis=0)
@@ -97,13 +105,13 @@ def analysisResults(resultDatabase, shots):
 
             # the weights λ and w for our LDA and QDA adaptive classifiers
             wLDA = resultDatabase['wTargetMeanLDA'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             lLDA = resultDatabase['wTargetCovLDA'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             wQDA = resultDatabase['wTargetMeanQDA'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             lQDA = resultDatabase['wTargetCovQDA'].loc[
-                (resultDatabase['subset'] == subset) & (resultDatabase['Feature Set'] == j)]
+                (resultDatabase['# shots'] == i) & (resultDatabase['Feature Set'] == j)]
             results.at[idx, 'wLDA'] = wLDA.mean(axis=0)
             results.at[idx, 'lLDA'] = lLDA.mean(axis=0)
             results.at[idx, 'wQDA'] = wQDA.mean(axis=0)
@@ -125,7 +133,9 @@ def analysisResults(resultDatabase, shots):
         # the time of the classification and the preprocessing (min-maxd normalization) of our adaptive classifier both LDA and QDA
         ourLDAclassifyTime = resultDatabase['tCLPropL'].loc[(resultDatabase['Feature Set'] == j)]
         ourQDAclassifyTime = resultDatabase['tCLPropQ'].loc[(resultDatabase['Feature Set'] == j)]
-        ourNormTime = resultDatabase['tPre'].loc[(resultDatabase['Feature Set'] == j)]
+
+        # capmyo
+        # ourNormTime = resultDatabase['tPre'].loc[(resultDatabase['Feature Set'] == j)]
         # means, standar deviation, and variance
         timeOurTechnique.at[j, 'meanClLDA'] = round(ourLDAclassifyTime.mean(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'stdClLDA'] = round(ourLDAclassifyTime.std(axis=0) * 1000, 2)
@@ -133,19 +143,22 @@ def analysisResults(resultDatabase, shots):
         timeOurTechnique.at[j, 'meanClQDA'] = round(ourQDAclassifyTime.mean(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'stdClQDA'] = round(ourQDAclassifyTime.std(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'varClQDA'] = round(ourQDAclassifyTime.var(axis=0) * 1000, 2)
-        timeOurTechnique.at[j, 'meanNorm'] = round(ourNormTime.mean(axis=0) * 1000000, 2)
-        timeOurTechnique.at[j, 'stdNorm'] = round(ourNormTime.std(axis=0) * 1000000, 2)
-        timeOurTechnique.at[j, 'varNorm'] = round(ourNormTime.var(axis=0) * 1000000, 2)
+
+        # capmyo
+        # timeOurTechnique.at[j, 'meanNorm'] = round(ourNormTime.mean(axis=0) * 1000000, 2)
+        # timeOurTechnique.at[j, 'stdNorm'] = round(ourNormTime.std(axis=0) * 1000000, 2)
+        # timeOurTechnique.at[j, 'varNorm'] = round(ourNormTime.var(axis=0) * 1000000, 2)
 
     return results, timeOurTechnique
 
 
 # %%Graph of the accuracy of the all DA classifiers for the three databasese and three feature sets
-def graphACC(resultsNina5, resultsCote, resultsEPN):
-    fig, ax = plt.subplots(nrows=3, ncols=6, sharey='row', sharex='col', figsize=(13, 6))
+def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A):
+    numDatabases = 4
+    fig, ax = plt.subplots(nrows=numDatabases, ncols=6, sharey='row', figsize=(13, 6))
     shotsSet = np.arange(1, 5)
     shots = len(shotsSet)
-    for Data in range(3):
+    for Data in range(numDatabases):
         for DA in ['LDA', 'QDA']:
 
             for FeatureSet in range(3):
@@ -159,6 +172,11 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
                 elif Data == 2:
                     results = resultsEPN
                     ax[Data, idx].yaxis.set_ticks(np.arange(50, 100, 6))
+                elif Data == 3:
+                    results = resultsCap_A
+                    ax[Data, idx].yaxis.set_ticks(np.arange(50, 100, 6))
+                    shotsSet = np.arange(1, 10)
+                    shots = len(shotsSet)
 
                 if DA == 'QDA':
                     idx += 3
@@ -185,15 +203,17 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
 
                 if shots == 25:
                     ax[Data, idx].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
+                elif shots == 9:
+                    ax[Data, idx].xaxis.set_ticks([1, 3, 5, 7, 9])
                 else:
                     ax[Data, idx].xaxis.set_ticks(np.arange(1, shots + .2, 1))
 
-    ax[2, 0].set_xlabel('repetitions')
-    ax[2, 1].set_xlabel('repetitions')
-    ax[2, 2].set_xlabel('repetitions')
-    ax[2, 3].set_xlabel('repetitions')
-    ax[2, 4].set_xlabel('repetitions')
-    ax[2, 5].set_xlabel('repetitions')
+    ax[numDatabases - 1, 0].set_xlabel('repetitions')
+    ax[numDatabases - 1, 1].set_xlabel('repetitions')
+    ax[numDatabases - 1, 2].set_xlabel('repetitions')
+    ax[numDatabases - 1, 3].set_xlabel('repetitions')
+    ax[numDatabases - 1, 4].set_xlabel('repetitions')
+    ax[numDatabases - 1, 5].set_xlabel('repetitions')
 
     ax[0, 0].set_title('LDA\n Feature Set 1')
     ax[0, 1].set_title('LDA\n Feature Set 2')
@@ -205,11 +225,12 @@ def graphACC(resultsNina5, resultsCote, resultsEPN):
     ax[0, 0].set_ylabel('NinaPro5\naccuracy [%]')
     ax[1, 0].set_ylabel('Côté-Allard\naccuracy [%]')
     ax[2, 0].set_ylabel('EPN \naccuracy [%]')
+    ax[3, 0].set_ylabel('Capgmyo A\naccuracy [%]')
 
     # ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
 
     fig.tight_layout(pad=0.1)
-    plt.savefig("FiguresPaper/acc.png", bbox_inches='tight', dpi=600)
+    # plt.savefig("FiguresPaper/acc.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -469,9 +490,8 @@ def analysisTime(extractionTime, timeOurTechnique):
 
 def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeOurTechniqueC, extractionTimeE,
                       timeOurTechniqueE):
-
     fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 3))
-    classifiers=6
+    classifiers = 6
     vectTrainingTime = np.zeros(classifiers)
     vectTrainingTimeSTD = np.zeros(classifiers)
     vectExtractionTime = np.zeros(classifiers)
@@ -482,7 +502,7 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
     vectPreprocessingTimeSTD = np.zeros(classifiers)
     vectAnalysisTime = np.zeros(classifiers)
     vectAnalysisTimeSTD = np.zeros(classifiers)
-    idx=0
+    idx = 0
     for BD in ['Nina5', 'Cote', 'EPN']:
         if BD == 'Nina5':
             extractionTime = extractionTimeN
@@ -507,71 +527,126 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
             AnalysisTime = 0
             AnalysisTimeVAR = 0
             for featureSet in range(3):
-                TrainingTime += timeOurTechnique.loc[featureSet + 1, 'meanTrain' + DA] / (60*1000)
-                TrainingTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdTrain' + DA] / (60*1000)
+                TrainingTime += timeOurTechnique.loc[featureSet + 1, 'meanTrain' + DA] / (60 * 1000)
+                TrainingTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdTrain' + DA] / (60 * 1000)
                 ExtractionTime += extractionTime.loc[featureSet, :].mean()
                 ExtractionTimeSTD += extractionTime.loc[featureSet, :].std()
                 ClassificationTime += timeOurTechnique.loc[featureSet + 1, 'meanCl' + DA]
                 ClassificationTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdCl' + DA]
-                PreprocessingTime += timeOurTechnique.loc[featureSet + 1, 'meanNorm'] /1000
+                PreprocessingTime += timeOurTechnique.loc[featureSet + 1, 'meanNorm'] / 1000
                 PreprocessingTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdNorm']
                 AnalysisTime += extractionTime.loc[featureSet, :].mean() + timeOurTechnique.loc[
                     featureSet + 1, 'meanCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'meanNorm'] / 1000
                 AnalysisTimeVAR += np.sqrt((extractionTime.loc[featureSet, :].var() + timeOurTechnique.loc[
                     featureSet + 1, 'varCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'varNorm'] / 1000))
-            vectTrainingTime[idx] = TrainingTime/3
-            vectTrainingTimeSTD[idx] = TrainingTimeSTD/3
-            vectExtractionTime[idx] = ExtractionTime/3
-            vectExtractionTimeSTD[idx] = ExtractionTimeSTD/3
-            vectClassificationTime[idx] = ClassificationTime/3
-            vectClassificationTimeSTD[idx] = ClassificationTimeSTD/3
-            vectPreprocessingTime[idx] = PreprocessingTime/3
-            vectPreprocessingTimeSTD[idx] = PreprocessingTimeSTD/3
-            vectAnalysisTime[idx] = AnalysisTime/3
-            vectAnalysisTimeSTD[idx] = AnalysisTimeVAR/3
-            idx+=1
+            vectTrainingTime[idx] = TrainingTime / 3
+            vectTrainingTimeSTD[idx] = TrainingTimeSTD / 3
+            vectExtractionTime[idx] = ExtractionTime / 3
+            vectExtractionTimeSTD[idx] = ExtractionTimeSTD / 3
+            vectClassificationTime[idx] = ClassificationTime / 3
+            vectClassificationTimeSTD[idx] = ClassificationTimeSTD / 3
+            vectPreprocessingTime[idx] = PreprocessingTime / 3
+            vectPreprocessingTimeSTD[idx] = PreprocessingTimeSTD / 3
+            vectAnalysisTime[idx] = AnalysisTime / 3
+            vectAnalysisTimeSTD[idx] = AnalysisTimeVAR / 3
+            idx += 1
 
-    print('Training Time [min]',vectTrainingTime)
-    print('Training Time [min] STD',vectTrainingTimeSTD,'\n')
-    print('Feature extraction Time [ms]',vectExtractionTime)
-    print('Feature extraction Time [ms] STD',vectExtractionTimeSTD)
-    print('Pre-processing Time [ms]',vectPreprocessingTime)
-    print('Pre-processing Time [ms] STD',vectPreprocessingTimeSTD)
-    print('Classification Time [ms]',vectClassificationTime)
-    print('Classification Time [ms] STD',vectClassificationTimeSTD)
-    print('Data-Analysis Time [ms]',vectAnalysisTime)
-    print('Data-Analysis Time [ms] STD',vectAnalysisTimeSTD,'\n')
+    print('Training Time [min]', vectTrainingTime)
+    print('Training Time [min] STD', vectTrainingTimeSTD, '\n')
+    print('Feature extraction Time [ms]', vectExtractionTime)
+    print('Feature extraction Time [ms] STD', vectExtractionTimeSTD)
+    print('Pre-processing Time [ms]', vectPreprocessingTime)
+    print('Pre-processing Time [ms] STD', vectPreprocessingTimeSTD)
+    print('Classification Time [ms]', vectClassificationTime)
+    print('Classification Time [ms] STD', vectClassificationTimeSTD)
+    print('Data-Analysis Time [ms]', vectAnalysisTime)
+    print('Data-Analysis Time [ms] STD', vectAnalysisTimeSTD, '\n')
 
     xAxis = np.arange(classifiers)  # the x locations for the groups
     width = 0.5  # the width of the bars: can also be len(x) sequence
     ax[0].grid(color='gainsboro', linewidth=1)
     ax[0].set_axisbelow(True)
 
-    vectPreprocessingTime*=300
+    vectPreprocessingTime *= 300
     ax[0].bar(xAxis, vectExtractionTime, width, label='Feature-extraction Time')
     ax[0].bar(xAxis, vectPreprocessingTime, width, bottom=vectExtractionTime, label='Pre-processing Time')
-    ax[0].bar(xAxis, vectClassificationTime, width, bottom=vectExtractionTime+vectPreprocessingTime, yerr=vectAnalysisTimeSTD, label='Classification Time')
+    ax[0].bar(xAxis, vectClassificationTime, width, bottom=vectExtractionTime + vectPreprocessingTime,
+              yerr=vectAnalysisTimeSTD, label='Classification Time')
 
     ax[0].set_xlabel('Our classifiers over the three databases')
     ax[0].set_ylabel('time (ms)')
     ax[0].set_title('Data-Analysis Time')
     ax[0].set_xticks(xAxis)
-    ax[0].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN','QDA_EPN'],rotation=20)
+    ax[0].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN', 'QDA_EPN'], rotation=20)
     # ax[0].legend(loc='lower center', bbox_to_anchor=(2, -1), ncol=5)
-
 
     ax[1].grid(color='gainsboro', linewidth=1)
     ax[1].set_axisbelow(True)
 
-    ax[1].bar(xAxis, vectTrainingTime, width,yerr=vectTrainingTimeSTD, label='Training Time',color='tab:red')
+    ax[1].bar(xAxis, vectTrainingTime, width, yerr=vectTrainingTimeSTD, label='Training Time', color='tab:red')
     ax[1].set_xlabel('Our classifiers over the three databases')
     ax[1].set_ylabel('time (min)')
     ax[1].set_title('Our classifiers\' Training Time')
     ax[1].set_xticks(xAxis)
-    ax[1].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN','QDA_EPN'],rotation=20)
+    ax[1].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN', 'QDA_EPN'], rotation=20)
     # ax[1].legend(loc='lower center', bbox_to_anchor=(2, -1), ncol=5)
 
     fig.tight_layout(pad=1)
     plt.savefig("FiguresPaper/times.png", bbox_inches='tight', dpi=600)
 
     plt.show()
+
+
+# %%
+
+
+place = '../Experiment1/results/'
+windowSize = '295'
+
+database = 'Nina5'
+resultsNina5, timeNina5 = uploadResultsDatabases(place, database, windowSize)
+
+database = 'Cote'
+resultsCote, timeCote = uploadResultsDatabases(place, database, windowSize)
+
+database = 'EPN'
+resultsEPN, timeEPN = uploadResultsDatabases(place, database, windowSize)
+
+database = 'Capgmyo_dba'
+resultsCapgmyoA, timeCapgmyoA = uploadResultsDatabases(place, database, windowSize)
+
+graphACC(resultsNina5, resultsCote, resultsEPN, resultsCapgmyoA)
+
+
+def uploadResultsCapgmyo(place, samples, people, times, windowSize):
+    for featureSet in range(1, 4):
+        resultsTest = pd.read_csv(
+            place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(1) + "_endPerson_" + str(
+                1) + '_windowSize_' + windowSize + ".csv")
+        if len(resultsTest) != samples * times:
+            print('error ' + str(featureSet) + ' ' + str(1))
+            print(len(resultsTest))
+
+        for per in range(2, people + 1):
+            auxFrame = pd.read_csv(
+                place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(per) + "_endPerson_" + str(
+                    per) + '_windowSize_' + windowSize + ".csv")
+            resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
+            if len(auxFrame) != samples * times:
+                print('error ' + str(featureSet) + ' ' + str(per))
+                print(len(auxFrame))
+
+        resultsTest = resultsTest.drop(columns='Unnamed: 0')
+        resultsTest['# shots'] = int(resultsTest['# shots'] / 16)
+        resultsTest.to_csv(
+            '../Experiment1/results/Capgmyo_dba' + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(
+                1) + "_endPerson_" + str(
+                people) + '_windowSize_' + windowSize + ".csv")
+
+# place = '../Experiment1/results2/Capgmyo_dba'
+# windowSize = '295'
+#
+# samples = 9
+# people = 18
+# times = 20
+# uploadResultsCapgmyo(place, samples, people, times, windowSize)

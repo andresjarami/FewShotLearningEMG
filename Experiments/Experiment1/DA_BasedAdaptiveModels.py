@@ -1,18 +1,39 @@
-import Experiments.Experiment1.DA_Classifiers as DA_Classifiers
+import DA_Classifiers as DA_Classifiers
 import numpy as np
 import pandas as pd
 from scipy.spatial import distance
 import time
 
-#%% LIU IMPLEMENTATION
+
+# %% LIU IMPLEMENTATION
 # Reduced Daily Recalibration of Myoelectric Prosthesis Classifiers Based on Domain Adaptation
+
+
+
+def mahalanobisDistance(mean, mean1, cov1):
+    try:
+        invCov1 = np.linalg.inv(cov1)
+    except:
+        invCov1 = np.linalg.pinv(cov1)
+        delta = mean - mean1
+        return np.sqrt(np.dot(np.dot(delta, invCov1), delta))
+    delta = mean - mean1
+    d = np.dot(np.dot(delta, invCov1), delta)
+    if d < 0:
+        invCov1 = np.linalg.pinv(cov1)
+        delta = mean - mean1
+        return np.sqrt(np.dot(np.dot(delta, invCov1), delta))
+    else:
+        d = np.sqrt(d)
+        return d
+
 
 def weightDenominatorLiu(currentMean, preTrainedDataMatrix):
     weightDenominatorV = 0
     for i in range(len(preTrainedDataMatrix.index)):
         weightDenominatorV = weightDenominatorV + (
-                1 / distance.mahalanobis(currentMean, preTrainedDataMatrix['mean'].loc[i],
-                                         np.linalg.inv(preTrainedDataMatrix['cov'].loc[i])))
+                    1 / mahalanobisDistance(currentMean, preTrainedDataMatrix['mean'].loc[i],
+                                            preTrainedDataMatrix['cov'].loc[i]))
     return weightDenominatorV
 
 
@@ -20,8 +41,8 @@ def reTrainedMeanLiu(r, currentMean, preTrainedDataMatrix, weightDenominatorV, a
     sumAllPreTrainedMean_Weighted = np.zeros((1, allFeatures))
     for i in range(len(preTrainedDataMatrix.index)):
         sumAllPreTrainedMean_Weighted = np.add(sumAllPreTrainedMean_Weighted, preTrainedDataMatrix['mean'].loc[i] * (
-                1 / distance.mahalanobis(currentMean, preTrainedDataMatrix['mean'].loc[i],
-                                         np.linalg.inv(preTrainedDataMatrix['cov'].loc[i]))))
+                1 / mahalanobisDistance(currentMean, preTrainedDataMatrix['mean'].loc[i],
+                                         preTrainedDataMatrix['cov'].loc[i])))
 
     reTrainedMeanValue = np.add((1 - r) * currentMean, (r / weightDenominatorV) * sumAllPreTrainedMean_Weighted)
     return reTrainedMeanValue
@@ -31,8 +52,8 @@ def reTrainedCovLiu(r, currentMean, currentCov, preTrainedDataMatrix, weightDeno
     sumAllPreTrainedCov_Weighted = np.zeros((allFeatures, allFeatures))
     for i in range(len(preTrainedDataMatrix.index)):
         sumAllPreTrainedCov_Weighted = np.add(sumAllPreTrainedCov_Weighted, preTrainedDataMatrix['cov'][i] * (
-                1 / distance.mahalanobis(currentMean, preTrainedDataMatrix['mean'][i],
-                                         np.linalg.inv(preTrainedDataMatrix['cov'][i]))))
+                1 / mahalanobisDistance(currentMean, preTrainedDataMatrix['mean'][i],
+                                         preTrainedDataMatrix['cov'][i])))
 
     reTrainedCovValue = np.add((1 - r) * currentCov, (r / weightDenominatorV) * sumAllPreTrainedCov_Weighted)
     return reTrainedCovValue
@@ -57,7 +78,7 @@ def LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
     return trainedModel
 
 
-#%% VIDOVIC IMPLEMENTATION
+# %% VIDOVIC IMPLEMENTATION
 def VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
     trainedModelL = pd.DataFrame(columns=['cov', 'mean', 'class'])
     trainedModelQ = pd.DataFrame(columns=['cov', 'mean', 'class'])
@@ -87,11 +108,10 @@ def VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
     return trainedModelL, trainedModelQ
 
 
-
-#%% OUR TECHNIQUE
+# %% OUR TECHNIQUE
 
 def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step,
-                  typeModel, k):
+             typeModel, k):
     t = time.time()
 
     adaptiveModel = pd.DataFrame(columns=['cov', 'mean', 'class'])
@@ -122,9 +142,9 @@ def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFea
             personMean = preTrainedMatrix_Class['mean'].loc[i]
             personCov = preTrainedMatrix_Class['cov'].loc[i]
             wPeopleMean[i] = weightPerPersonMean(currentValues, personMean, cla, classes
-                                                      , trainFeatures, trainLabels, step, typeModel)
+                                                 , trainFeatures, trainLabels, step, typeModel)
             wPeopleCov[i] = weightPerPersonCov(currentValues, personCov, cla, classes
-                                                    , trainFeatures, trainLabels, step, typeModel)
+                                               , trainFeatures, trainLabels, step, typeModel)
 
         sumWMean = np.sum(wPeopleMean)
 
@@ -147,8 +167,9 @@ def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFea
             wPeopleCov = np.zeros(peopleClass)
 
         adaptiveModel.at[cla, 'cov'] = np.sum(preTrainedMatrix_Class['cov'] * wPeopleCov) + currentCov * wTargetCov[cla]
-        adaptiveModel.at[cla, 'mean'] = np.sum(preTrainedMatrix_Class['mean'] * wPeopleMean) + currentMean * wTargetMean[
-            cla]
+        adaptiveModel.at[cla, 'mean'] = np.sum(preTrainedMatrix_Class['mean'] * wPeopleMean) + currentMean * \
+                                        wTargetMean[
+                                            cla]
         adaptiveModel.at[cla, 'class'] = cla + 1
 
     trainingTime = time.time() - t
@@ -157,7 +178,7 @@ def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFea
 
 # Weight Calculation
 def weightPerPersonMean(currentValues, personMean, currentClass, classes, trainFeatures, trainLabels, step,
-                             typeModel):
+                        typeModel):
     personValues = currentValues.copy()
     personValues['mean'].at[currentClass] = personMean
     if typeModel == 'LDA':
@@ -169,7 +190,7 @@ def weightPerPersonMean(currentValues, personMean, currentClass, classes, trainF
 
 
 def weightPerPersonCov(currentValues, personCov, currentClass, classes, trainFeatures, trainLabels, step,
-                            typeModel):
+                       typeModel):
     personValues = currentValues.copy()
     personValues['cov'].at[currentClass] = personCov
     if typeModel == 'LDA':

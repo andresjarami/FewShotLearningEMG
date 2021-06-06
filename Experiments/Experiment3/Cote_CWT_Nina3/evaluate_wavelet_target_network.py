@@ -8,7 +8,7 @@ from torch.autograd import Variable
 import time
 from scipy.stats import mode
 import copy
-import load_evaluation_Nina5_dataset
+import load_evaluation_Nina3_dataset
 import csv
 
 
@@ -35,7 +35,7 @@ def calculate_pre_training(examples, labels, person):
     list_train_dataloader = []
     list_validation_dataloader = []
     human_number = 0
-    for j in range(10):
+    for j in range(11):
         if j is not person:
             examples_personne_training = []
             labels_gesture_personne_training = []
@@ -219,7 +219,7 @@ def pre_train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epoch
     print('Best val loss: {:4f}'.format(best_loss))
 
     # Save the best weights found to file
-    torch.save(best_weights, str(person) + 'best_pre_train_weights_target_wavelet.pt')
+    torch.save(best_weights, 'data/'+str(person) + 'best_pre_train_weights_target_wavelet.pt')
 
 
 def calculate_fitness(examples_training, labels_training, examples_test_0, labels_test_0, cycles, person):
@@ -274,7 +274,7 @@ def calculate_fitness(examples_training, labels_training, examples_test_0, label
     test_0_loader = torch.utils.data.DataLoader(test_0, batch_size=1, shuffle=False)
     # test_1_loader = torch.utils.data.DataLoader(test_1, batch_size=1, shuffle=False)
 
-    pre_trained_weights = torch.load(str(person) + 'best_pre_train_weights_target_wavelet.pt')
+    pre_trained_weights = torch.load('data/'+str(person) + 'best_pre_train_weights_target_wavelet.pt')
 
     cnn = Wavelet_CNN_Target_Network.TargetNetwork(number_of_class=18,
                                                    weights_pre_trained_cnn=pre_trained_weights).cuda()
@@ -426,7 +426,7 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
         time_elapsed // 60, time_elapsed % 60))
     print('Best val loss: {:4f}'.format(best_loss))
     # Save to file the best weights found
-    torch.save(best_weights, 'best_weights_source_wavelet.pt')
+    torch.save(best_weights, 'data/'+'best_weights_source_wavelet.pt')
     # load best model weights
     cnn.load_state_dict(copy.deepcopy(best_weights))
     cnn.eval()
@@ -434,55 +434,55 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
 
 
 if __name__ == '__main__':
-    ''' 
-    %Load data
-    examples, labels = load_evaluation_Nina5_dataset.read_data('../../../Databases/ninaDB5/')
+
+    #%Load data
+    examples, labels = load_evaluation_Nina3_dataset.read_data('../../../Databases/ninaDB3/')
 
     datasets = [examples, labels]
     np.save("data/saved_dataset.npy", datasets)
-    '''
-    '''
-    % training source network
-    for person in range(10):
+
+    #% training source network
+    for person in range(11):
         datasets_training = np.load("data/saved_dataset.npy", encoding="bytes", allow_pickle=True)
         examples_training, labels_training = datasets_training
 
         calculate_pre_training(examples_training, labels_training, person)
-    '''
-    datasets_training = np.load("data/saved_dataset.npy", encoding="bytes", allow_pickle=True)
-    examples_training, labels_training = datasets_training
-    test_0 = []
 
-    classificationTime = []  # CHANGE AJ
-    for cycles in range(1,5):
 
-        for person in range(10):
-
-            aux_test_0 = []
-            aux_time= []
-            for i in range(20):
-                accuracy_test_0, cl_time = calculate_fitness(examples_training, labels_training,
-                                                                      examples_training, labels_training,
-                                                                      cycles, person)
-                print(accuracy_test_0)
-
-                aux_test_0.append(accuracy_test_0)
-                aux_time.append(cl_time)
-                print("TEST 0 SO FAR: ", aux_test_0)
-                print("CLASSIFICATION TIME SO FAR: ", aux_time)
-                print("CURRENT AVERAGE : ", np.mean(aux_test_0))
-                print("CURRENT AVERAGE CLASSIFICATION TIME: ", np.mean(aux_time))
-
-            test_0.append(aux_test_0)
-            classificationTime.append(aux_time)
-
-            print("ACCURACY FINAL TEST 0: ", test_0)
-            print("ACCURACY FINAL TEST 0: ", np.mean(test_0))
-            print("CLASSIFICATION TIMES: ", classificationTime)  # CHANGE AJ
-            print("AVERAGE FINAL CLASSIFICATION TIME 0: ", np.mean(classificationTime))  # CHANGE AJ
-
-            save_results = [test_0, classificationTime]
-            with open('Pytorch_results_' + str(cycles) + '_cycles.csv', 'w', newline='') as myfile:
-                writer = csv.writer(myfile)
-                writer.writerows(save_results)
-
+    # datasets_training = np.load("data/saved_dataset.npy", encoding="bytes", allow_pickle=True)
+    # examples_training, labels_training = datasets_training
+    # test_0 = []
+    #
+    # classificationTime = []  # CHANGE AJ
+    # for cycles in range(1,5):
+    #
+    #     for person in range(11):
+    #
+    #         aux_test_0 = []
+    #         aux_time= []
+    #         for i in range(20):
+    #             accuracy_test_0, cl_time = calculate_fitness(examples_training, labels_training,
+    #                                                                   examples_training, labels_training,
+    #                                                                   cycles, person)
+    #             print(accuracy_test_0)
+    #
+    #             aux_test_0.append(accuracy_test_0)
+    #             aux_time.append(cl_time)
+    #             print("TEST 0 SO FAR: ", aux_test_0)
+    #             print("CLASSIFICATION TIME SO FAR: ", aux_time)
+    #             print("CURRENT AVERAGE : ", np.mean(aux_test_0))
+    #             print("CURRENT AVERAGE CLASSIFICATION TIME: ", np.mean(aux_time))
+    #
+    #         test_0.append(aux_test_0)
+    #         classificationTime.append(aux_time)
+    #
+    #         print("ACCURACY FINAL TEST 0: ", test_0)
+    #         print("ACCURACY FINAL TEST 0: ", np.mean(test_0))
+    #         print("CLASSIFICATION TIMES: ", classificationTime)  # CHANGE AJ
+    #         print("AVERAGE FINAL CLASSIFICATION TIME 0: ", np.mean(classificationTime))  # CHANGE AJ
+    #
+    #         save_results = [test_0, classificationTime]
+    #         with open('Pytorch_results_' + str(cycles) + '_cycles.csv', 'w', newline='') as myfile:
+    #             writer = csv.writer(myfile)
+    #             writer.writerows(save_results)
+    #

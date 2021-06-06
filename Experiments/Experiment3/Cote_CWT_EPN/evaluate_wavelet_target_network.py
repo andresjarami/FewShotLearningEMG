@@ -446,21 +446,21 @@ def train_model(cnn, criterion, optimizer, scheduler, dataloaders, num_epochs=50
 if __name__ == '__main__':
     # Comment between here
     '''
-    path = '../../../data/CollectedData/detectedData/'
+    path = '../../../Databases/CollectedData/detectedData/'
 
     examples, labels = load_dataset.read_data(path, 'training')
     datasets = [examples, labels]
-    np.save("saved_dataset_training.npy", datasets)
+    np.save("data/saved_dataset_training.npy", datasets)
 
     
     examples, labels = load_dataset.read_data(path,'testing')
     datasets = [examples, labels]
-    np.save("saved_dataset_test0.npy", datasets) 
+    np.save("data/saved_dataset_test0.npy", datasets) 
 
     
     examples, labels = load_dataset.read_data(path,'pre-training')
     datasets = [examples, labels]
-    np.save("saved_pre_training_dataset.npy", datasets)
+    np.save("data/saved_pre_training_dataset.npy", datasets)
     
     # And here if the pre-training dataset was already processed and saved
     '''

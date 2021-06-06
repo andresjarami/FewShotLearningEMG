@@ -1,9 +1,9 @@
 # %% Libraries
 import sys
-import Experiments.Experiment1.functionsExp1 as functionsExp1
+import functionsExp1 as functionsExp1
 
 # %%## Input Variables
-
+#
 # featureSet = int(sys.argv[1])
 # startPerson = int(sys.argv[2])
 # endPerson = int(sys.argv[3])
@@ -18,18 +18,18 @@ import Experiments.Experiment1.functionsExp1 as functionsExp1
 ## featureSet 1 (logVar) 2 (MAV,WL,ZC,SSC) or 3(LS,MFL,MSR,WAMP)
 featureSet = 1
 ## people Nina5 (1-10) Cote(1-17) EPN(1-30) Capgmyo_dba(1-18) Capgmyo_dbc(1-10) Nina3 (1-11)
-startPerson = 1
-endPerson = 18
+startPerson = 11
+endPerson = 11
 ## typeDatabase: 'Nina5' or 'Cote' or 'EPN' or 'Capgmyo_dba' or 'Capgmyo_dbc'
-typeDatabase = 'Capgmyo_dba'
+typeDatabase = 'Nina3'
 ## printR: Print results (True or False)
 printR = True
 ## windowSize: '260' for a window of 260ms with overlap of 235ms or '295' for a window of 295ms with overlap of 290ms
 windowSize = '295'
 ## nameFile: Put in string the name of the file where you want to save the results or None to not save a file
 # nameFile = None
-nameFile = 'examples/' + typeDatabase + '_FeatureSet_' + str(featureSet) + '_startPerson_' + str(
-    startPerson) + '_endPerson_' + str(endPerson) + '.csv'
+nameFile = 'examples/Change0_999' + typeDatabase + '_FeatureSet_' + str(featureSet) + '_startPerson_' + str(
+    startPerson) + '_endPerson_' + str(endPerson) + '_windowSize_' + windowSize + '.csv'
 
 # %% Upload Data
 dataMatrix, _, _, classes, peoplePriorK, _, numberShots, _, allFeatures, _ = functionsExp1.uploadDatabases(
