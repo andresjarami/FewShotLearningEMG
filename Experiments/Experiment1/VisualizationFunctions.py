@@ -186,9 +186,9 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A):
                 Model = 'Ind' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
                 ax[Data, idx].plot(shotsSet, Y[:shots], marker='x', label='Individual', color='tab:orange')
-                Model = 'Multi' + DA
-                Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
+                # Model = 'Multi' + DA
+                # Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                # ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
                 Model = 'Liu' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
                 ax[Data, idx].plot(shotsSet, Y[:shots], marker='o', label='Liu', color='tab:green')
@@ -637,7 +637,7 @@ def uploadResultsCapgmyo(place, samples, people, times, windowSize):
                 print(len(auxFrame))
 
         resultsTest = resultsTest.drop(columns='Unnamed: 0')
-        resultsTest['# shots'] = int(resultsTest['# shots'] / 16)
+        resultsTest['# shots'] = resultsTest['# shots'] / 16
         resultsTest.to_csv(
             '../Experiment1/results/Capgmyo_dba' + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(
                 1) + "_endPerson_" + str(

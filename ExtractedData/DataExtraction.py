@@ -139,7 +139,7 @@ for database in ['Nina1']:
     # Cote: window=260 and overlap=235
     # window = [260,295,100]
     # overlap = [235,290,50]
-    for window in [295]:
+    for window in [280,295]:
         if window == 260:
             overlap = 235
         elif window == 295:
@@ -232,7 +232,7 @@ for database in ['Nina1']:
                             wi += incrmentSamples
 
                         rp = rp + 1
-                        if rp == 7:
+                        if rp == 11:
                             rp = 1
 
             timesFeatures = np.vstack((t1, t2, t3))
