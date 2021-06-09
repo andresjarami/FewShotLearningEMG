@@ -37,13 +37,25 @@ def uploadResultsDatabases(folder, database, windowSize):
         people = 30
         shots = 25
     elif database == 'Capgmyo_dba':
-        samples = 9
+        times = 2
+        samples = 9 * times
         people = 18
         shots = 9
     elif database == 'Capgmyo_dbc':
         samples = 9
-        people = 18
+        people = 10
         shots = 9
+    elif database == 'Nina1':
+        times = 2
+        samples = 9 * times
+        people = 27
+        shots = 9
+    elif database == 'Nina3':
+        times=2
+        samples = 5*times
+        people = 9
+        shots = 5
+
 
     place = folder + database
 
@@ -153,9 +165,9 @@ def analysisResults(resultDatabase, shots):
 
 
 # %%Graph of the accuracy of the all DA classifiers for the three databasese and three feature sets
-def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A):
-    numDatabases = 4
-    fig, ax = plt.subplots(nrows=numDatabases, ncols=6, sharey='row', figsize=(13, 6))
+def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, resultsNina1, resultsNina3):
+    numDatabases = 7
+    fig, ax = plt.subplots(nrows=numDatabases, ncols=6, sharey='row', figsize=(13, 13))
     shotsSet = np.arange(1, 5)
     shots = len(shotsSet)
     for Data in range(numDatabases):
@@ -176,6 +188,21 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A):
                     results = resultsCap_A
                     ax[Data, idx].yaxis.set_ticks(np.arange(50, 100, 6))
                     shotsSet = np.arange(1, 10)
+                    shots = len(shotsSet)
+                elif Data == 4:
+                    results = resultsCap_C
+                    ax[Data, idx].yaxis.set_ticks(np.arange(50, 100, 6))
+                    shotsSet = np.arange(1, 10)
+                    shots = len(shotsSet)
+                elif Data == 5:
+                    results = resultsNina1
+                    ax[Data, idx].yaxis.set_ticks(np.arange(30, 82, 10))
+                    shotsSet = np.arange(1, 10)
+                    shots = len(shotsSet)
+                elif Data == 6:
+                    results = resultsNina3
+                    ax[Data, idx].yaxis.set_ticks(np.arange(0, 52, 10))
+                    shotsSet = np.arange(1, 6)
                     shots = len(shotsSet)
 
                 if DA == 'QDA':
@@ -226,6 +253,9 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A):
     ax[1, 0].set_ylabel('Côté-Allard\naccuracy [%]')
     ax[2, 0].set_ylabel('EPN \naccuracy [%]')
     ax[3, 0].set_ylabel('Capgmyo A\naccuracy [%]')
+    ax[4, 0].set_ylabel('Capgmyo C\naccuracy [%]')
+    ax[5, 0].set_ylabel('NinaPro1\naccuracy [%]')
+    ax[6, 0].set_ylabel('NinaPro3\naccuracy [%]')
 
     # ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
 
@@ -600,25 +630,35 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
 # %%
 
 
-place = '../Experiment1/results/'
-windowSize = '295'
+# place = '../Experiment1/results/'
+# windowSize = '295'
+#
+# database = 'Nina5'
+# resultsNina5, timeNina5 = uploadResultsDatabases(place, database, windowSize)
+#
+# database = 'Cote'
+# resultsCote, timeCote = uploadResultsDatabases(place, database, windowSize)
+#
+# database = 'EPN'
+# resultsEPN, timeEPN = uploadResultsDatabases(place, database, windowSize)
+#
+# database = 'Capgmyo_dba'
+# resultsCapgmyoA, timeCapgmyoA = uploadResultsDatabases(place, database, windowSize)
+#
+# database = 'Capgmyo_dbc'
+# resultsCapgmyoC, timeCapgmyoC = uploadResultsDatabases(place, database, windowSize)
+#
+# database = 'Nina1'
+# resultsNina1, timeNina1 = uploadResultsDatabases(place, database, windowSize)
+#
+# database = 'Nina3'
+# resultsNina3, timeNina3 = uploadResultsDatabases(place, database, windowSize)
+#
+# graphACC(resultsNina5, resultsCote, resultsEPN, resultsCapgmyoA, resultsCapgmyoC, resultsNina1, resultsNina3)
 
-database = 'Nina5'
-resultsNina5, timeNina5 = uploadResultsDatabases(place, database, windowSize)
 
-database = 'Cote'
-resultsCote, timeCote = uploadResultsDatabases(place, database, windowSize)
-
-database = 'EPN'
-resultsEPN, timeEPN = uploadResultsDatabases(place, database, windowSize)
-
-database = 'Capgmyo_dba'
-resultsCapgmyoA, timeCapgmyoA = uploadResultsDatabases(place, database, windowSize)
-
-graphACC(resultsNina5, resultsCote, resultsEPN, resultsCapgmyoA)
-
-
-def uploadResultsCapgmyo(place, samples, people, times, windowSize):
+def uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset):
+    place=place+dataset
     for featureSet in range(1, 4):
         resultsTest = pd.read_csv(
             place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(1) + "_endPerson_" + str(
@@ -628,25 +668,58 @@ def uploadResultsCapgmyo(place, samples, people, times, windowSize):
             print(len(resultsTest))
 
         for per in range(2, people + 1):
-            auxFrame = pd.read_csv(
-                place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(per) + "_endPerson_" + str(
-                    per) + '_windowSize_' + windowSize + ".csv")
-            resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
-            if len(auxFrame) != samples * times:
-                print('error ' + str(featureSet) + ' ' + str(per))
-                print(len(auxFrame))
+            try:
+                auxFrame = pd.read_csv(
+                    place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(per) + "_endPerson_" + str(
+                        per) + '_windowSize_' + windowSize + ".csv")
+                resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
+                if len(auxFrame) != samples * times:
+                    print('error ' + str(featureSet) + ' ' + str(per))
+                    print(len(auxFrame))
+            except:
+                print('Not Found ' + str(featureSet) + ' ' + str(per))
 
         resultsTest = resultsTest.drop(columns='Unnamed: 0')
-        resultsTest['# shots'] = resultsTest['# shots'] / 16
+        if dataset=='Capgmyo_dba':
+            resultsTest['# shots'] = resultsTest['# shots'] / 16
+        elif dataset=='Capgmyo_dbc' or dataset=='Nina1':
+            resultsTest['# shots'] = resultsTest['# shots'] / 24
+        elif dataset=='Nina3':
+            resultsTest['# shots'] = resultsTest['# shots'] / 36
+
         resultsTest.to_csv(
-            '../Experiment1/results/Capgmyo_dba' + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(
+            '../Experiment1/results/'+dataset + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(
                 1) + "_endPerson_" + str(
                 people) + '_windowSize_' + windowSize + ".csv")
 
-# place = '../Experiment1/results2/Capgmyo_dba'
-# windowSize = '295'
-#
-# samples = 9
-# people = 18
-# times = 20
-# uploadResultsCapgmyo(place, samples, people, times, windowSize)
+place = '../Experiment1/results2/'
+windowSize = '295'
+
+dataset= 'Capgmyo_dba'
+print(dataset)
+samples = 9
+people = 18
+times = 2
+uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)
+
+dataset = 'Capgmyo_dbc'
+print(dataset)
+samples = 9
+people = 10
+times = 2
+uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)
+
+dataset = 'Nina1'
+print(dataset)
+samples = 9
+people = 27
+times = 2
+uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)
+
+
+dataset = 'Nina3'
+print(dataset)
+samples = 5
+people = 9
+times = 2
+uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)

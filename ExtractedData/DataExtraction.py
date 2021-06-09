@@ -9,15 +9,6 @@ from statsmodels.tsa.ar_model import AutoReg
 
 # %% Features
 
-def AR6ch(EMG, ch):
-    ar = []
-    for i in range(ch):
-        model = AutoReg(EMG[i, :], lags=6, old_names=False).fit()
-        ar.append(list(model.params))
-    ar = np.array(ar)
-    return ar[:, 0], ar[:, 1], ar[:, 2], ar[:, 3], ar[:, 4], ar[:, 5]
-
-
 def MAVch(EMG, ch):
     EMG = abs(EMG)
     mavVector = EMG.mean(axis=0)
@@ -71,7 +62,6 @@ def MFLch(EMG, ch):
             mflVector[0, i] = np.log10(np.sqrt(np.sum((x_f - x) ** 2)))
         except:
             mflVector[0, i] = 0
-            # print('error', np.sqrt(np.sum((x_f - x) ** 2)))
     return mflVector
 
 
@@ -91,36 +81,6 @@ def WAMPch(EMG, ch):
     return wampVector
 
 
-def RMSch(EMG, ch):
-    rmsVector = np.zeros([1, ch])
-    for i in range(ch):
-        rmsVector[0, i] = np.sqrt(np.sum((EMG[:, i]) ** 2) / np.size(EMG[:, i], 0))
-    return rmsVector
-
-
-def IAVch(EMG, ch):
-    iavVector = np.zeros([1, ch])
-    for i in range(ch):
-        iavVector[0, i] = np.sum(abs(EMG[:, i]) / np.size(EMG[:, i], 0))
-    return iavVector
-
-
-def DASDVch(EMG, ch):
-    dasdvVector = np.zeros([1, ch])
-    for i in range(ch):
-        x_f = EMG[1:np.size(EMG, 0), i]
-        x = EMG[0:np.size(EMG, 0) - 1, i]
-        dasdvVector[0, i] = np.sqrt(np.sum((x_f - x) ** 2) / np.size(x, 0))
-    return dasdvVector
-
-
-def VARch(EMG, ch):
-    varVector = np.zeros([1, ch])
-    for i in range(ch):
-        varVector[0, i] = np.sum((EMG[:, i] - np.mean(EMG[:, i])) ** 2) / (np.size(EMG[:, i], 0) - 1)
-    return varVector
-
-
 def logVARch(EMG, ch):
     logVarVector = np.zeros([1, ch])
     for i in range(ch):
@@ -128,18 +88,17 @@ def logVARch(EMG, ch):
             logVarVector[0, i] = np.log(np.sum((EMG[:, i] - np.mean(EMG[:, i])) ** 2) / (np.size(EMG[:, i], 0) - 1))
         except:
             logVarVector[0, i] = 0
-            # print('errorV', np.sum((EMG[:, i] - np.mean(EMG[:, i])) ** 2) / (np.size(EMG[:, i], 0) - 1))
     return logVarVector
 
 
 # %% Segmentation, and Feature Extraction
 # for database in ['Nina5', 'Cote', 'EPN', 'Capgmyo_dba','Capgmyo_dbc','Nina3','Nina1']:
-for database in ['Nina1']:
+for database in ['Nina3']:
     # Our interface: window=295 and overlap=290
     # Cote: window=260 and overlap=235
     # window = [260,295,100]
     # overlap = [235,290,50]
-    for window in [280,295]:
+    for window in [ 295]:
         if window == 260:
             overlap = 235
         elif window == 295:
@@ -151,10 +110,7 @@ for database in ['Nina1']:
         t1 = []
         t2 = []
         t3 = []
-        t4 = []
-        t5 = []
-        t6 = []
-        t7 = []
+
         logvarMatrix = []
         mavMatrix = []
         wlMatrix = []
@@ -164,23 +120,12 @@ for database in ['Nina1']:
         mflMatrix = []
         msrMatrix = []
         wampMatrix = []
-        rmsMatrix = []
-        iavMatrix = []
-        dasdvMatrix = []
-        varMatrix = []
-        ar1 = []
-        ar2 = []
-        ar3 = []
-        ar4 = []
-        ar5 = []
-        ar6 = []
 
         windowFileName = str(window)
 
         if database == 'Nina1':
             np.seterr(divide='raise')
             sampleRate = 100
-            ## NINA PRO 1 DATABASE
             rpt = 10
             ch = 10
             classes = 12
@@ -214,7 +159,8 @@ for database in ['Nina1']:
                             wf = wi + windowSamples
 
                             t = time.time()
-                            logvarMatrix.append(np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
+                            logvarMatrix.append(
+                                np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                             t1.append(time.time() - t)
                             t = time.time()
                             mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([person, cl, rp]))))
@@ -223,7 +169,8 @@ for database in ['Nina1']:
                             sscMatrix.append(np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                             t2.append(time.time() - t)
                             t = time.time()
-                            lscaleMatrix.append(np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
+                            lscaleMatrix.append(
+                                np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                             mflMatrix.append(np.hstack((MFLch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                             msrMatrix.append(np.hstack((MSRch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                             wampMatrix.append(np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
@@ -297,96 +244,98 @@ for database in ['Nina1']:
 
             windowSamples = int(window * sampleRate / 1000)
             incrmentSamples = windowSamples - int(overlap * sampleRate / 1000)
-
+            per=0
             for person in range(1, people + 1):
-                aux = scipy.io.loadmat('../Databases/ninaDB3/s' + str(person) + '_0/DB3_s' + str(person) + '/S' + str(
-                    person) + '_E1_A1.mat')
-                auxEMG = aux['emg']
-                auxRestimulus = aux['restimulus']
+                if person != 6 and person != 7:
+                    per+=1
+                    aux = scipy.io.loadmat('../Databases/ninaDB3/s' + str(person) + '_0/DB3_s' + str(person) + '/S' + str(
+                        person) + '_E1_A1.mat')
+                    auxEMG = aux['emg']
+                    auxRestimulus = aux['restimulus']
 
-                stack = 0
-                rp = 1
-                stackR = 0
-                rpR = 0
-                auxIdx = 0
-                for i in range(np.size(auxRestimulus)):
-                    if auxRestimulus[i] != 0 and stack == 0:
-                        aux1 = i
-                        stack = 1
-                        cl = int(auxRestimulus[i])
+                    stack = 0
+                    rp = 1
+                    stackR = 0
+                    rpR = 0
+                    auxIdx = 0
+                    for i in range(np.size(auxRestimulus)):
+                        if auxRestimulus[i] != 0 and stack == 0:
+                            aux1 = i
+                            stack = 1
+                            cl = int(auxRestimulus[i])
 
-                    elif auxRestimulus[i] == 0 and stack == 1:
-                        aux2 = i
-                        stack = 0
-                        wi = aux1
-                        segments = int((aux2 - aux1 - windowSamples) / incrmentSamples + 1)
-                        for w in range(segments):
-                            wf = wi + windowSamples
+                        elif auxRestimulus[i] == 0 and stack == 1:
+                            aux2 = i
+                            stack = 0
+                            wi = aux1
+                            segments = int((aux2 - aux1 - windowSamples) / incrmentSamples + 1)
+                            for w in range(segments):
+                                wf = wi + windowSamples
 
-                            t = time.time()
-                            logvarMatrix.append(np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            t1.append(time.time() - t)
-                            t = time.time()
-                            mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([person, cl, rp]))))
-                            wlMatrix.append(np.hstack((WLch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            zcMatrix.append(np.hstack((ZCch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            sscMatrix.append(np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            t2.append(time.time() - t)
-                            t = time.time()
-                            lscaleMatrix.append(np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            mflMatrix.append(np.hstack((MFLch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            msrMatrix.append(np.hstack((MSRch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            wampMatrix.append(np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            t3.append(time.time() - t)
+                                t = time.time()
+                                logvarMatrix.append(np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                t1.append(time.time() - t)
+                                t = time.time()
+                                mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([per, cl, rp]))))
+                                wlMatrix.append(np.hstack((WLch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                zcMatrix.append(np.hstack((ZCch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                sscMatrix.append(np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                t2.append(time.time() - t)
+                                t = time.time()
+                                lscaleMatrix.append(np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                mflMatrix.append(np.hstack((MFLch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                msrMatrix.append(np.hstack((MSRch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                wampMatrix.append(np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                t3.append(time.time() - t)
 
-                            wi += incrmentSamples
+                                wi += incrmentSamples
 
-                        rp = rp + 1
-                        if rp == 7:
-                            rp = 1
+                            rp = rp + 1
+                            if rp == 7:
+                                rp = 1
 
-                    if rpR <= rpt:
-                        if auxRestimulus[i] == 0 and stackR == 0:
-                            aux1R = i
-                            stackR = 1
-                            clR = 18
+                        if rpR <= rpt:
+                            if auxRestimulus[i] == 0 and stackR == 0:
+                                aux1R = i
+                                stackR = 1
+                                clR = 18
 
-                        elif auxRestimulus[i] != 0 and stackR == 1:
-                            aux2R = i
-                            stackR = 0
-                            wiR = aux1R
-                            if rpR != 0:
-                                segments = int(((aux2R - aux1R) - windowSamples) / (incrmentSamples) + 1)
-                                for w in range(segments):
-                                    wfR = wiR + windowSamples
+                            elif auxRestimulus[i] != 0 and stackR == 1:
+                                aux2R = i
+                                stackR = 0
+                                wiR = aux1R
+                                if rpR != 0:
+                                    segments = int(((aux2R - aux1R) - windowSamples) / (incrmentSamples) + 1)
+                                    for w in range(segments):
+                                        wfR = wiR + windowSamples
 
-                                    t = time.time()
-                                    logvarMatrix.append(
-                                        np.hstack((logVARch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    t1.append(time.time() - t)
-                                    t = time.time()
-                                    mavMatrix.append(
-                                        np.hstack((MAVch(auxEMG[wiR:wfR], ch), np.array([person, clR, rpR]))))
-                                    wlMatrix.append(
-                                        np.hstack((WLch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    zcMatrix.append(
-                                        np.hstack((ZCch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    sscMatrix.append(
-                                        np.hstack((SSCch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    t2.append(time.time() - t)
-                                    t = time.time()
-                                    lscaleMatrix.append(
-                                        np.hstack((Lscalech(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    mflMatrix.append(
-                                        np.hstack((MFLch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    msrMatrix.append(
-                                        np.hstack((MSRch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    wampMatrix.append(
-                                        np.hstack((WAMPch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    t3.append(time.time() - t)
+                                        t = time.time()
+                                        logvarMatrix.append(
+                                            np.hstack((logVARch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        t1.append(time.time() - t)
+                                        t = time.time()
+                                        mavMatrix.append(
+                                            np.hstack((MAVch(auxEMG[wiR:wfR], ch), np.array([per, clR, rpR]))))
+                                        wlMatrix.append(
+                                            np.hstack((WLch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        zcMatrix.append(
+                                            np.hstack((ZCch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        sscMatrix.append(
+                                            np.hstack((SSCch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        t2.append(time.time() - t)
+                                        t = time.time()
+                                        lscaleMatrix.append(
+                                            np.hstack((Lscalech(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        mflMatrix.append(
+                                            np.hstack((MFLch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        msrMatrix.append(
+                                            np.hstack((MSRch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        wampMatrix.append(
+                                            np.hstack((WAMPch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                                        t3.append(time.time() - t)
 
-                                    wiR += incrmentSamples
-                            rpR += 1
+                                        wiR += incrmentSamples
+                                rpR += 1
 
             timesFeatures = np.vstack((t1, t2, t3))
             auxName = 'timesFeatures' + windowFileName
@@ -718,12 +667,6 @@ for database in ['Nina1']:
                             msrMatrix.append(np.hstack((MSRch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                             wampMatrix.append(np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
                             t3.append(time.time() - t)
-                            t = time.time()
-                            rmsMatrix.append(np.hstack((RMSch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            iavMatrix.append(np.hstack((IAVch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            dasdvMatrix.append(np.hstack((DASDVch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            varMatrix.append(np.hstack((VARch(auxEMG[wi:wf], ch)[0], np.array([person, cl, rp]))))
-                            t4.append(time.time() - t)
 
                             # LS, MFL, MSR, WAMP, ZC, RMS, IAV, DASDV, and VAR
 
@@ -772,21 +715,11 @@ for database in ['Nina1']:
                                     wampMatrix.append(
                                         np.hstack((WAMPch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
                                     t3.append(time.time() - t)
-                                    t = time.time()
-                                    rmsMatrix.append(
-                                        np.hstack((RMSch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    iavMatrix.append(
-                                        np.hstack((IAVch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    dasdvMatrix.append(
-                                        np.hstack((DASDVch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    varMatrix.append(
-                                        np.hstack((VARch(auxEMG[wiR:wfR], ch)[0], np.array([person, clR, rpR]))))
-                                    t4.append(time.time() - t)
 
                                     wiR += incrmentSamples
                             rpR += 1
 
-            timesFeatures = np.vstack((t1, t2, t3, t4))
+            timesFeatures = np.vstack((t1, t2, t3))
             auxName = 'timesFeatures' + windowFileName
             myFile = database + '/' + auxName + '.csv'
             np.savetxt(myFile, timesFeatures, delimiter=',')
@@ -836,26 +769,7 @@ for database in ['Nina1']:
             with myFile:
                 writer = csv.writer(myFile)
                 writer.writerows(logvarMatrix)
-            auxName = 'rmsMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(rmsMatrix)
-            auxName = 'iavMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(iavMatrix)
-            auxName = 'dasdvMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(dasdvMatrix)
-            auxName = 'varMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(varMatrix)
+
             print('Finished')
 
         elif database == 'Cote':
@@ -957,16 +871,6 @@ for database in ['Nina1']:
                                     wampMatrix.append(
                                         np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
                                     t3.append(time.time() - t)
-                                    t = time.time()
-                                    rmsMatrix.append(
-                                        np.hstack((RMSch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
-                                    iavMatrix.append(
-                                        np.hstack((IAVch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
-                                    dasdvMatrix.append(
-                                        np.hstack((DASDVch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
-                                    varMatrix.append(
-                                        np.hstack((VARch(auxEMG[wi:wf], ch)[0], np.array([tyi, per, carp, cl, rp]))))
-                                    t4.append(time.time() - t)
 
                                     wi += incrmentSamples
 
@@ -974,7 +878,7 @@ for database in ['Nina1']:
                                     rp = rp + 1
                         per += 1
 
-            timesFeatures = np.vstack((t1, t2, t3, t4))
+            timesFeatures = np.vstack((t1, t2, t3))
             auxName = 'timesFeatures' + windowFileName
             myFile = database + '/' + auxName + '.csv'
             np.savetxt(myFile, timesFeatures, delimiter=',')
@@ -1024,26 +928,7 @@ for database in ['Nina1']:
             with myFile:
                 writer = csv.writer(myFile)
                 writer.writerows(logvarMatrix)
-            auxName = 'rmsMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(rmsMatrix)
-            auxName = 'iavMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(iavMatrix)
-            auxName = 'dasdvMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(dasdvMatrix)
-            auxName = 'varMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(varMatrix)
+
             print('Finished')
 
         elif database == 'EPN':
@@ -1096,20 +981,10 @@ for database in ['Nina1']:
                                 wampMatrix.append(
                                     np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
                                 t3.append((time.time() - t))
-                                t = time.time()
-                                rmsMatrix.append(
-                                    np.hstack((RMSch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
-                                iavMatrix.append(
-                                    np.hstack((IAVch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
-                                dasdvMatrix.append(
-                                    np.hstack((DASDVch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
-                                varMatrix.append(
-                                    np.hstack((VARch(auxEMG[wi:wf], ch)[0], np.array([ty, person, cl, rp]))))
-                                t4.append((time.time() - t))
 
                                 wi += incrmentSamples
 
-            timesFeatures = np.vstack((t1, t2, t3, t4))
+            timesFeatures = np.vstack((t1, t2, t3))
             auxName = 'timesFeatures' + windowFileName
             myFile = database + '/' + auxName + '.csv'
             np.savetxt(myFile, timesFeatures, delimiter=',')
@@ -1159,24 +1034,5 @@ for database in ['Nina1']:
             with myFile:
                 writer = csv.writer(myFile)
                 writer.writerows(logvarMatrix)
-            auxName = 'rmsMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(rmsMatrix)
-            auxName = 'iavMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(iavMatrix)
-            auxName = 'dasdvMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(dasdvMatrix)
-            auxName = 'varMatrix' + windowFileName
-            myFile = open(database + '/' + auxName + '.csv', 'w')
-            with myFile:
-                writer = csv.writer(myFile)
-                writer.writerows(varMatrix)
+
             print('Finished')

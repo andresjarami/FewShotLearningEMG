@@ -32,8 +32,8 @@ def uploadDatabases(Database, featureSet, windowSize):
         CH = 8
     elif Database == 'Nina3':
         classes = 18
-        peoplePriorK = 11
-        peopleTest = 11
+        peoplePriorK = 9
+        peopleTest = 9
         numberShots = 6
         CH = 12
     elif Database == 'Nina1':
@@ -219,13 +219,13 @@ def evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameF
     if typeDatabase == 'EPN':
         evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                       allFeatures, printR, scaler)
-    elif typeDatabase == 'Nina5' or typeDatabase == 'Nina3':
+    elif typeDatabase == 'Nina5':
         evaluationNina(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                        allFeatures, printR, scaler)
     elif typeDatabase == 'Cote':
         evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                        allFeatures, printR, scaler)
-    elif typeDatabase == 'Capgmyo_dba' or typeDatabase == 'Capgmyo_dbc' or typeDatabase == 'Nina1':
+    elif typeDatabase == 'Capgmyo_dba' or typeDatabase == 'Capgmyo_dbc' or typeDatabase == 'Nina1' or typeDatabase == 'Nina3':
         evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                           allFeatures, printR, scaler)
 
@@ -245,9 +245,11 @@ def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots
         trainFeaturesGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), 0:allFeatures][0]
         trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), allFeatures + 1][0]
 
-        numberShots2Test = 9
+        numberShots2Test = numberShots - 1
+        # print(numberShots2Test)
+
         for shot in range(1, numberShots2Test + 1):
-            for seed in range(2):
+            for seed in range(2, 4):
                 np.random.seed(seed)
                 testGestures = []
                 trainGestures = []
@@ -292,7 +294,8 @@ def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots
 
                 # print('features before', np.size(dataMatrix[:, 0:allFeatures], axis=1))
 
-                if np.size(dataMatrix[:, 0:allFeatures], axis=1) == 128:
+                if np.size(dataMatrix[:, 0:allFeatures], axis=1) == 128 or np.size(dataMatrix[:, 0:allFeatures],
+                                                                                   axis=1) == 4 * 128:
                     pca = PCA(n_components=0.99, svd_solver='full')
                     pca.fit(np.vstack((trainFeatures)))
                     trainFeatures = pca.transform(trainFeatures)
@@ -574,19 +577,11 @@ def evaluationNina(dataMatrix, classes, peoplePriorK, featureSet, numberShots, n
             trainFeatures = scaler.transform(trainFeatures)
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
 
-            # print('features before', np.size(dataMatrix[:, 0:allFeatures], axis=1))
-            # pca = PCA(n_components=0.999, svd_solver='full')
-            # pca.fit(np.vstack((trainFeatures)))
-            # trainFeatures = pca.transform(trainFeatures)
-            # trainFeaturesGen = pca.transform(trainFeaturesGen)
-
             t = time.time()
             testFeaturesTransform = scaler.transform(testFeatures)
-            # testFeaturesTransform = pca.transform(testFeaturesTransform)
             results.at[idx, 'tPre'] = (time.time() - t) / len(testFeatures)
 
             dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
-            # print('features after', allFeaturesPK)
 
             preTrainedDataMatrix = preTrainedDataNina(dataPK, classes, peoplePriorK, person, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
