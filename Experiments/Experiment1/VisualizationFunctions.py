@@ -37,8 +37,7 @@ def uploadResultsDatabases(folder, database, windowSize):
         people = 30
         shots = 25
     elif database == 'Capgmyo_dba':
-        times = 2
-        samples = 9 * times
+        samples = 9
         people = 18
         shots = 9
     elif database == 'Capgmyo_dbc':
@@ -46,16 +45,13 @@ def uploadResultsDatabases(folder, database, windowSize):
         people = 10
         shots = 9
     elif database == 'Nina1':
-        times = 2
-        samples = 9 * times
+        samples = 9
         people = 27
         shots = 9
     elif database == 'Nina3':
-        times=2
-        samples = 5*times
+        samples = 5
         people = 9
         shots = 5
-
 
     place = folder + database
 
@@ -145,9 +141,7 @@ def analysisResults(resultDatabase, shots):
         # the time of the classification and the preprocessing (min-maxd normalization) of our adaptive classifier both LDA and QDA
         ourLDAclassifyTime = resultDatabase['tCLPropL'].loc[(resultDatabase['Feature Set'] == j)]
         ourQDAclassifyTime = resultDatabase['tCLPropQ'].loc[(resultDatabase['Feature Set'] == j)]
-
-        # capmyo
-        # ourNormTime = resultDatabase['tPre'].loc[(resultDatabase['Feature Set'] == j)]
+        ourNormTime = resultDatabase['tPre'].loc[(resultDatabase['Feature Set'] == j)]
         # means, standar deviation, and variance
         timeOurTechnique.at[j, 'meanClLDA'] = round(ourLDAclassifyTime.mean(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'stdClLDA'] = round(ourLDAclassifyTime.std(axis=0) * 1000, 2)
@@ -155,19 +149,17 @@ def analysisResults(resultDatabase, shots):
         timeOurTechnique.at[j, 'meanClQDA'] = round(ourQDAclassifyTime.mean(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'stdClQDA'] = round(ourQDAclassifyTime.std(axis=0) * 1000, 2)
         timeOurTechnique.at[j, 'varClQDA'] = round(ourQDAclassifyTime.var(axis=0) * 1000, 2)
-
-        # capmyo
-        # timeOurTechnique.at[j, 'meanNorm'] = round(ourNormTime.mean(axis=0) * 1000000, 2)
-        # timeOurTechnique.at[j, 'stdNorm'] = round(ourNormTime.std(axis=0) * 1000000, 2)
-        # timeOurTechnique.at[j, 'varNorm'] = round(ourNormTime.var(axis=0) * 1000000, 2)
+        timeOurTechnique.at[j, 'meanNorm'] = round(ourNormTime.mean(axis=0) * 1000000, 2)
+        timeOurTechnique.at[j, 'stdNorm'] = round(ourNormTime.std(axis=0) * 1000000, 2)
+        timeOurTechnique.at[j, 'varNorm'] = round(ourNormTime.var(axis=0) * 1000000, 2)
 
     return results, timeOurTechnique
 
 
 # %%Graph of the accuracy of the all DA classifiers for the three databasese and three feature sets
-def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, resultsNina1, resultsNina3):
-    numDatabases = 7
-    fig, ax = plt.subplots(nrows=numDatabases, ncols=6, sharey='row', figsize=(13, 13))
+def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, resultsNina1):
+    numDatabases = 6
+    fig, ax = plt.subplots(nrows=numDatabases, ncols=6, sharey='row', figsize=(15, 22))
     shotsSet = np.arange(1, 5)
     shots = len(shotsSet)
     for Data in range(numDatabases):
@@ -176,34 +168,23 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, 
             for FeatureSet in range(3):
                 idx = FeatureSet
                 if Data == 0:
-                    results = resultsNina5
-                    ax[Data, idx].yaxis.set_ticks(np.arange(30, 100, 6))
-                elif Data == 1:
-                    results = resultsCote
-                    ax[Data, idx].yaxis.set_ticks(np.arange(74, 100, 5))
-                elif Data == 2:
-                    results = resultsEPN
-                    ax[Data, idx].yaxis.set_ticks(np.arange(50, 100, 6))
-                elif Data == 3:
-                    results = resultsCap_A
-                    ax[Data, idx].yaxis.set_ticks(np.arange(50, 100, 6))
-                    shotsSet = np.arange(1, 10)
-                    shots = len(shotsSet)
-                elif Data == 4:
-                    results = resultsCap_C
-                    ax[Data, idx].yaxis.set_ticks(np.arange(50, 100, 6))
-                    shotsSet = np.arange(1, 10)
-                    shots = len(shotsSet)
-                elif Data == 5:
                     results = resultsNina1
-                    ax[Data, idx].yaxis.set_ticks(np.arange(30, 82, 10))
-                    shotsSet = np.arange(1, 10)
-                    shots = len(shotsSet)
-                elif Data == 6:
-                    results = resultsNina3
-                    ax[Data, idx].yaxis.set_ticks(np.arange(0, 52, 10))
-                    shotsSet = np.arange(1, 6)
-                    shots = len(shotsSet)
+                    ax[Data, idx].yaxis.set_ticks(np.arange(20, 86, 10))
+                elif Data == 1:
+                    results = resultsNina5
+                    ax[Data, idx].yaxis.set_ticks(np.arange(30, 100, 7))
+                elif Data == 2:
+                    results = resultsCote
+                    ax[Data, idx].yaxis.set_ticks(np.arange(70, 100, 7))
+                elif Data == 3:
+                    results = resultsEPN
+                    ax[Data, idx].yaxis.set_ticks(np.arange(55, 100, 6))
+                elif Data == 4:
+                    results = resultsCap_A
+                    ax[Data, idx].yaxis.set_ticks(np.arange(20, 100, 11))
+                elif Data == 5:
+                    results = resultsCap_C
+                    ax[Data, idx].yaxis.set_ticks(np.arange(30, 100, 11))
 
                 if DA == 'QDA':
                     idx += 3
@@ -213,9 +194,9 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, 
                 Model = 'Ind' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
                 ax[Data, idx].plot(shotsSet, Y[:shots], marker='x', label='Individual', color='tab:orange')
-                # Model = 'Multi' + DA
-                # Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                # ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
+                Model = 'Multi' + DA
+                Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
                 Model = 'Liu' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
                 ax[Data, idx].plot(shotsSet, Y[:shots], marker='o', label='Liu', color='tab:green')
@@ -225,7 +206,6 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, 
                 Model = 'Our' + DA
                 Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
                 ax[Data, idx].plot(shotsSet, Y[:shots], marker='v', label='Our classifier', color='tab:blue')
-
                 ax[Data, idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
 
                 if shots == 25:
@@ -249,20 +229,18 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, 
     ax[0, 3].set_title('QDA\n Feature Set 1')
     ax[0, 4].set_title('QDA\n Feature Set 2')
     ax[0, 5].set_title('QDA\n Feature Set 3')
-    ax[0, 0].set_ylabel('NinaPro5\naccuracy [%]')
-    ax[1, 0].set_ylabel('Côté-Allard\naccuracy [%]')
-    ax[2, 0].set_ylabel('EPN \naccuracy [%]')
-    ax[3, 0].set_ylabel('Capgmyo A\naccuracy [%]')
-    ax[4, 0].set_ylabel('Capgmyo C\naccuracy [%]')
-    ax[5, 0].set_ylabel('NinaPro1\naccuracy [%]')
-    ax[6, 0].set_ylabel('NinaPro3\naccuracy [%]')
+    ax[0, 0].set_ylabel('NinaPro1\naccuracy [%]')
+    ax[1, 0].set_ylabel('NinaPro5\naccuracy [%]')
+    ax[2, 0].set_ylabel('Côté-Allard_db\naccuracy [%]')
+    ax[3, 0].set_ylabel('EMG-EPN-120 \naccuracy [%]')
+    ax[4, 0].set_ylabel('CapgMyo_dba\naccuracy [%]')
+    ax[5, 0].set_ylabel('CapgMyo_dbc\naccuracy [%]')
 
     # ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
 
     fig.tight_layout(pad=0.1)
-    # plt.savefig("FiguresPaper/acc.png", bbox_inches='tight', dpi=600)
+    plt.savefig("PaperFigures/acc.png", bbox_inches='tight', dpi=600)
     plt.show()
-
 
 # %% Friedman rank test for all DA approaches
 
@@ -306,9 +284,9 @@ def friedman_test(*args):
 
     rankings_avg = [np.mean([case[j] for case in rankings]) for j in range(k)]
     rankings_cmp = [r / np.sqrt(k * (k + 1) / (6. * n)) for r in rankings_avg]
-
+    aux = [r ** 2 for r in rankings_avg]
     chi2 = ((12 * n) / float((k * (k + 1)))) * (
-            (np.sum(r ** 2 for r in rankings_avg)) - ((k * (k + 1) ** 2) / float(4)))
+            (np.sum(aux)) - ((k * (k + 1) ** 2) / float(4)))
     iman_davenport = ((n - 1) * chi2) / float((n * (k - 1) - chi2))
 
     p_value = 1 - stats.f.cdf(iman_davenport, k - 1, (k - 1) * (n - 1))
@@ -367,38 +345,63 @@ def AnalysisFriedman(folder, windowSize):
     samples = 4
     people = 10
     place = folder + base
-    DataFrameN = uploadResults(place, samples, people, windowSize)
+    DataFrameN5 = uploadResults(place, samples, people, windowSize)
     base = 'Cote'
     samples = 4
     people = 17
     place = folder + base
-    DataFrameC = uploadResults(place, samples, people, windowSize)
+    DataFrameCo = uploadResults(place, samples, people, windowSize)
     base = 'EPN'
     samples = 25
     people = 30
     place = folder + base
     DataFrameE = uploadResults(place, samples, people, windowSize)
-    TotalDataframe = pd.concat([DataFrameN, DataFrameC, DataFrameE])
+    base = 'Capgmyo_dba'
+    samples = 9 * 4
+    people = 18
+    place = folder + base
+    DataFrameCA = uploadResults(place, samples, people, windowSize)
+    base = 'Capgmyo_dbc'
+    samples = 9 * 4
+    people = 10
+    place = folder + base
+    DataFrameCC = uploadResults(place, samples, people, windowSize)
+    base = 'Nina1'
+    samples = 9 * 4
+    people = 27
+    place = folder + base
+    DataFrameN1 = uploadResults(place, samples, people, windowSize)
+    base = 'Nina3'
+    samples = 5 * 4
+    people = 9
+    place = folder + base
+    DataFrameN3 = uploadResults(place, samples, people, windowSize)
 
+    TotalDataframe = pd.concat(
+        [DataFrameN5, DataFrameCo, DataFrameE, DataFrameCA, DataFrameCC, DataFrameN1, DataFrameN3])
+    # TotalDataframe = pd.concat([DataFrameN1])
+
+    # for shot in range(1,4):
+    shot = 4
     for f in range(1, 4):
         for DA in ['LDA', 'QDA']:
             print('\n\nTYPE OF DA CLASSIFIER: ' + DA + ' FEATURE SET: ' + str(f))
             dataFrame = pd.DataFrame()
             dataFrame['Individual ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Ind'].loc[
-                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= shot)].values
             dataFrame['Multi-User ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Multi'].loc[
-                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= shot)].values
             dataFrame['Liu ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Liu'].loc[
-                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= shot)].values
             dataFrame['Vidovic ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Vidovic'].loc[
-                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= shot)].values
             dataFrame['Our ' + DA + ' ' + str(f)] = TotalDataframe['Acc' + DA + 'Prop'].loc[
-                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= 4)].values
+                (TotalDataframe['Feature Set'] == f) & (TotalDataframe['# shots'] <= shot)].values
 
             data = np.asarray(dataFrame)
             num_datasets, num_methods = data.shape
             print("Number of classifiers: ", num_methods,
-                  "\nNumber of evaluations (10(people NinaPro5) x 4(shots) + 17(people Cote) x 4(shots) 30(people EPN) x 7(shots)): ",
+                  "\nNumber of evaluations (18(Nina1)+9(Nina3)+10(Nina5)+17(Cote)+30(EPN)+18(Capg_A)+10(Capg_C)) x 4(shots): ",
                   num_datasets, '\n')
 
             alpha = 0.05  # Set this to the desired alpha/signifance level
@@ -431,7 +434,7 @@ def AnalysisFriedman(folder, windowSize):
 
 
 # %% Analysis using a large database (EPN)
-def largeDatabase(results, featureSet):
+def largeDatabase(results):
     fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(9, 3))
     shotsTotal = 25
     shotsSet = np.array([0, 4, 9, 14, 19, 24])
@@ -461,13 +464,15 @@ def largeDatabase(results, featureSet):
     # ax[idx].legend(loc='lower center', bbox_to_anchor=(1.2, -0.8), ncol=2)
 
     idx = 0
-    shotsSet_featureSet = (featureSet - 1) * shotsTotal + shotsSet
-    for DA in ['LDA', 'QDA']:
-        title = DA
-        ind = np.array(results['Ind' + DA]) * 100
-        liu = np.array(results['Liu' + DA]) * 100
-        vid = np.array(results['Vid' + DA]) * 100
-        our = np.array(results['Our' + DA]) * 100
+    bestFeatureSet = [3, 1]
+    DA =['LDA', 'QDA']
+    for i in range(len(DA)):
+        shotsSet_featureSet = (bestFeatureSet[i] - 1) * shotsTotal + shotsSet
+        title = DA[i]
+        ind = np.array(results['Ind' + DA[i]]) * 100
+        liu = np.array(results['Liu' + DA[i]]) * 100
+        vid = np.array(results['Vid' + DA[i]]) * 100
+        our = np.array(results['Our' + DA[i]]) * 100
         ax[idx].grid(color='gainsboro', linewidth=1)
         ax[idx].set_axisbelow(True)
         ax[idx].plot(xAxis, ind[shotsSet_featureSet], label='Individual', marker='x',
@@ -487,7 +492,7 @@ def largeDatabase(results, featureSet):
     # ax[0].legend(loc='lower center', bbox_to_anchor=(1.2, -1.2), ncol=2)
 
     fig.tight_layout(pad=1)
-    plt.savefig("FiguresPaper/largeDatabase.png", bbox_inches='tight', dpi=600)
+    plt.savefig("PaperFigures/largeDatabase.png", bbox_inches='tight', dpi=600)
     plt.show()
 
 
@@ -518,10 +523,11 @@ def analysisTime(extractionTime, timeOurTechnique):
                       featureSet + 1, 'varCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'varNorm'] / 1000)), 2))
 
 
-def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeOurTechniqueC, extractionTimeE,
-                      timeOurTechniqueE):
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 3))
-    classifiers = 6
+def analysisTimeTotal(extractionTimeN1, timeOurTechniqueN1, extractionTimeN3, timeOurTechniqueN3, extractionTimeN5,
+                      timeOurTechniqueN5, extractionTimeC, timeOurTechniqueC, extractionTimeE, timeOurTechniqueE,
+                      extractionTimeCap_a, timeOurTechniqueCap_a, extractionTimeCap_c, timeOurTechniqueCap_c):
+    fig, ax = plt.subplots(nrows=2, ncols=1, sharex='col', figsize=(9, 6))
+    classifiers = 7 * 2
     vectTrainingTime = np.zeros(classifiers)
     vectTrainingTimeSTD = np.zeros(classifiers)
     vectExtractionTime = np.zeros(classifiers)
@@ -533,19 +539,39 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
     vectAnalysisTime = np.zeros(classifiers)
     vectAnalysisTimeSTD = np.zeros(classifiers)
     idx = 0
-    for BD in ['Nina5', 'Cote', 'EPN']:
-        if BD == 'Nina5':
-            extractionTime = extractionTimeN
-            timeOurTechnique = timeOurTechniqueN
-        elif BD == 'Cote':
+    for BD in range(7):
+        if BD == 0:
+            extractionTime = extractionTimeN1
+            timeOurTechnique = timeOurTechniqueN1
+            bestFeatureSet = [3, 3]
+        elif BD == 1:
+            extractionTime = extractionTimeN3
+            timeOurTechnique = timeOurTechniqueN3
+            bestFeatureSet = [3, 1]
+        elif BD == 2:
+            extractionTime = extractionTimeN5
+            timeOurTechnique = timeOurTechniqueN5
+            bestFeatureSet = [3, 1]
+        elif BD == 3:
             extractionTime = extractionTimeC
             timeOurTechnique = timeOurTechniqueC
-        elif BD == 'EPN':
+            bestFeatureSet = [1, 1]
+        elif BD == 4:
             extractionTime = extractionTimeE
             timeOurTechnique = timeOurTechniqueE
+            bestFeatureSet = [3, 1]
+        elif BD == 5:
+            extractionTime = extractionTimeCap_a
+            timeOurTechnique = timeOurTechniqueCap_a
+            bestFeatureSet = [1, 1]
+        elif BD == 6:
+            extractionTime = extractionTimeCap_c
+            timeOurTechnique = timeOurTechniqueCap_c
+            bestFeatureSet = [1, 1]
         # from seconds to miliseconds
         extractionTime = extractionTime * 1000
-        for DA in ['LDA', 'QDA']:
+        DA = ['LDA', 'QDA']
+        for i in range(len(DA)):
             TrainingTime = 0
             TrainingTimeSTD = 0
             ExtractionTime = 0
@@ -556,19 +582,18 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
             PreprocessingTimeSTD = 0
             AnalysisTime = 0
             AnalysisTimeVAR = 0
-            for featureSet in range(3):
-                TrainingTime += timeOurTechnique.loc[featureSet + 1, 'meanTrain' + DA] / (60 * 1000)
-                TrainingTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdTrain' + DA] / (60 * 1000)
-                ExtractionTime += extractionTime.loc[featureSet, :].mean()
-                ExtractionTimeSTD += extractionTime.loc[featureSet, :].std()
-                ClassificationTime += timeOurTechnique.loc[featureSet + 1, 'meanCl' + DA]
-                ClassificationTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdCl' + DA]
-                PreprocessingTime += timeOurTechnique.loc[featureSet + 1, 'meanNorm'] / 1000
-                PreprocessingTimeSTD += timeOurTechnique.loc[featureSet + 1, 'stdNorm']
-                AnalysisTime += extractionTime.loc[featureSet, :].mean() + timeOurTechnique.loc[
-                    featureSet + 1, 'meanCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'meanNorm'] / 1000
-                AnalysisTimeVAR += np.sqrt((extractionTime.loc[featureSet, :].var() + timeOurTechnique.loc[
-                    featureSet + 1, 'varCl' + DA] + timeOurTechnique.loc[featureSet + 1, 'varNorm'] / 1000))
+            TrainingTime += timeOurTechnique.loc[bestFeatureSet[i], 'meanTrain' + DA[i]] / (60 * 1000)
+            TrainingTimeSTD += timeOurTechnique.loc[bestFeatureSet[i], 'stdTrain' + DA[i]] / (60 * 1000)
+            ExtractionTime += extractionTime.loc[bestFeatureSet[i] - 1, :].mean()
+            ExtractionTimeSTD += extractionTime.loc[bestFeatureSet[i] - 1, :].std()
+            ClassificationTime += timeOurTechnique.loc[bestFeatureSet[i], 'meanCl' + DA[i]]
+            ClassificationTimeSTD += timeOurTechnique.loc[bestFeatureSet[i], 'stdCl' + DA[i]]
+            PreprocessingTime += timeOurTechnique.loc[bestFeatureSet[i], 'meanNorm'] / 1000
+            PreprocessingTimeSTD += timeOurTechnique.loc[bestFeatureSet[i], 'stdNorm'] / 1000
+            AnalysisTime += extractionTime.loc[bestFeatureSet[i] - 1, :].mean() + timeOurTechnique.loc[
+                bestFeatureSet[i], 'meanCl' + DA[i]] + timeOurTechnique.loc[bestFeatureSet[i], 'meanNorm'] / 1000
+            AnalysisTimeVAR += np.sqrt((extractionTime.loc[bestFeatureSet[i] - 1, :].var() + timeOurTechnique.loc[
+                bestFeatureSet[i], 'varCl' + DA[i]] + timeOurTechnique.loc[bestFeatureSet[i], 'varNorm'] / 1000))
             vectTrainingTime[idx] = TrainingTime / 3
             vectTrainingTimeSTD[idx] = TrainingTimeSTD / 3
             vectExtractionTime[idx] = ExtractionTime / 3
@@ -603,31 +628,210 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
     ax[0].bar(xAxis, vectClassificationTime, width, bottom=vectExtractionTime + vectPreprocessingTime,
               yerr=vectAnalysisTimeSTD, label='Classification Time')
 
-    ax[0].set_xlabel('Our classifiers over the three databases')
     ax[0].set_ylabel('time (ms)')
+    ax[0].yaxis.set_ticks(np.arange(0, 3.1, 1))
     ax[0].set_title('Data-Analysis Time')
     ax[0].set_xticks(xAxis)
-    ax[0].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN', 'QDA_EPN'], rotation=20)
-    # ax[0].legend(loc='lower center', bbox_to_anchor=(2, -1), ncol=5)
 
     ax[1].grid(color='gainsboro', linewidth=1)
     ax[1].set_axisbelow(True)
 
     ax[1].bar(xAxis, vectTrainingTime, width, yerr=vectTrainingTimeSTD, label='Training Time', color='tab:red')
-    ax[1].set_xlabel('Our classifiers over the three databases')
+    ax[1].set_xlabel('Our classifiers over the seven databases')
     ax[1].set_ylabel('time (min)')
-    ax[1].set_title('Our classifiers\' Training Time')
+    ax[1].yaxis.set_ticks(np.arange(0, 3.1, 1))
+    ax[1].set_title('Training Time')
     ax[1].set_xticks(xAxis)
-    ax[1].set_xticklabels(['LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote', 'LDA_EPN', 'QDA_EPN'], rotation=20)
+    ax[1].set_xticklabels(
+        ['LDA_Nina1', 'QDA_Nina1', 'LDA_Nina3', 'QDA_Nina3', 'LDA_Nina5', 'QDA_Nina5', 'LDA_Cote', 'QDA_Cote',
+         'LDA_EPN', 'QDA_EPN', 'LDA_CapgMyoA', 'QDA_CapgMyoA', 'LDA_CapgMyoC', 'QDA_CapgMyoC'], rotation=20)
     # ax[1].legend(loc='lower center', bbox_to_anchor=(2, -1), ncol=5)
 
     fig.tight_layout(pad=1)
-    plt.savefig("FiguresPaper/times.png", bbox_inches='tight', dpi=600)
+    plt.savefig("PaperFigures/times.png", bbox_inches='tight', dpi=600)
 
     plt.show()
 
 
+# %% Graph NinaPro3 dataset that has EMG data from amputees
+
+def graphACCNina3(results):
+    fig, ax = plt.subplots(nrows=1, ncols=2, sharey='row', figsize=(7, 3))
+    shotsSet = np.arange(1, 6)
+    shots = len(shotsSet)
+
+    bestFeatureSet = [3, 1]
+    DA =['LDA', 'QDA']
+    for i in range(len(DA)):
+        FeatureSet=bestFeatureSet[i]
+        ax[i].yaxis.set_ticks(np.arange(20, 86, 10))
+        ax[i].grid(color='gainsboro', linewidth=1)
+        ax[i].set_axisbelow(True)
+
+        Model = 'Ind' + DA[i]
+        Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+        ax[i].plot(shotsSet, Y[:shots], marker='x', label='Individual', color='tab:orange')
+        Model = 'Multi' + DA[i]
+        Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+        ax[i].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
+        Model = 'Liu' + DA[i]
+        Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+        ax[i].plot(shotsSet, Y[:shots], marker='o', label='Liu', color='tab:green')
+        Model = 'Vid' + DA[i]
+        Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+        ax[i].plot(shotsSet, Y[:shots], marker='^', label='Vidovic', color='tab:red')
+        Model = 'Our' + DA[i]
+        Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+        ax[i].plot(shotsSet, Y[:shots], marker='v', label='Our classifier', color='tab:blue')
+        ax[i].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+
+        ax[i].set_xlabel('repetitions')
+
+    ax[0].set_title('LDA')
+    ax[1].set_title('QDA')
+
+    ax[0].set_ylabel('NinaPro3\naccuracy [%]')
+
+    # ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
+
+    fig.tight_layout(pad=0.1)
+    plt.savefig("PaperFigures/accNina3.png", bbox_inches='tight', dpi=600)
+    plt.show()
+
 # %%
+def uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset):
+    for featureSet in range(1, 4):
+        place = place1 + dataset
+        try:
+            resultsTest = pd.read_csv(
+                place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(1) + "_endPerson_" + str(
+                    1) + '_windowSize_' + windowSize + ".csv")
+            if len(resultsTest) != samples * times:
+                print('1 error ' + str(featureSet) + ' ' + str(1))
+                print(len(resultsTest), '/' + str(samples * times))
+
+            for per in range(2, people + 1):
+                try:
+                    auxFrame = pd.read_csv(
+                        place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(per) + "_endPerson_" + str(
+                            per) + '_windowSize_' + windowSize + ".csv")
+                    resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
+                    if len(auxFrame) != samples * times:
+                        print('1 error ' + str(featureSet) + ' ' + str(per))
+                        print(len(auxFrame), '/' + str(samples * times))
+                except:
+                    print('1 Not Found ' + str(featureSet) + ' ' + str(per))
+
+            # place = place2 + dataset
+            # for per in range(1, people + 1):
+            #     try:
+            #         auxFrame = pd.read_csv(
+            #             place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(per) + "_endPerson_" + str(
+            #                 per) + '_windowSize_' + windowSize + ".csv")
+            #         resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
+            #         if len(auxFrame) != samples * times:
+            #             print('2 error ' + str(featureSet) + ' ' + str(per))
+            #             print(len(auxFrame), '/' + str(samples * times))
+            #     except:
+            #         print('2 Not Found ' + str(featureSet) + ' ' + str(per))
+
+            resultsTest = resultsTest.drop(columns='Unnamed: 0')
+            if dataset == 'Capgmyo_dba':
+                resultsTest['# shots'] = resultsTest['# shots'] / 16
+                resultsTest = resultsTest.iloc[::2]
+            elif dataset == 'Capgmyo_dbc' or dataset == 'Nina1':
+                resultsTest['# shots'] = resultsTest['# shots'] / 24
+                resultsTest = resultsTest.iloc[::2]
+            elif dataset == 'Nina3':
+                resultsTest['# shots'] = resultsTest['# shots'] / 36
+                resultsTest = resultsTest.iloc[::2]
+            resultsTest.to_csv(
+                '../Experiment1/results/' + dataset + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(
+                    1) + "_endPerson_" + str(
+                    people) + '_windowSize_' + windowSize + ".csv")
+
+        except:
+            print(dataset, featureSet, 'error databse')
+
+
+# windowSize = '295'
+# place1 = '../Experiment1/results2/'
+# place2 = '../Experiment1/results2/2_'
+#
+# dataset = 'Capgmyo_dba'
+# print(dataset)
+# samples = 9
+# people = 18
+# times = 2
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# dataset = 'Capgmyo_dbc'
+# print(dataset)
+# samples = 9
+# people = 10
+# times = 2
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# dataset = 'Nina1'
+# print(dataset)
+# samples = 9
+# people = 27
+# times = 2
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# dataset = 'Nina3'
+# print(dataset)
+# samples = 5
+# people = 9
+# times = 2
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# dataset = 'Cote'
+# print(dataset)
+# samples = 4
+# people = 17
+# times = 1
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# dataset = 'EPN'
+# print(dataset)
+# samples = 25
+# people = 30
+# times = 1
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# dataset = 'Nina5'
+# print(dataset)
+# samples = 4
+# people = 10
+# times = 1
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+
+#
+#
+# windowSize = '100'
+#
+# dataset = 'Capgmyo_dba'
+# print(dataset)
+# samples = 9
+# people = 18
+# times = 2
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# dataset = 'Capgmyo_dbc'
+# print(dataset)
+# samples = 9
+# people = 10
+# times = 2
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
+#
+# windowSize = '280'
+# dataset = 'Nina1'
+# print(dataset)
+# samples = 9
+# people = 27
+# times = 2
+# uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
 
 
 # place = '../Experiment1/results/'
@@ -653,73 +857,84 @@ def analysisTimeTotal(extractionTimeN, timeOurTechniqueN, extractionTimeC, timeO
 #
 # database = 'Nina3'
 # resultsNina3, timeNina3 = uploadResultsDatabases(place, database, windowSize)
+
+# graphACC(resultsNina5, resultsCote, resultsEPN, resultsCapgmyoA, resultsCapgmyoC, resultsNina1)
+
+# AnalysisFriedman(place, windowSize)
+
+# largeDatabase(resultsEPN)
+
+# graphACCNina3(resultsNina3)
+
+# def grphComparison(resultsCapgmyoA, resultsCapgmyoC, resultsNina1):
+#     fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 4))
 #
-# graphACC(resultsNina5, resultsCote, resultsEPN, resultsCapgmyoA, resultsCapgmyoC, resultsNina1, resultsNina3)
+#     #####graph1
+#     results = resultsCapgmyoA
+#     Model = 'Our' + 'QDA'
+#     FeatureSet = 1
+#     ours = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+#     ax[0].plot(np.arange(1, len(ours) + 1), ours, marker='v', label='Ours (LDA FS2)', color='tab:blue')
+#     print('Capgmyo_dba - accuracy average (Ours LDA FS2): ', np.mean(ours[:7]), np.std(ours[:7]))
+#
+#     # Values get (approximately) from "Hand Gesture Recognition based on Surface Electromyography using Convolutional Neural
+#     # Network with Transfer Learning Method" (Chen 2020)
+#     LSTM_TL = [79, 89, 92, 94, 97, 99, 100, 100, 100]
+#     TL = [76, 86, 89, 91, 92, 94, 94, 96, 99]
+#     ax[0].plot(np.arange(1, len(ours) + 1), TL, marker='o', label='Chen (CNN+TL)', color='tab:orange')
+#     ax[0].plot(np.arange(1, len(ours) + 1), LSTM_TL, marker='o', label='Chen (CNN+LSTM+TL)', color='tab:green')
+#     print('Capgmyo_dba - accuracy average (Chen_CNN+TL): ', str(91.18), str(6.25))
+#     print('Capgmyo_dba - accuracy average (Chen_CNN+LSTM+TL): ', str(94.57), str(6.77))
+#
+#     ax[0].grid(color='gainsboro', linewidth=1)
+#     ax[0].legend(prop={'size': 7})
+#     ax[0].set_title('Capgmyo_dba')
+#     ax[0].set_ylabel('accuracy [%]')
+#     ax[0].set_xlabel('repetitions')
+#     ax[0].yaxis.set_ticks(np.arange(70, 102, 5))
+#
+#     #####graph2
+#     results = resultsCapgmyoC
+#     Model = 'Our' + 'QDA'
+#     FeatureSet = 1
+#     ours = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+#     ax[1].plot(np.arange(1, len(ours[:7]) + 1), ours[:7], marker='v', label='Ours (LDA FS1)', color='tab:blue')
+#     print('Capgmyo_dbc - accuracy average (Ours LDA FS1): ', np.mean(ours[:7]), np.std(ours[:7]))
+#
+#     # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
+#     # Network with the Transfer Learning Method" (Yu 2021)
+#     TL = [72.25, 91.59, 92.19, 95.07, 96.53, 97.26, 98.03]
+#     ax[1].plot(np.arange(1, len(ours[:7]) + 1), TL, marker='o', label='Yu (CNN+TL)', color='tab:orange')
+#     print('Capgmyo_dbc - accuracy average (Yu_CNN+TL): ', str(95.97), str(2.95))
+#
+#     ax[1].grid(color='gainsboro', linewidth=1)
+#     ax[1].legend(prop={'size': 7})
+#     ax[1].set_title('Capgmyo_dbc')
+#     ax[1].set_xlabel('repetitions')
+#     ax[1].yaxis.set_ticks(np.arange(70, 102, 5))
+#
+#     #####graph3
+#     results = resultsNina1
+#     Model = 'Our' + 'QDA'
+#     FeatureSet = 3
+#     ours = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
+#     ax[2].plot(np.arange(1, len(ours[:7]) + 1), ours[:7], marker='v', label='Ours (QDA FS3)', color='tab:blue')
+#     print('NinaPro1 - accuracy average (Ours QDA FS3): ', np.mean(ours[:7]), np.std(ours[:7]))
+#
+#     # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
+#     # Network with the Transfer Learning Method" (Yu 2021)
+#     TL = [59.29, 64.33, 70.80, 73.74, 73.68, 74.01, 75.53]
+#     ax[2].plot(np.arange(1, len(ours[:7]) + 1), TL, marker='o', label='Yu (CNN+TL)', color='tab:orange')
+#     print('NinaPro1 - accuracy average (Yu_CNN+TL): ', str(76.9), str(3.8))
+#     ax[2].grid(color='gainsboro', linewidth=1)
+#     ax[2].legend(prop={'size': 7})
+#     ax[2].set_title('NinaPro1')
+#     ax[2].set_xlabel('repetitions')
+#     ax[2].yaxis.set_ticks(np.arange(55, 86, 5))
+#
+#     fig.tight_layout(pad=0.1)
+#     # plt.savefig("PaperFigures/acc.png", bbox_inches='tight', dpi=600)
+#     plt.show()
+#
 
-
-def uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset):
-    place=place+dataset
-    for featureSet in range(1, 4):
-        resultsTest = pd.read_csv(
-            place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(1) + "_endPerson_" + str(
-                1) + '_windowSize_' + windowSize + ".csv")
-        if len(resultsTest) != samples * times:
-            print('error ' + str(featureSet) + ' ' + str(1))
-            print(len(resultsTest))
-
-        for per in range(2, people + 1):
-            try:
-                auxFrame = pd.read_csv(
-                    place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(per) + "_endPerson_" + str(
-                        per) + '_windowSize_' + windowSize + ".csv")
-                resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
-                if len(auxFrame) != samples * times:
-                    print('error ' + str(featureSet) + ' ' + str(per))
-                    print(len(auxFrame))
-            except:
-                print('Not Found ' + str(featureSet) + ' ' + str(per))
-
-        resultsTest = resultsTest.drop(columns='Unnamed: 0')
-        if dataset=='Capgmyo_dba':
-            resultsTest['# shots'] = resultsTest['# shots'] / 16
-        elif dataset=='Capgmyo_dbc' or dataset=='Nina1':
-            resultsTest['# shots'] = resultsTest['# shots'] / 24
-        elif dataset=='Nina3':
-            resultsTest['# shots'] = resultsTest['# shots'] / 36
-
-        resultsTest.to_csv(
-            '../Experiment1/results/'+dataset + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(
-                1) + "_endPerson_" + str(
-                people) + '_windowSize_' + windowSize + ".csv")
-
-place = '../Experiment1/results2/'
-windowSize = '295'
-
-dataset= 'Capgmyo_dba'
-print(dataset)
-samples = 9
-people = 18
-times = 2
-uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)
-
-dataset = 'Capgmyo_dbc'
-print(dataset)
-samples = 9
-people = 10
-times = 2
-uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)
-
-dataset = 'Nina1'
-print(dataset)
-samples = 9
-people = 27
-times = 2
-uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)
-
-
-dataset = 'Nina3'
-print(dataset)
-samples = 5
-people = 9
-times = 2
-uploadResultsCapgmyo(place, samples, people, times, windowSize,dataset)
+# grphComparison(resultsCapgmyoA, resultsCapgmyoC, resultsNina1)

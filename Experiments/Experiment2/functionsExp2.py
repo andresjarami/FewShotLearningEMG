@@ -157,65 +157,65 @@ def ResultsSyntheticData(DataFrame, nameFile, numberShots=30, peoplePK=0, sample
         y_test = np.hstack((y_test, np.ones(lenTest) * cl + 1))
     x_test = x_test.T
 
-    # for t in range(times): (for spliting the task)
-    t = times
+    for t in range(times): #(for spliting the task)
+        # t = times
 
-    for i in range(numberShots):
-        x_train = currentPersonTrain.loc[0, 'data'][:, t:i + t + iSample]
-        y_train = np.ones(i + iSample)
-        currentValues.at[0, 'mean'] = np.mean(x_train, axis=1)
-        currentValues.at[0, 'cov'] = np.cov(x_train, rowvar=True)
-        currentValues.at[0, 'class'] = 1
+        for i in range(numberShots):
+            x_train = currentPersonTrain.loc[0, 'data'][:, t:i + t + iSample]
+            y_train = np.ones(i + iSample)
+            currentValues.at[0, 'mean'] = np.mean(x_train, axis=1)
+            currentValues.at[0, 'cov'] = np.cov(x_train, rowvar=True)
+            currentValues.at[0, 'class'] = 1
 
-        for cl in range(1, classes):
-            x_train = np.hstack((x_train, currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample]))
-            y_train = np.hstack((y_train, np.ones(i + iSample) * cl + 1))
-            currentValues.at[cl, 'mean'] = np.mean(currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample], axis=1)
-            currentValues.at[cl, 'cov'] = np.cov(currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample], rowvar=True)
-            currentValues.at[cl, 'class'] = cl + 1
+            for cl in range(1, classes):
+                x_train = np.hstack((x_train, currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample]))
+                y_train = np.hstack((y_train, np.ones(i + iSample) * cl + 1))
+                currentValues.at[cl, 'mean'] = np.mean(currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample], axis=1)
+                currentValues.at[cl, 'cov'] = np.cov(currentPersonTrain.loc[cl, 'data'][:, t:i + t + iSample], rowvar=True)
+                currentValues.at[cl, 'class'] = cl + 1
 
-        x_Multi = np.hstack((x_PK, x_train))
-        y_Multi = np.hstack((y_PK, y_train))
-        for cl in range(classes):
-            pkValues.at[cl, 'mean'] = np.mean(x_Multi[:, y_Multi == cl + 1], axis=1)
-            pkValues.at[cl, 'cov'] = np.cov(x_Multi[:, y_Multi == cl + 1], rowvar=True)
-            pkValues.at[cl, 'class'] = cl + 1
+            x_Multi = np.hstack((x_PK, x_train))
+            y_Multi = np.hstack((y_PK, y_train))
+            for cl in range(classes):
+                pkValues.at[cl, 'mean'] = np.mean(x_Multi[:, y_Multi == cl + 1], axis=1)
+                pkValues.at[cl, 'cov'] = np.cov(x_Multi[:, y_Multi == cl + 1], rowvar=True)
+                pkValues.at[cl, 'class'] = cl + 1
 
-        resultsData.at[idx, 'person'] = per
-        resultsData.at[idx, 'times'] = t
-        resultsData.at[idx, 'shots'] = i + iSample
+            resultsData.at[idx, 'person'] = per
+            resultsData.at[idx, 'times'] = t
+            resultsData.at[idx, 'shots'] = i + iSample
 
-        step = 1
-        k = 1 - (np.log(i + 1) / np.log(samples + 1))
+            step = 1
+            k = 1 - (np.log(i + 1) / np.log(samples + 1))
 
-        propModelLDA, _, resultsData.at[idx, 'wTargetMeanLDA'], _, resultsData.at[idx, 'wTargetCovLDA'], resultsData.at[
-            idx, 'tPropLDA'] = adaptive.OurModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T,
-                                                 y_train, step, 'LDA', k)
-        propModelQDA, _, resultsData.at[idx, 'wTargetMeanQDA'], _, resultsData.at[idx, 'wTargetCovQDA'], resultsData.at[
-            idx, 'tPropQDA'] = adaptive.OurModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T,
-                                                 y_train, step, 'QDA', k)
+            propModelLDA, _, resultsData.at[idx, 'wTargetMeanLDA'], _, resultsData.at[idx, 'wTargetCovLDA'], resultsData.at[
+                idx, 'tPropLDA'] = adaptive.OurModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T,
+                                                     y_train, step, 'LDA', k)
+            propModelQDA, _, resultsData.at[idx, 'wTargetMeanQDA'], _, resultsData.at[idx, 'wTargetCovQDA'], resultsData.at[
+                idx, 'tPropQDA'] = adaptive.OurModel(currentValues, preTrainedDataMatrix, classes, Features, x_train.T,
+                                                     y_train, step, 'QDA', k)
 
-        liuModel = adaptive.LiuModel(currentValues, preTrainedDataMatrix, classes, Features)
-        vidovicModelL, vidovicModelQ = adaptive.VidovicModel(currentValues, preTrainedDataMatrix, classes, Features)
+            liuModel = adaptive.LiuModel(currentValues, preTrainedDataMatrix, classes, Features)
+            vidovicModelL, vidovicModelQ = adaptive.VidovicModel(currentValues, preTrainedDataMatrix, classes, Features)
 
-        resultsData.at[idx, 'AccLDAInd'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, currentValues, classes)
-        resultsData.at[idx, 'AccQDAInd'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, currentValues, classes)
-        resultsData.at[idx, 'AccLDAMulti'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, pkValues, classes)
-        resultsData.at[idx, 'AccQDAMulti'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, pkValues, classes)
-        resultsData.at[idx, 'AccLDALiu'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, liuModel, classes)
-        resultsData.at[idx, 'AccQDALiu'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, liuModel, classes)
-        resultsData.at[idx, 'AccLDAVidovic'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, vidovicModelL,
-                                                                                  classes)
-        resultsData.at[idx, 'AccQDAVidovic'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, vidovicModelQ,
-                                                                                  classes)
-        resultsData.at[idx, 'AccLDAProp'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, propModelLDA, classes)
-        resultsData.at[idx, 'AccQDAProp'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, propModelQDA, classes)
+            resultsData.at[idx, 'AccLDAInd'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, currentValues, classes)
+            resultsData.at[idx, 'AccQDAInd'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, currentValues, classes)
+            resultsData.at[idx, 'AccLDAMulti'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, pkValues, classes)
+            resultsData.at[idx, 'AccQDAMulti'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, pkValues, classes)
+            resultsData.at[idx, 'AccLDALiu'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, liuModel, classes)
+            resultsData.at[idx, 'AccQDALiu'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, liuModel, classes)
+            resultsData.at[idx, 'AccLDAVidovic'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, vidovicModelL,
+                                                                                      classes)
+            resultsData.at[idx, 'AccQDAVidovic'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, vidovicModelQ,
+                                                                                      classes)
+            resultsData.at[idx, 'AccLDAProp'], _ = DA_Classifiers.accuracyModelLDA(x_test, y_test, propModelLDA, classes)
+            resultsData.at[idx, 'AccQDAProp'], _ = DA_Classifiers.accuracyModelQDA(x_test, y_test, propModelQDA, classes)
 
-        if nameFile is not None:
-            resultsData.to_csv(nameFile)
-        idx += 1
-        if printValues:
-            print(per + 1, t + 1, i + 1)
+            if nameFile is not None:
+                resultsData.to_csv(nameFile)
+            idx += 1
+            if printValues:
+                print(per + 1, t + 1, i + 1)
 
     if Graph:
         VF2.graphSyntheticData(resultsData, numberShots, iSample)

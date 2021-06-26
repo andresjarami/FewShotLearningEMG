@@ -9,7 +9,6 @@ import time
 # Reduced Daily Recalibration of Myoelectric Prosthesis Classifiers Based on Domain Adaptation
 
 
-
 def mahalanobisDistance(mean, mean1, cov1):
     try:
         invCov1 = np.linalg.inv(cov1)
@@ -32,8 +31,8 @@ def weightDenominatorLiu(currentMean, preTrainedDataMatrix):
     weightDenominatorV = 0
     for i in range(len(preTrainedDataMatrix.index)):
         weightDenominatorV = weightDenominatorV + (
-                    1 / mahalanobisDistance(currentMean, preTrainedDataMatrix['mean'].loc[i],
-                                            preTrainedDataMatrix['cov'].loc[i]))
+                1 / mahalanobisDistance(currentMean, preTrainedDataMatrix['mean'].loc[i],
+                                        preTrainedDataMatrix['cov'].loc[i]))
     return weightDenominatorV
 
 
@@ -42,7 +41,7 @@ def reTrainedMeanLiu(r, currentMean, preTrainedDataMatrix, weightDenominatorV, a
     for i in range(len(preTrainedDataMatrix.index)):
         sumAllPreTrainedMean_Weighted = np.add(sumAllPreTrainedMean_Weighted, preTrainedDataMatrix['mean'].loc[i] * (
                 1 / mahalanobisDistance(currentMean, preTrainedDataMatrix['mean'].loc[i],
-                                         preTrainedDataMatrix['cov'].loc[i])))
+                                        preTrainedDataMatrix['cov'].loc[i])))
 
     reTrainedMeanValue = np.add((1 - r) * currentMean, (r / weightDenominatorV) * sumAllPreTrainedMean_Weighted)
     return reTrainedMeanValue
@@ -53,7 +52,7 @@ def reTrainedCovLiu(r, currentMean, currentCov, preTrainedDataMatrix, weightDeno
     for i in range(len(preTrainedDataMatrix.index)):
         sumAllPreTrainedCov_Weighted = np.add(sumAllPreTrainedCov_Weighted, preTrainedDataMatrix['cov'][i] * (
                 1 / mahalanobisDistance(currentMean, preTrainedDataMatrix['mean'][i],
-                                         preTrainedDataMatrix['cov'][i])))
+                                        preTrainedDataMatrix['cov'][i])))
 
     reTrainedCovValue = np.add((1 - r) * currentCov, (r / weightDenominatorV) * sumAllPreTrainedCov_Weighted)
     return reTrainedCovValue
@@ -108,6 +107,145 @@ def VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures):
     return trainedModelL, trainedModelQ
 
 
+############# our model new
+
+def calculationMcc(trueLabels, predeictedLabeles, currentClass):
+    vectorCurrentClass = np.ones(len(predeictedLabeles)) * (currentClass + 1)
+    TP = len(np.where((trueLabels == vectorCurrentClass) & (trueLabels == predeictedLabeles))[0])
+    FN = len(np.where((trueLabels == vectorCurrentClass) & (trueLabels != predeictedLabeles))[0])
+    TN = len(np.where((trueLabels != vectorCurrentClass) & (trueLabels == predeictedLabeles))[0])
+    FP = len(np.where((trueLabels != vectorCurrentClass) & (trueLabels != predeictedLabeles))[0])
+
+    return mcc(TP, TN, FP, FN)
+
+
+def discriminantTab(trainFeatures, personMean, personCov, classes, currentValues):
+    tabDiscriminantValues = []
+    det = np.linalg.det(personCov)
+    personDiscriminantValues = np.array([-.5 * np.log(det) - .5 * np.dot(
+        np.dot((trainFeatures[a, :] - personMean), np.linalg.inv(personCov)),
+        (trainFeatures[a, :] - personMean).T) for a in range(len(trainFeatures))])
+    for cla in range(classes):
+        covariance = currentValues['cov'].at[cla]
+        mean = currentValues['mean'].at[cla]
+        det = np.linalg.det(covariance)
+        tabDiscriminantValues.append([-.5 * np.log(det) - .5 * np.dot(
+            np.dot((trainFeatures[a, :] - mean), np.linalg.inv(covariance)), (trainFeatures[a, :] - mean).T)
+                                      for a in range(len(trainFeatures))])
+    tabDiscriminantValues = np.array(tabDiscriminantValues)
+    return personDiscriminantValues, tabDiscriminantValues
+
+
+def pseudoDiscriminantTab(trainFeatures, personMean, personCov, classes, currentValues):
+    tabPseudoDiscriminantValues = []
+    personPseudoDiscriminantValues = np.array([- .5 * np.dot(
+        np.dot((trainFeatures[a, :] - personMean), np.linalg.pinv(personCov)),
+        (trainFeatures[a, :] - personMean).T) for a in range(len(trainFeatures))])
+    for cla in range(classes):
+        covariance = currentValues['cov'].at[cla]
+        mean = currentValues['mean'].at[cla]
+        tabPseudoDiscriminantValues.append([- .5 * np.dot(
+            np.dot((trainFeatures[a, :] - mean), np.linalg.pinv(covariance)), (trainFeatures[a, :] - mean).T)
+                                            for a in range(len(trainFeatures))])
+    tabPseudoDiscriminantValues = np.array(tabPseudoDiscriminantValues)
+    return personPseudoDiscriminantValues, tabPseudoDiscriminantValues
+
+
+def calculationWeight(personDiscriminantValues, tabDiscriminantValues, classes, trainLabels):
+    weights = []
+    for cla in range(classes):
+        auxTab = tabDiscriminantValues.copy()
+        auxTab[cla, :] = personDiscriminantValues.copy()
+        weights.append(calculationMcc(trainLabels, np.argmax(auxTab, axis=0) + 1, cla))
+    return weights
+
+
+def calculationWeight2(determinantsCurrentModel, personPseudoDiscriminantValues, tabPseudoDiscriminantValues,
+                       personDiscriminantValues, tabDiscriminantValues, classes, trainLabels):
+    weights = []
+    for cla in range(classes):
+        if determinantsCurrentModel[cla] == float('NaN'):
+            auxTab = tabPseudoDiscriminantValues.copy()
+            auxTab[cla, :] = personPseudoDiscriminantValues.copy()
+        else:
+            auxTab = tabDiscriminantValues.copy()
+            auxTab[cla, :] = personDiscriminantValues.copy()
+
+        weights.append(calculationMcc(trainLabels, np.argmax(auxTab, axis=0) + 1, cla))
+    return weights
+
+
+def weightMSDA_reduce(currentValues, personMean, personCov, classes, trainFeatures, trainLabels, type_DA):
+    if type_DA == 'LDA':
+        weights = []
+
+        for cla in range(classes):
+            auxCurrentValues = currentValues.copy()
+            auxCurrentValues['cov'].at[cla] = personCov
+            LDACov = DA_Classifiers.LDA_Cov(auxCurrentValues, classes)
+
+            tabDiscriminantValues = []
+            if np.linalg.det(LDACov) > 0:
+                invCov = np.linalg.inv(LDACov)
+                for cla2 in range(classes):
+                    if cla == cla2:
+                        tabDiscriminantValues.append(list(
+                            np.dot(np.dot(trainFeatures, invCov), personMean) - 0.5 * np.dot(np.dot(personMean, invCov),
+                                                                                             personMean)))
+                    else:
+                        mean = currentValues['mean'].at[cla2]
+                        tabDiscriminantValues.append(list(
+                            np.dot(np.dot(trainFeatures, invCov), mean) - 0.5 * np.dot(np.dot(mean, invCov), mean)))
+            else:
+                invCov = np.linalg.pinv(LDACov)
+                for cla2 in range(classes):
+                    if cla == cla2:
+                        tabDiscriminantValues.append(list(
+                            np.dot(np.dot(trainFeatures, invCov), personMean) - 0.5 * np.dot(np.dot(personMean, invCov),
+                                                                                             personMean)))
+                    else:
+                        mean = currentValues['mean'].at[cla2]
+                        tabDiscriminantValues.append(list(
+                            np.dot(np.dot(trainFeatures, invCov), mean) - 0.5 * np.dot(np.dot(mean, invCov), mean)))
+
+            weights.append(calculationMcc(trainLabels, np.argmax(np.array(tabDiscriminantValues), axis=0) + 1, cla))
+        return weights
+
+    elif type_DA == 'QDA':
+
+        if np.linalg.det(personCov) > 0:
+            determinantsCurrentModel = []
+            for cla in range(classes):
+                det = np.linalg.det(currentValues['cov'].at[cla])
+                if det > 0:
+                    determinantsCurrentModel.append(det)
+                else:
+                    determinantsCurrentModel.append(float('NaN'))
+            countNaN = np.count_nonzero(np.isnan(np.array(determinantsCurrentModel)))
+            if countNaN == 0:
+                personDiscriminantValues, tabDiscriminantValues = discriminantTab(
+                    trainFeatures, personMean, personCov, classes, currentValues)
+                return calculationWeight(personDiscriminantValues, tabDiscriminantValues, classes, trainLabels)
+
+            elif countNaN == 1:
+                personDiscriminantValues, tabDiscriminantValues = discriminantTab(
+                    trainFeatures, personMean, personCov, classes, currentValues)
+                personPseudoDiscriminantValues, tabPseudoDiscriminantValues = pseudoDiscriminantTab(
+                    trainFeatures, personMean, personCov, classes, currentValues)
+                return calculationWeight2(determinantsCurrentModel, personPseudoDiscriminantValues,
+                                          tabPseudoDiscriminantValues, personDiscriminantValues, tabDiscriminantValues,
+                                          classes, trainLabels)
+            elif countNaN >= 2:
+                personPseudoDiscriminantValues, tabPseudoDiscriminantValues = pseudoDiscriminantTab(
+                    trainFeatures, personMean, personCov, classes, currentValues)
+                return calculationWeight(personPseudoDiscriminantValues, tabPseudoDiscriminantValues, classes,
+                                         trainLabels)
+        else:
+            personPseudoDiscriminantValues, tabPseudoDiscriminantValues = pseudoDiscriminantTab(
+                trainFeatures, personMean, personCov, classes, currentValues)
+            return calculationWeight(personPseudoDiscriminantValues, tabPseudoDiscriminantValues, classes, trainLabels)
+
+
 # %% OUR TECHNIQUE
 
 def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFeatures, trainLabels, step,
@@ -145,6 +283,8 @@ def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFea
                                                  , trainFeatures, trainLabels, step, typeModel)
             wPeopleCov[i] = weightPerPersonCov(currentValues, personCov, cla, classes
                                                , trainFeatures, trainLabels, step, typeModel)
+        if typeModel == 'LDA':
+            wPeopleCov = wPeopleMean.copy()
 
         sumWMean = np.sum(wPeopleMean)
 
@@ -168,15 +308,34 @@ def OurModel(currentValues, preTrainedDataMatrix, classes, allFeatures, trainFea
 
         adaptiveModel.at[cla, 'cov'] = np.sum(preTrainedMatrix_Class['cov'] * wPeopleCov) + currentCov * wTargetCov[cla]
         adaptiveModel.at[cla, 'mean'] = np.sum(preTrainedMatrix_Class['mean'] * wPeopleMean) + currentMean * \
-                                        wTargetMean[
-                                            cla]
+                                        wTargetMean[cla]
         adaptiveModel.at[cla, 'class'] = cla + 1
 
     trainingTime = time.time() - t
     return adaptiveModel, wTargetMean, wTargetMean.mean(), wTargetCov, wTargetCov.mean(), trainingTime
 
 
-# Weight Calculation
+## Weight Calculation
+
+
+# def weightPerPerson(currentValues, personMean, personCov, currentClass, classes, trainFeatures, trainLabels, step,
+#                     typeModel):
+#     if typeModel == 'LDA':
+#         personValues = currentValues.copy()
+#         personValues['mean'].at[currentClass] = personMean
+#         personValues['cov'].at[currentClass] = personCov
+#         weightMean = mccModelLDA(trainFeatures, trainLabels, personValues, classes, currentClass, step)
+#         weightCov = weightMean
+#     elif typeModel == 'QDA':
+#         personValues = currentValues.copy()
+#         personValues['mean'].at[currentClass] = personMean
+#         weightMean = mccModelQDA(trainFeatures, trainLabels, personValues, classes, currentClass, step)
+#         personValues = currentValues.copy()
+#         personValues['cov'].at[currentClass] = personCov
+#         weightCov = mccModelQDA(trainFeatures, trainLabels, personValues, classes, currentClass, step)
+#     return weightMean, weightCov
+
+
 def weightPerPersonMean(currentValues, personMean, currentClass, classes, trainFeatures, trainLabels, step,
                         typeModel):
     personValues = currentValues.copy()

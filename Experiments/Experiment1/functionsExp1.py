@@ -81,7 +81,7 @@ def uploadDatabases(Database, featureSet, windowSize):
             dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
             dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
             labelsDataMatrix = dataMatrix[:, allFeatures + 3]
-        elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc' or Database == 'Nina3' or Database == 'Nina1':
+        elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc' or Database == 'Nina1' or Database == 'Nina3':
             dataMatrix = logvarMatrix[:, :]
             labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
@@ -155,56 +155,56 @@ def uploadDatabases(Database, featureSet, windowSize):
             dataMatrix = np.hstack((lscaleMatrix[:, 0:CH], mflMatrix[:, 0:CH], msrMatrix[:, 0:CH], wampMatrix[:, 0:]))
             labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
-    elif featureSet == 4:
-        # Setting variables
-        Feature1 = 'mavMatrix'
-        Feature2 = 'wlMatrix'
-        Feature3 = 'zcMatrix'
-        Feature4 = 'sscMatrix'
-        Feature5 = 'rmsMatrix'
-        Feature6 = 'iavMatrix'
-        Feature7 = 'dasdvMatrix'
-        Feature8 = 'varMatrix'
-
-        numberFeatures = 8
-        allFeatures = numberFeatures * CH
-        mavMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature1 + windowSize + '.csv',
-                                  delimiter=',')
-        wlMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature2 + windowSize + '.csv',
-                                 delimiter=',')
-        zcMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature3 + windowSize + '.csv',
-                                 delimiter=',')
-        sscMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature4 + windowSize + '.csv',
-                                  delimiter=',')
-        rmsMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature5 + windowSize + '.csv',
-                                  delimiter=',')
-        iavMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature6 + windowSize + '.csv',
-                                  delimiter=',')
-        dasdvMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature7 + windowSize + '.csv',
-                                    delimiter=',')
-        varMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature8 + windowSize + '.csv',
-                                  delimiter=',')
-        if Database == 'EPN':
-            dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
-                                    rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
-            labelsDataMatrix = dataMatrix[:, allFeatures + 2]
-
-        elif Database == 'Nina5':
-            dataMatrix = np.hstack(
-                (mavMatrix[:, 8:CH * 2], wlMatrix[:, 8:CH * 2], zcMatrix[:, 8:CH * 2], sscMatrix[:, 8:CH * 2],
-                 rmsMatrix[:, 8:CH * 2], iavMatrix[:, 8:CH * 2], dasdvMatrix[:, 8:CH * 2], varMatrix[:, 8:]))
-            labelsDataMatrix = dataMatrix[:, allFeatures + 1]
-
-        elif Database == 'Cote':
-            dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
-                                    rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
-            dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
-            dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
-            labelsDataMatrix = dataMatrix[:, allFeatures + 3]
-        elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc' or Database == 'Nina3' or Database == 'Nina1':
-            dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
-                                    rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
-            labelsDataMatrix = dataMatrix[:, allFeatures + 1]
+    # elif featureSet == 4:
+    #     # Setting variables
+    #     Feature1 = 'mavMatrix'
+    #     Feature2 = 'wlMatrix'
+    #     Feature3 = 'zcMatrix'
+    #     Feature4 = 'sscMatrix'
+    #     Feature5 = 'rmsMatrix'
+    #     Feature6 = 'iavMatrix'
+    #     Feature7 = 'dasdvMatrix'
+    #     Feature8 = 'varMatrix'
+    #
+    #     numberFeatures = 8
+    #     allFeatures = numberFeatures * CH
+    #     mavMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature1 + windowSize + '.csv',
+    #                               delimiter=',')
+    #     wlMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature2 + windowSize + '.csv',
+    #                              delimiter=',')
+    #     zcMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature3 + windowSize + '.csv',
+    #                              delimiter=',')
+    #     sscMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature4 + windowSize + '.csv',
+    #                               delimiter=',')
+    #     rmsMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature5 + windowSize + '.csv',
+    #                               delimiter=',')
+    #     iavMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature6 + windowSize + '.csv',
+    #                               delimiter=',')
+    #     dasdvMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature7 + windowSize + '.csv',
+    #                                 delimiter=',')
+    #     varMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature8 + windowSize + '.csv',
+    #                               delimiter=',')
+    #     if Database == 'EPN':
+    #         dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
+    #                                 rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
+    #         labelsDataMatrix = dataMatrix[:, allFeatures + 2]
+    #
+    #     elif Database == 'Nina5':
+    #         dataMatrix = np.hstack(
+    #             (mavMatrix[:, 8:CH * 2], wlMatrix[:, 8:CH * 2], zcMatrix[:, 8:CH * 2], sscMatrix[:, 8:CH * 2],
+    #              rmsMatrix[:, 8:CH * 2], iavMatrix[:, 8:CH * 2], dasdvMatrix[:, 8:CH * 2], varMatrix[:, 8:]))
+    #         labelsDataMatrix = dataMatrix[:, allFeatures + 1]
+    #
+    #     elif Database == 'Cote':
+    #         dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
+    #                                 rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
+    #         dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
+    #         dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
+    #         labelsDataMatrix = dataMatrix[:, allFeatures + 3]
+    #     elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc' or Database == 'Nina3' or Database == 'Nina1':
+    #         dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
+    #                                 rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
+    #         labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
     return dataMatrix, numberFeatures, CH, classes, peoplePriorK, peopleTest, numberShots, combinationSet, allFeatures, labelsDataMatrix
 
@@ -226,13 +226,13 @@ def evaluation(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameF
         evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
                        allFeatures, printR, scaler)
     elif typeDatabase == 'Capgmyo_dba' or typeDatabase == 'Capgmyo_dbc' or typeDatabase == 'Nina1' or typeDatabase == 'Nina3':
-        evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
-                          allFeatures, printR, scaler)
+        evaluationRandom(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile, startPerson, endPerson,
+                         allFeatures, printR, scaler)
 
 
-# %% Capgmyo
-def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
-                      startPerson, endPerson, allFeatures, printR, scaler):
+# %% CapgmyoA, Capgmyoc, Nina1, Nina3
+def evaluationRandom(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
+                     startPerson, endPerson, allFeatures, printR, scaler):
     # Creating Variables
 
     results = pd.DataFrame(
@@ -246,11 +246,10 @@ def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots
         trainLabelsGenPre = dataMatrix[np.where((dataMatrix[:, allFeatures] != person)), allFeatures + 1][0]
 
         numberShots2Test = numberShots - 1
-        # print(numberShots2Test)
 
         for shot in range(1, numberShots2Test + 1):
-            for seed in range(2, 4):
-                np.random.seed(seed)
+            for seed in range(1, 3):
+                np.random.seed(seed * person * shot)
                 testGestures = []
                 trainGestures = []
 
@@ -288,14 +287,12 @@ def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots
 
                 k = 1 - (np.log(shot) / np.log(numberShots + 1))
 
-                scaler.fit(np.vstack((trainFeatures, trainFeaturesGen)))
-                trainFeatures = scaler.transform(trainFeatures)
-                trainFeaturesGen = scaler.transform(trainFeaturesGen)
-
-                # print('features before', np.size(dataMatrix[:, 0:allFeatures], axis=1))
-
                 if np.size(dataMatrix[:, 0:allFeatures], axis=1) == 128 or np.size(dataMatrix[:, 0:allFeatures],
                                                                                    axis=1) == 4 * 128:
+                    scaler.fit(np.vstack((trainFeatures, trainFeaturesGen)))
+                    trainFeatures = scaler.transform(trainFeatures)
+                    trainFeaturesGen = scaler.transform(trainFeaturesGen)
+
                     pca = PCA(n_components=0.99, svd_solver='full')
                     pca.fit(np.vstack((trainFeatures)))
                     trainFeatures = pca.transform(trainFeatures)
@@ -306,14 +303,15 @@ def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots
                     testFeaturesTransform = pca.transform(testFeaturesTransform)
                     results.at[idx, 'tPre'] = (time.time() - t) / len(testFeatures)
                 else:
+                    trainFeatures = scaler.fit_transform(trainFeatures)
+                    trainFeaturesGen = scaler.transform(trainFeaturesGen)
                     pca = 0
                     t = time.time()
                     testFeaturesTransform = scaler.transform(testFeatures)
                     results.at[idx, 'tPre'] = (time.time() - t) / len(testFeatures)
 
                 dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca)
-                # print('features after', allFeaturesPK)
-                preTrainedDataMatrix = preTrainedDataCapgmyo(dataPK, classes, peoplePriorK, person, allFeaturesPK)
+                preTrainedDataMatrix = preTrainedDataRandom(dataPK, classes, peoplePriorK, person, allFeaturesPK)
                 currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
                 pkValues = currentDistributionValues(trainFeaturesGen, trainLabelsGen, classes, allFeaturesPK)
                 results, idx = resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLabels,
@@ -323,7 +321,7 @@ def evaluationCapgmyo(dataMatrix, classes, peoplePriorK, featureSet, numberShots
     return results
 
 
-def preTrainedDataCapgmyo(dataMatrix, classes, peoplePriorK, evaluatedPerson, allFeatures):
+def preTrainedDataRandom(dataMatrix, classes, peoplePriorK, evaluatedPerson, allFeatures):
     preTrainedDataMatrix = pd.DataFrame(columns=['mean', 'cov', 'class', 'person'])
 
     indx = 0
@@ -387,15 +385,14 @@ def evaluationEPN(dataMatrix, classes, peoplePriorK, featureSet, numberShots, na
 
             k = 1 - (np.log(shot) / np.log(numberShots + 1))
 
-            scaler.fit(trainFeatures)
-            trainFeatures = scaler.transform(trainFeatures)
+            trainFeatures = scaler.fit_transform(trainFeatures)
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
 
             t = time.time()
             testFeaturesTransform = scaler.transform(testFeatures)
             results.at[idx, 'tPre'] = (time.time() - t) / len(testFeatures)
 
-            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler, pca=0)
+            dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
 
             preTrainedDataMatrix = preTrainedDataEPN(dataPK, classes, peoplePriorK, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -481,26 +478,14 @@ def evaluationCote(dataMatrix, classes, peoplePriorK, featureSet, numberShots, n
 
             k = 1 - (np.log(shot) / np.log(numberShots + 1))
 
-            scaler.fit(trainFeatures)
-
-            scaler.fit(np.vstack((trainFeatures, trainFeaturesGen)))
-            trainFeatures = scaler.transform(trainFeatures)
+            trainFeatures = scaler.fit_transform(trainFeatures)
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
-
-            print('features before', np.size(dataMatrix[:, 0:allFeatures], axis=1))
-            # pca = PCA(n_components=0.99, svd_solver='full')
-            # pca.fit(np.vstack((trainFeatures, trainFeaturesGen)))
-            # trainFeatures = pca.transform(trainFeatures)
-            # trainFeaturesGen = pca.transform(trainFeaturesGen)
-            # testFeaturesTransform = pca.transform(testFeaturesTransform)
 
             t = time.time()
             testFeaturesTransform = scaler.transform(testFeatures)
-            # testFeaturesTransform = pca.transform(testFeaturesTransform)
             results.at[idx, 'tPre'] = (time.time() - t) / len(testFeatures)
 
             dataPK, allFeaturesPK = preprocessingPK(dataMatrix, allFeatures, scaler)
-            print('features after', allFeaturesPK)
 
             preTrainedDataMatrix = preTrainedDataCote(dataPK, classes, peoplePriorK, allFeaturesPK)
             currentValues = currentDistributionValues(trainFeatures, trainLabels, classes, allFeaturesPK)
@@ -532,7 +517,7 @@ def preTrainedDataCote(dataMatrix, classes, peoplePriorK, allFeatures):
     return preTrainedDataMatrix
 
 
-# %% Nina Pro
+# %% Nina Pro 5
 
 def evaluationNina(dataMatrix, classes, peoplePriorK, featureSet, numberShots, nameFile,
                    startPerson, endPerson, allFeatures, printR, scaler):
@@ -573,8 +558,7 @@ def evaluationNina(dataMatrix, classes, peoplePriorK, featureSet, numberShots, n
 
             k = 1 - (np.log(shot) / np.log(numberShots + 1))
 
-            scaler.fit(np.vstack((trainFeatures, trainFeaturesGen)))
-            trainFeatures = scaler.transform(trainFeatures)
+            trainFeatures = scaler.fit_transform(trainFeatures)
             trainFeaturesGen = scaler.transform(trainFeaturesGen)
 
             t = time.time()
@@ -622,9 +606,8 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     numSamples = 20
     trainFeatures, trainLabels = subsetTraining(trainFeatures, trainLabels, numSamples, classes)
 
-    # step = math.ceil(np.shape(trainLabels)[0] / (classes * minSamplesClass))
     step = 1
-    print('step: ', np.shape(trainLabels)[0], step)
+    # print('step: ', np.shape(trainLabels)[0], step)
 
     liuModel = adaptive.LiuModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
     vidovicModelL, vidovicModelQ = adaptive.VidovicModel(currentValues, preTrainedDataMatrix, classes, allFeatures)
@@ -641,34 +624,28 @@ def resultsDataframe(currentValues, preTrainedDataMatrix, trainFeatures, trainLa
     results.at[idx, '# shots'] = np.size(subset)
     results.at[idx, 'Feature Set'] = featureSet
     # LDA results
-    results.at[idx, 'AccLDAInd'], results.at[idx, 'tIndL'] = DA_Classifiers.accuracyModelLDA(testFeatures, testLabels,
-                                                                                             currentValues,
-                                                                                             classes)
-    results.at[idx, 'AccLDAMulti'], results.at[idx, 'tGenL'] = DA_Classifiers.accuracyModelLDA(testFeatures, testLabels,
-                                                                                               pkValues,
-                                                                                               classes)
-    results.at[idx, 'AccLDAProp'], results.at[idx, 'tCLPropL'] = DA_Classifiers.accuracyModelLDA(testFeatures,
-                                                                                                 testLabels,
-                                                                                                 propModelLDA,
-                                                                                                 classes)
-    results.at[idx, 'AccLDALiu'], _ = DA_Classifiers.accuracyModelLDA(testFeatures, testLabels, liuModel, classes)
-    results.at[idx, 'AccLDAVidovic'], _ = DA_Classifiers.accuracyModelLDA(testFeatures, testLabels, vidovicModelL,
-                                                                          classes)
+    results.at[idx, 'AccLDAInd'], results.at[idx, 'tIndL'] = DA_Classifiers.accuracyModelLDA(
+        testFeatures, testLabels, currentValues, classes)
+    results.at[idx, 'AccLDAMulti'], results.at[idx, 'tGenL'] = DA_Classifiers.accuracyModelLDA(
+        testFeatures, testLabels, pkValues, classes)
+    results.at[idx, 'AccLDAProp'], results.at[idx, 'tCLPropL'] = DA_Classifiers.accuracyModelLDA(
+        testFeatures, testLabels, propModelLDA, classes)
+    results.at[idx, 'AccLDALiu'], _ = DA_Classifiers.accuracyModelLDA(
+        testFeatures, testLabels, liuModel, classes)
+    results.at[idx, 'AccLDAVidovic'], _ = DA_Classifiers.accuracyModelLDA(
+        testFeatures, testLabels, vidovicModelL, classes)
 
     # QDA results
-    results.at[idx, 'AccQDAInd'], results.at[idx, 'tIndQ'] = DA_Classifiers.accuracyModelQDA(testFeatures, testLabels,
-                                                                                             currentValues,
-                                                                                             classes)
-    results.at[idx, 'AccQDAMulti'], results.at[idx, 'tGenQ'] = DA_Classifiers.accuracyModelQDA(testFeatures, testLabels,
-                                                                                               pkValues,
-                                                                                               classes)
-    results.at[idx, 'AccQDAProp'], results.at[idx, 'tCLPropQ'] = DA_Classifiers.accuracyModelQDA(testFeatures,
-                                                                                                 testLabels,
-                                                                                                 propModelQDA,
-                                                                                                 classes)
-    results.at[idx, 'AccQDALiu'], _ = DA_Classifiers.accuracyModelQDA(testFeatures, testLabels, liuModel, classes)
-    results.at[idx, 'AccQDAVidovic'], _ = DA_Classifiers.accuracyModelQDA(testFeatures, testLabels, vidovicModelQ,
-                                                                          classes)
+    results.at[idx, 'AccQDAInd'], results.at[idx, 'tIndQ'] = DA_Classifiers.accuracyModelQDA(
+        testFeatures, testLabels, currentValues, classes)
+    results.at[idx, 'AccQDAMulti'], results.at[idx, 'tGenQ'] = DA_Classifiers.accuracyModelQDA(
+        testFeatures, testLabels, pkValues, classes)
+    results.at[idx, 'AccQDAProp'], results.at[idx, 'tCLPropQ'] = DA_Classifiers.accuracyModelQDA(
+        testFeatures, testLabels, propModelQDA, classes)
+    results.at[idx, 'AccQDALiu'], _ = DA_Classifiers.accuracyModelQDA(
+        testFeatures, testLabels, liuModel, classes)
+    results.at[idx, 'AccQDAVidovic'], _ = DA_Classifiers.accuracyModelQDA(
+        testFeatures, testLabels, vidovicModelQ, classes)
 
     if nameFile is not None:
         results.to_csv(nameFile)

@@ -98,7 +98,7 @@ for database in ['Nina3']:
     # Cote: window=260 and overlap=235
     # window = [260,295,100]
     # overlap = [235,290,50]
-    for window in [ 295]:
+    for window in [295]:
         if window == 260:
             overlap = 235
         elif window == 295:
@@ -239,24 +239,26 @@ for database in ['Nina3']:
             ## NINA PRO 3 DATABASE
             rpt = 6
             ch = 12
-            classes = 18
-            people = 11
+            classes = 17
 
             windowSamples = int(window * sampleRate / 1000)
             incrmentSamples = windowSamples - int(overlap * sampleRate / 1000)
-            per=0
+            per = 0
+            people = 11
             for person in range(1, people + 1):
                 if person != 6 and person != 7:
-                    per+=1
-                    aux = scipy.io.loadmat('../Databases/ninaDB3/s' + str(person) + '_0/DB3_s' + str(person) + '/S' + str(
-                        person) + '_E1_A1.mat')
+                    per += 1
+                    print(person, per)
+                    aux = scipy.io.loadmat(
+                        '../Databases/ninaDB3/s' + str(person) + '_0/DB3_s' + str(person) + '/S' + str(
+                            person) + '_E1_A1.mat')
                     auxEMG = aux['emg']
                     auxRestimulus = aux['restimulus']
 
                     stack = 0
                     rp = 1
-                    stackR = 0
-                    rpR = 0
+                    # stackR = 0
+                    # rpR = 0
                     auxIdx = 0
                     for i in range(np.size(auxRestimulus)):
                         if auxRestimulus[i] != 0 and stack == 0:
@@ -273,7 +275,8 @@ for database in ['Nina3']:
                                 wf = wi + windowSamples
 
                                 t = time.time()
-                                logvarMatrix.append(np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                logvarMatrix.append(
+                                    np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
                                 t1.append(time.time() - t)
                                 t = time.time()
                                 mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([per, cl, rp]))))
@@ -282,7 +285,8 @@ for database in ['Nina3']:
                                 sscMatrix.append(np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
                                 t2.append(time.time() - t)
                                 t = time.time()
-                                lscaleMatrix.append(np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                                lscaleMatrix.append(
+                                    np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
                                 mflMatrix.append(np.hstack((MFLch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
                                 msrMatrix.append(np.hstack((MSRch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
                                 wampMatrix.append(np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
@@ -294,48 +298,102 @@ for database in ['Nina3']:
                             if rp == 7:
                                 rp = 1
 
-                        if rpR <= rpt:
-                            if auxRestimulus[i] == 0 and stackR == 0:
-                                aux1R = i
-                                stackR = 1
-                                clR = 18
+                        # if rpR <= rpt:
+                        #     if auxRestimulus[i] == 0 and stackR == 0:
+                        #         aux1R = i
+                        #         stackR = 1
+                        #         clR = 18
+                        #
+                        #     elif auxRestimulus[i] != 0 and stackR == 1:
+                        #         aux2R = i
+                        #         stackR = 0
+                        #         wiR = aux1R
+                        #         if rpR != 0:
+                        #             segments = int(((aux2R - aux1R) - windowSamples) / (incrmentSamples) + 1)
+                        #             for w in range(segments):
+                        #                 wfR = wiR + windowSamples
+                        #
+                        #                 t = time.time()
+                        #                 logvarMatrix.append(
+                        #                     np.hstack((logVARch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 t1.append(time.time() - t)
+                        #                 t = time.time()
+                        #                 mavMatrix.append(
+                        #                     np.hstack((MAVch(auxEMG[wiR:wfR], ch), np.array([per, clR, rpR]))))
+                        #                 wlMatrix.append(
+                        #                     np.hstack((WLch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 zcMatrix.append(
+                        #                     np.hstack((ZCch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 sscMatrix.append(
+                        #                     np.hstack((SSCch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 t2.append(time.time() - t)
+                        #                 t = time.time()
+                        #                 lscaleMatrix.append(
+                        #                     np.hstack((Lscalech(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 mflMatrix.append(
+                        #                     np.hstack((MFLch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 msrMatrix.append(
+                        #                     np.hstack((MSRch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 wampMatrix.append(
+                        #                     np.hstack((WAMPch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
+                        #                 t3.append(time.time() - t)
+                        #
+                        #                 wiR += incrmentSamples
+                        #         rpR += 1
 
-                            elif auxRestimulus[i] != 0 and stackR == 1:
-                                aux2R = i
-                                stackR = 0
-                                wiR = aux1R
-                                if rpR != 0:
-                                    segments = int(((aux2R - aux1R) - windowSamples) / (incrmentSamples) + 1)
-                                    for w in range(segments):
-                                        wfR = wiR + windowSamples
+            # add Nina Pro 2
+            people = 40
+            for person in range(1, people + 1):
+                per += 1
+                print(person, per)
+                aux = scipy.io.loadmat(
+                    '../Databases/ninaDB2/DB2_s' + str(person) + '/DB2_s' + str(person) + '/S' + str(
+                        person) + '_E1_A1.mat')
+                auxEMG = aux['emg']
+                auxRestimulus = aux['restimulus']
 
-                                        t = time.time()
-                                        logvarMatrix.append(
-                                            np.hstack((logVARch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        t1.append(time.time() - t)
-                                        t = time.time()
-                                        mavMatrix.append(
-                                            np.hstack((MAVch(auxEMG[wiR:wfR], ch), np.array([per, clR, rpR]))))
-                                        wlMatrix.append(
-                                            np.hstack((WLch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        zcMatrix.append(
-                                            np.hstack((ZCch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        sscMatrix.append(
-                                            np.hstack((SSCch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        t2.append(time.time() - t)
-                                        t = time.time()
-                                        lscaleMatrix.append(
-                                            np.hstack((Lscalech(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        mflMatrix.append(
-                                            np.hstack((MFLch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        msrMatrix.append(
-                                            np.hstack((MSRch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        wampMatrix.append(
-                                            np.hstack((WAMPch(auxEMG[wiR:wfR], ch)[0], np.array([per, clR, rpR]))))
-                                        t3.append(time.time() - t)
+                stack = 0
+                rp = 1
+                # stackR = 0
+                # rpR = 0
+                auxIdx = 0
+                for i in range(np.size(auxRestimulus)):
+                    if auxRestimulus[i] != 0 and stack == 0:
+                        aux1 = i
+                        stack = 1
+                        cl = int(auxRestimulus[i])
 
-                                        wiR += incrmentSamples
-                                rpR += 1
+                    elif auxRestimulus[i] == 0 and stack == 1:
+                        aux2 = i
+                        stack = 0
+                        wi = aux1
+                        segments = int((aux2 - aux1 - windowSamples) / incrmentSamples + 1)
+                        for w in range(segments):
+                            wf = wi + windowSamples
+
+                            t = time.time()
+                            logvarMatrix.append(
+                                np.hstack((logVARch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            t1.append(time.time() - t)
+                            t = time.time()
+                            mavMatrix.append(np.hstack((MAVch(auxEMG[wi:wf], ch), np.array([per, cl, rp]))))
+                            wlMatrix.append(np.hstack((WLch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            zcMatrix.append(np.hstack((ZCch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            sscMatrix.append(np.hstack((SSCch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            t2.append(time.time() - t)
+                            t = time.time()
+                            lscaleMatrix.append(
+                                np.hstack((Lscalech(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            mflMatrix.append(np.hstack((MFLch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            msrMatrix.append(np.hstack((MSRch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            wampMatrix.append(np.hstack((WAMPch(auxEMG[wi:wf], ch)[0], np.array([per, cl, rp]))))
+                            t3.append(time.time() - t)
+
+                            wi += incrmentSamples
+
+                        rp = rp + 1
+                        if rp == 7:
+                            rp = 1
 
             timesFeatures = np.vstack((t1, t2, t3))
             auxName = 'timesFeatures' + windowFileName
