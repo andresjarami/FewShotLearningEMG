@@ -155,56 +155,6 @@ def uploadDatabases(Database, featureSet, windowSize):
             dataMatrix = np.hstack((lscaleMatrix[:, 0:CH], mflMatrix[:, 0:CH], msrMatrix[:, 0:CH], wampMatrix[:, 0:]))
             labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
-    # elif featureSet == 4:
-    #     # Setting variables
-    #     Feature1 = 'mavMatrix'
-    #     Feature2 = 'wlMatrix'
-    #     Feature3 = 'zcMatrix'
-    #     Feature4 = 'sscMatrix'
-    #     Feature5 = 'rmsMatrix'
-    #     Feature6 = 'iavMatrix'
-    #     Feature7 = 'dasdvMatrix'
-    #     Feature8 = 'varMatrix'
-    #
-    #     numberFeatures = 8
-    #     allFeatures = numberFeatures * CH
-    #     mavMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature1 + windowSize + '.csv',
-    #                               delimiter=',')
-    #     wlMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature2 + windowSize + '.csv',
-    #                              delimiter=',')
-    #     zcMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature3 + windowSize + '.csv',
-    #                              delimiter=',')
-    #     sscMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature4 + windowSize + '.csv',
-    #                               delimiter=',')
-    #     rmsMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature5 + windowSize + '.csv',
-    #                               delimiter=',')
-    #     iavMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature6 + windowSize + '.csv',
-    #                               delimiter=',')
-    #     dasdvMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature7 + windowSize + '.csv',
-    #                                 delimiter=',')
-    #     varMatrix = np.genfromtxt(path + 'ExtractedData/' + Database + '/' + Feature8 + windowSize + '.csv',
-    #                               delimiter=',')
-    #     if Database == 'EPN':
-    #         dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
-    #                                 rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
-    #         labelsDataMatrix = dataMatrix[:, allFeatures + 2]
-    #
-    #     elif Database == 'Nina5':
-    #         dataMatrix = np.hstack(
-    #             (mavMatrix[:, 8:CH * 2], wlMatrix[:, 8:CH * 2], zcMatrix[:, 8:CH * 2], sscMatrix[:, 8:CH * 2],
-    #              rmsMatrix[:, 8:CH * 2], iavMatrix[:, 8:CH * 2], dasdvMatrix[:, 8:CH * 2], varMatrix[:, 8:]))
-    #         labelsDataMatrix = dataMatrix[:, allFeatures + 1]
-    #
-    #     elif Database == 'Cote':
-    #         dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
-    #                                 rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
-    #         dataMatrix[:, allFeatures + 1] = dataMatrix[:, allFeatures + 1] + 1
-    #         dataMatrix[:, allFeatures + 3] = dataMatrix[:, allFeatures + 3] + 1
-    #         labelsDataMatrix = dataMatrix[:, allFeatures + 3]
-    #     elif Database == 'Capgmyo_dba' or Database == 'Capgmyo_dbc' or Database == 'Nina3' or Database == 'Nina1':
-    #         dataMatrix = np.hstack((mavMatrix[:, 0:CH], wlMatrix[:, 0:CH], zcMatrix[:, 0:CH], sscMatrix[:, 0:CH],
-    #                                 rmsMatrix[:, 0:CH], iavMatrix[:, 0:CH], dasdvMatrix[:, 0:CH], varMatrix[:, 0:]))
-    #         labelsDataMatrix = dataMatrix[:, allFeatures + 1]
 
     return dataMatrix, numberFeatures, CH, classes, peoplePriorK, peopleTest, numberShots, combinationSet, allFeatures, labelsDataMatrix
 

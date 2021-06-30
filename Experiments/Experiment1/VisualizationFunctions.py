@@ -191,22 +191,40 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, 
                 ax[Data, idx].grid(color='gainsboro', linewidth=1)
                 ax[Data, idx].set_axisbelow(True)
 
-                Model = 'Ind' + DA
-                Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shotsSet, Y[:shots], marker='x', label='Individual', color='tab:orange')
-                Model = 'Multi' + DA
-                Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
-                Model = 'Liu' + DA
-                Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shotsSet, Y[:shots], marker='o', label='Liu', color='tab:green')
-                Model = 'Vid' + DA
-                Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shotsSet, Y[:shots], marker='^', label='Vidovic', color='tab:red')
-                Model = 'Our' + DA
-                Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
-                ax[Data, idx].plot(shotsSet, Y[:shots], marker='v', label='Our classifier', color='tab:blue')
-                ax[Data, idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+                if Data == 5 and idx == 5:
+                    Model = 'Ind' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='x', label='Individual', color='tab:orange')
+                    Model = 'Multi' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', label='Multi-user', color='tab:purple')
+                    Model = 'Liu' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='o', label='Liu', color='tab:green')
+                    Model = 'Vid' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='^', label='Vidovic', color='tab:red')
+                    Model = 'Our' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='v', label='Our classifier', color='tab:blue')
+                    ax[Data, idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+                else:
+                    Model = 'Ind' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='x', color='tab:orange')
+                    Model = 'Multi' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='s', color='tab:purple')
+                    Model = 'Liu' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='o', color='tab:green')
+                    Model = 'Vid' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='^', color='tab:red')
+                    Model = 'Our' + DA
+                    Y = np.array(results[Model].loc[results['Feature Set'] == FeatureSet + 1]) * 100
+                    ax[Data, idx].plot(shotsSet, Y[:shots], marker='v', color='tab:blue')
+                    ax[Data, idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
 
                 if shots == 25:
                     ax[Data, idx].xaxis.set_ticks([1, 5, 10, 15, 20, 25])
@@ -236,11 +254,11 @@ def graphACC(resultsNina5, resultsCote, resultsEPN, resultsCap_A, resultsCap_C, 
     ax[4, 0].set_ylabel('CapgMyo_dba\naccuracy [%]')
     ax[5, 0].set_ylabel('CapgMyo_dbc\naccuracy [%]')
 
-    # ax[2, 5].legend(loc='lower center', bbox_to_anchor=(2, -0.7), ncol=5)
-
+    # fig.legend(loc='lower center', bbox_to_anchor=(0.5,-0.1), ncol=5)
     fig.tight_layout(pad=0.1)
-    plt.savefig("PaperFigures/acc.png", bbox_inches='tight', dpi=600)
+    plt.savefig("PaperFigures/acc.png", bbox_inches='tight', dpi=300)
     plt.show()
+
 
 # %% Friedman rank test for all DA approaches
 
@@ -293,7 +311,6 @@ def friedman_test(*args):
 
     return iman_davenport, p_value, rankings_avg, rankings_cmp
 
-
 def holm_test(ranks, control=None):
     """
         From: https://github.com/citiususc/stac/blob/master/stac/nonparametric_tests.py
@@ -339,7 +356,6 @@ def holm_test(ranks, control=None):
 
     return comparisons, z_values, p_values, adj_p_values, keys[control_i]
 
-
 def AnalysisFriedman(folder, windowSize):
     base = 'Nina5'
     samples = 4
@@ -357,22 +373,22 @@ def AnalysisFriedman(folder, windowSize):
     place = folder + base
     DataFrameE = uploadResults(place, samples, people, windowSize)
     base = 'Capgmyo_dba'
-    samples = 9 * 4
+    samples = 9
     people = 18
     place = folder + base
     DataFrameCA = uploadResults(place, samples, people, windowSize)
     base = 'Capgmyo_dbc'
-    samples = 9 * 4
+    samples = 9
     people = 10
     place = folder + base
     DataFrameCC = uploadResults(place, samples, people, windowSize)
     base = 'Nina1'
-    samples = 9 * 4
+    samples = 9
     people = 27
     place = folder + base
     DataFrameN1 = uploadResults(place, samples, people, windowSize)
     base = 'Nina3'
-    samples = 5 * 4
+    samples = 5
     people = 9
     place = folder + base
     DataFrameN3 = uploadResults(place, samples, people, windowSize)
@@ -465,7 +481,7 @@ def largeDatabase(results):
 
     idx = 0
     bestFeatureSet = [3, 1]
-    DA =['LDA', 'QDA']
+    DA = ['LDA', 'QDA']
     for i in range(len(DA)):
         shotsSet_featureSet = (bestFeatureSet[i] - 1) * shotsTotal + shotsSet
         title = DA[i]
@@ -547,7 +563,7 @@ def analysisTimeTotal(extractionTimeN1, timeOurTechniqueN1, extractionTimeN3, ti
         elif BD == 1:
             extractionTime = extractionTimeN3
             timeOurTechnique = timeOurTechniqueN3
-            bestFeatureSet = [3, 1]
+            bestFeatureSet = [3, 3]
         elif BD == 2:
             extractionTime = extractionTimeN5
             timeOurTechnique = timeOurTechniqueN5
@@ -660,10 +676,10 @@ def graphACCNina3(results):
     shotsSet = np.arange(1, 6)
     shots = len(shotsSet)
 
-    bestFeatureSet = [3, 1]
-    DA =['LDA', 'QDA']
+    bestFeatureSet = [3, 3]
+    DA = ['LDA', 'QDA']
     for i in range(len(DA)):
-        FeatureSet=bestFeatureSet[i]
+        FeatureSet = bestFeatureSet[i]
         ax[i].yaxis.set_ticks(np.arange(20, 86, 10))
         ax[i].grid(color='gainsboro', linewidth=1)
         ax[i].set_axisbelow(True)
@@ -697,6 +713,7 @@ def graphACCNina3(results):
     fig.tight_layout(pad=0.1)
     plt.savefig("PaperFigures/accNina3.png", bbox_inches='tight', dpi=600)
     plt.show()
+
 
 # %%
 def uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset):
@@ -832,7 +849,7 @@ def uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dat
 # people = 27
 # times = 2
 # uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dataset)
-
+#
 
 # place = '../Experiment1/results/'
 # windowSize = '295'
@@ -859,82 +876,10 @@ def uploadResultsCapgmyo(place1, place2, samples, people, times, windowSize, dat
 # resultsNina3, timeNina3 = uploadResultsDatabases(place, database, windowSize)
 
 # graphACC(resultsNina5, resultsCote, resultsEPN, resultsCapgmyoA, resultsCapgmyoC, resultsNina1)
-
+#
 # AnalysisFriedman(place, windowSize)
 
 # largeDatabase(resultsEPN)
-
+#
 # graphACCNina3(resultsNina3)
 
-# def grphComparison(resultsCapgmyoA, resultsCapgmyoC, resultsNina1):
-#     fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 4))
-#
-#     #####graph1
-#     results = resultsCapgmyoA
-#     Model = 'Our' + 'QDA'
-#     FeatureSet = 1
-#     ours = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
-#     ax[0].plot(np.arange(1, len(ours) + 1), ours, marker='v', label='Ours (LDA FS2)', color='tab:blue')
-#     print('Capgmyo_dba - accuracy average (Ours LDA FS2): ', np.mean(ours[:7]), np.std(ours[:7]))
-#
-#     # Values get (approximately) from "Hand Gesture Recognition based on Surface Electromyography using Convolutional Neural
-#     # Network with Transfer Learning Method" (Chen 2020)
-#     LSTM_TL = [79, 89, 92, 94, 97, 99, 100, 100, 100]
-#     TL = [76, 86, 89, 91, 92, 94, 94, 96, 99]
-#     ax[0].plot(np.arange(1, len(ours) + 1), TL, marker='o', label='Chen (CNN+TL)', color='tab:orange')
-#     ax[0].plot(np.arange(1, len(ours) + 1), LSTM_TL, marker='o', label='Chen (CNN+LSTM+TL)', color='tab:green')
-#     print('Capgmyo_dba - accuracy average (Chen_CNN+TL): ', str(91.18), str(6.25))
-#     print('Capgmyo_dba - accuracy average (Chen_CNN+LSTM+TL): ', str(94.57), str(6.77))
-#
-#     ax[0].grid(color='gainsboro', linewidth=1)
-#     ax[0].legend(prop={'size': 7})
-#     ax[0].set_title('Capgmyo_dba')
-#     ax[0].set_ylabel('accuracy [%]')
-#     ax[0].set_xlabel('repetitions')
-#     ax[0].yaxis.set_ticks(np.arange(70, 102, 5))
-#
-#     #####graph2
-#     results = resultsCapgmyoC
-#     Model = 'Our' + 'QDA'
-#     FeatureSet = 1
-#     ours = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
-#     ax[1].plot(np.arange(1, len(ours[:7]) + 1), ours[:7], marker='v', label='Ours (LDA FS1)', color='tab:blue')
-#     print('Capgmyo_dbc - accuracy average (Ours LDA FS1): ', np.mean(ours[:7]), np.std(ours[:7]))
-#
-#     # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
-#     # Network with the Transfer Learning Method" (Yu 2021)
-#     TL = [72.25, 91.59, 92.19, 95.07, 96.53, 97.26, 98.03]
-#     ax[1].plot(np.arange(1, len(ours[:7]) + 1), TL, marker='o', label='Yu (CNN+TL)', color='tab:orange')
-#     print('Capgmyo_dbc - accuracy average (Yu_CNN+TL): ', str(95.97), str(2.95))
-#
-#     ax[1].grid(color='gainsboro', linewidth=1)
-#     ax[1].legend(prop={'size': 7})
-#     ax[1].set_title('Capgmyo_dbc')
-#     ax[1].set_xlabel('repetitions')
-#     ax[1].yaxis.set_ticks(np.arange(70, 102, 5))
-#
-#     #####graph3
-#     results = resultsNina1
-#     Model = 'Our' + 'QDA'
-#     FeatureSet = 3
-#     ours = np.array(results[Model].loc[results['Feature Set'] == FeatureSet]) * 100
-#     ax[2].plot(np.arange(1, len(ours[:7]) + 1), ours[:7], marker='v', label='Ours (QDA FS3)', color='tab:blue')
-#     print('NinaPro1 - accuracy average (Ours QDA FS3): ', np.mean(ours[:7]), np.std(ours[:7]))
-#
-#     # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
-#     # Network with the Transfer Learning Method" (Yu 2021)
-#     TL = [59.29, 64.33, 70.80, 73.74, 73.68, 74.01, 75.53]
-#     ax[2].plot(np.arange(1, len(ours[:7]) + 1), TL, marker='o', label='Yu (CNN+TL)', color='tab:orange')
-#     print('NinaPro1 - accuracy average (Yu_CNN+TL): ', str(76.9), str(3.8))
-#     ax[2].grid(color='gainsboro', linewidth=1)
-#     ax[2].legend(prop={'size': 7})
-#     ax[2].set_title('NinaPro1')
-#     ax[2].set_xlabel('repetitions')
-#     ax[2].yaxis.set_ticks(np.arange(55, 86, 5))
-#
-#     fig.tight_layout(pad=0.1)
-#     # plt.savefig("PaperFigures/acc.png", bbox_inches='tight', dpi=600)
-#     plt.show()
-#
-
-# grphComparison(resultsCapgmyoA, resultsCapgmyoC, resultsNina1)

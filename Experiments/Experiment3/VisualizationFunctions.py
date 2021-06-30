@@ -7,17 +7,25 @@ import ast
 
 
 # %% Upload results of the three databases
-def uploadResults(place, samples, people, windowSize, featureSet):
-    resultsTest = pd.read_csv(place + "_FeatureSet_" + str(featureSet) + "_startPerson_" + str(1) + "_endPerson_" + str(
+def uploadResults(place, samples, people, windowSize):
+    resultsTest = pd.read_csv(place + "_FeatureSet_1_startPerson_" + str(1) + "_endPerson_" + str(
         people) + '_windowSize_' + windowSize + ".csv")
     if len(resultsTest) != samples * people:
         print('error' + ' 1')
         print(len(resultsTest))
+    for j in range(3, 4):
+        auxFrame = pd.read_csv(
+            place + "_FeatureSet_" + str(j) + "_startPerson_" + str(1) + "_endPerson_" + str(
+                people) + '_windowSize_' + windowSize + ".csv")
+        resultsTest = pd.concat([resultsTest, auxFrame], ignore_index=True)
+        if len(auxFrame) != samples * people:
+            print('error' + ' ' + str(j))
+            print(len(auxFrame))
     return resultsTest.drop(columns='Unnamed: 0')
 
 
-# %% Accuracy of the Cote Allard interface and our classifiers for the three databases
-def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
+# %% Accuracy of the Cote Allard interface and our classifiers for the databases NinaPro5, Cote-Allard and EPN
+def AnalysisCote(placeOur260, placeOur295, placeCote):
     fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(9, 3))
     shotsSet = np.array([1, 2, 3, 4])
     shots = len(shotsSet)
@@ -32,16 +40,19 @@ def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
             samples = 4
             people = 10
             title = 'NinaPro5'
+            bestFeatureSet = [3, 1]
         elif base == 'Cote':
             samples = 4
             people = 17
             title = 'Côté-Allard'
+            bestFeatureSet = [1, 1]
         elif base == 'EPN':
             samples = 25
             people = 30
             title = base
-        DataFrame260 = uploadResults(placeOur260 + base, samples, people, windowSize='260', featureSet=featureSet)
-        DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295', featureSet=featureSet)
+            bestFeatureSet = [3, 1]
+        DataFrame260 = uploadResults(placeOur260 + base, samples, people, windowSize='260')
+        DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295')
 
         vectOurQDA260 = np.zeros(shots)
         vectOurLDA260 = np.zeros(shots)
@@ -67,10 +78,14 @@ def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
                     coteResults.append(ast.literal_eval(cote.loc[1][i]))
                 coteResults = np.mean(np.array(coteResults), axis=0)
 
-            vectOurLDA260[s - 1] = np.mean(DataFrame260['AccLDAProp'].loc[(DataFrame260['# shots'] == s)].values) * 100
-            vectOurQDA260[s - 1] = np.mean(DataFrame260['AccQDAProp'].loc[(DataFrame260['# shots'] == s)].values) * 100
-            vectOurLDA295[s - 1] = np.mean(DataFrame295['AccLDAProp'].loc[(DataFrame295['# shots'] == s)].values) * 100
-            vectOurQDA295[s - 1] = np.mean(DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s)].values) * 100
+            vectOurLDA260[s - 1] = np.mean(DataFrame260['AccLDAProp'].loc[(DataFrame260['# shots'] == s) & (
+                    DataFrame260['Feature Set'] == bestFeatureSet[0])].values) * 100
+            vectOurQDA260[s - 1] = np.mean(DataFrame260['AccQDAProp'].loc[(DataFrame260['# shots'] == s) & (
+                    DataFrame260['Feature Set'] == bestFeatureSet[1])].values) * 100
+            vectOurLDA295[s - 1] = np.mean(DataFrame295['AccLDAProp'].loc[(DataFrame295['# shots'] == s) & (
+                    DataFrame295['Feature Set'] == bestFeatureSet[0])].values) * 100
+            vectOurQDA295[s - 1] = np.mean(DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s) & (
+                    DataFrame295['Feature Set'] == bestFeatureSet[1])].values) * 100
             vectCote[s - 1] = np.mean(coteResults)
 
         ax[idx].grid(color='gainsboro', linewidth=1)
@@ -84,13 +99,13 @@ def AnalysisCote(placeOur260, placeOur295, placeCote, featureSet):
         ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
         ax[idx].xaxis.set_ticks(np.arange(1, shots + .2, 1))
         ax[idx].set_xlabel('repetitions')
-        ax[idx].set_ylabel('accuracy [%]')
+        ax[0].set_ylabel('accuracy [%]')
         ax[idx].set_title(title)
         idx += 1
 
     # ax[2].legend(loc='lower center', bbox_to_anchor=(2, -1.5), ncol=3)
     fig.tight_layout(pad=0.1)
-    plt.savefig("FiguresPaper/coteAcc.png", bbox_inches='tight', dpi=600)
+    plt.savefig("PaperFigures/coteAcc.png", bbox_inches='tight', dpi=600)
     plt.show()
 
     return
@@ -147,6 +162,7 @@ def friedman_test(*args):
 
     return iman_davenport, p_value, rankings_avg, rankings_cmp
 
+
 def holm_test(ranks, control=None):
     """
         From: https://github.com/citiususc/stac/blob/master/stac/nonparametric_tests.py
@@ -192,6 +208,7 @@ def holm_test(ranks, control=None):
 
     return comparisons, z_values, p_values, adj_p_values, keys[control_i]
 
+
 def dataFrame_Friedman_Holm(dataFrame):
     data = np.asarray(dataFrame)
     num_datasets, num_methods = data.shape
@@ -225,7 +242,8 @@ def dataFrame_Friedman_Holm(dataFrame):
         holm_scores = pd.DataFrame({"p": adj_p_values, "sig": adj_p_values < alpha}, index=comparisons)
         print(holm_scores)
 
-def AnalysisFriedman(placeOur260, placeOur295, placeCote, featureSet):
+
+def AnalysisFriedman(placeOur260, placeOur295, placeCote):
     shots = 4
     # the experiment with the CNN was perform 20 times to get more accurated results
     CoteAllardExperiment_Repetitions = 20
@@ -239,14 +257,17 @@ def AnalysisFriedman(placeOur260, placeOur295, placeCote, featureSet):
         if base == 'Nina5':
             samples = 4
             people = 10
+            bestFeatureSet = [3, 1]
         elif base == 'Cote':
             samples = 4
             people = 17
+            bestFeatureSet = [1, 1]
         elif base == 'EPN':
             samples = 25
             people = 30
-        DataFrame260 = uploadResults(placeOur260 + base, samples, people, windowSize='260', featureSet=featureSet)
-        DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295', featureSet=featureSet)
+            bestFeatureSet = [3, 1]
+        DataFrame260 = uploadResults(placeOur260 + base, samples, people, windowSize='260')
+        DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295')
 
         for s in range(1, shots + 1):
             place = placeCote + "Cote_CWT_" + base + "/results/"
@@ -268,24 +289,134 @@ def AnalysisFriedman(placeOur260, placeOur295, placeCote, featureSet):
                 coteResults = np.mean(np.array(coteResults), axis=0)
 
             vectOurLDA260 = np.hstack(
-                (vectOurLDA260, DataFrame260['AccLDAProp'].loc[(DataFrame260['# shots'] == s)].values * 100))
+                (vectOurLDA260, DataFrame260['AccLDAProp'].loc[
+                    (DataFrame260['# shots'] == s) & (DataFrame260['Feature Set'] == bestFeatureSet[0])].values * 100))
             vectOurQDA260 = np.hstack(
-                (vectOurQDA260, DataFrame260['AccQDAProp'].loc[(DataFrame260['# shots'] == s)].values * 100))
+                (vectOurQDA260, DataFrame260['AccQDAProp'].loc[
+                    (DataFrame260['# shots'] == s) & (DataFrame260['Feature Set'] == bestFeatureSet[1])].values * 100))
             vectOurLDA295 = np.hstack(
-                (vectOurLDA295, DataFrame295['AccLDAProp'].loc[(DataFrame295['# shots'] == s)].values * 100))
+                (vectOurLDA295, DataFrame295['AccLDAProp'].loc[
+                    (DataFrame295['# shots'] == s) & (DataFrame295['Feature Set'] == bestFeatureSet[0])].values * 100))
             vectOurQDA295 = np.hstack(
-                (vectOurQDA295, DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s)].values * 100))
+                (vectOurQDA295, DataFrame295['AccQDAProp'].loc[
+                    (DataFrame295['# shots'] == s) & (DataFrame295['Feature Set'] == bestFeatureSet[1])].values * 100))
             vectCote = np.hstack((vectCote, coteResults))
-    #Analysis with a window size of 260ms
+    # Analysis with a window size of 260ms
     print('\n\nANALYSIS OF WINDOW 260ms')
     dataFrame_Friedman_Holm(pd.DataFrame(
-        data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260,'vectCote': vectCote}))
+        data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260, 'vectCote': vectCote}))
     # Analysis with a window size of 295ms
     print('\n\nANALYSIS OF WINDOW 295ms')
     dataFrame_Friedman_Holm(pd.DataFrame(
         data={'vectOurLDA295': vectOurLDA295, 'vectOurQDA295': vectOurQDA295, 'vectCote': vectCote}))
     # Analysis with all window sizes
     print('\n\nANALYSIS BOTH WINDOWS (260ms AND 295ms)')
-    dataFrame_Friedman_Holm(dataFrame = pd.DataFrame(
+    dataFrame_Friedman_Holm(dataFrame=pd.DataFrame(
         data={'vectOurLDA260': vectOurLDA260, 'vectOurQDA260': vectOurQDA260, 'vectOurLDA295': vectOurLDA295,
               'vectOurQDA295': vectOurQDA295, 'vectCote': vectCote}))
+
+
+# %% Accuracy of the Yu and Chen interfaces and our classifiers for the databases NinaPro1, Capgmyo_dba and Capgmyo_dbc
+def AnalysisYuChen(placeExWindow, placeOur295):
+    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(9, 3))
+
+
+
+    idx = 0
+
+
+    for base in ['Nina1', 'Capgmyo_dbc', 'Capgmyo_dba']:
+
+        if base == 'Capgmyo_dba':
+            samples = 9
+            people = 18
+            shots = 9
+            title = 'CapgMyo_dba'
+            extraWindow = '100'
+            bestFeatureSet = [1, 1]
+        elif base == 'Capgmyo_dbc':
+            samples = 9
+            people = 10
+            shots = 7
+            title = 'CapgMyo_dbc'
+            extraWindow = '100'
+            bestFeatureSet = [1, 1]
+        elif base == 'Nina1':
+            samples = 9
+            people = 27
+            shots = 7
+            title = 'NinaPro1'
+            extraWindow='280'
+            bestFeatureSet = [3, 3]
+
+        shotsSet = np.arange(1,shots+1)
+
+        DataFrameExWindow = uploadResults(placeExWindow + base, samples, people, windowSize=extraWindow)
+        DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295')
+
+        vectOurQDA260 = np.zeros(shots)
+        vectOurLDA260 = np.zeros(shots)
+        vectOurQDA295 = np.zeros(shots)
+        vectOurLDA295 = np.zeros(shots)
+        for s in range(1, shots + 1):
+
+
+            vectOurLDA260[s - 1] = np.mean(DataFrameExWindow['AccLDAProp'].loc[(DataFrameExWindow['# shots'] == s) & (
+                    DataFrameExWindow['Feature Set'] == bestFeatureSet[0])].values) * 100
+            vectOurQDA260[s - 1] = np.mean(DataFrameExWindow['AccQDAProp'].loc[(DataFrameExWindow['# shots'] == s) & (
+                    DataFrameExWindow['Feature Set'] == bestFeatureSet[1])].values) * 100
+            vectOurLDA295[s - 1] = np.mean(DataFrame295['AccLDAProp'].loc[(DataFrame295['# shots'] == s) & (
+                    DataFrame295['Feature Set'] == bestFeatureSet[0])].values) * 100
+            vectOurQDA295[s - 1] = np.mean(DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s) & (
+                    DataFrame295['Feature Set'] == bestFeatureSet[1])].values) * 100
+
+
+        ax[idx].grid(color='gainsboro', linewidth=1)
+        ax[idx].set_axisbelow(True)
+        if base == 'Capgmyo_dba':
+            # Values get (approximately) from "Hand Gesture Recognition based on Surface Electromyography using Convolutional Neural
+            # Network with Transfer Learning Method" (Chen 2020)
+            LSTM_TL = [79, 89, 92, 94, 97, 99, 100, 100, 100]
+            TL = [76, 86, 89, 91, 92, 94, 94, 96, 99]
+            ax[idx].plot(shotsSet, TL, marker='x', label='Chen (CNN+TL)', color='tab:red')
+            ax[idx].plot(shotsSet, LSTM_TL, marker='s', label='Chen (CNN+LSTM+TL)', color='tab:red')
+            ax[idx].plot(shotsSet, vectOurLDA260, marker='o', label='Our LDA classifier (window 100ms)',
+                         color='tab:orange')
+            ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)',
+                         color='tab:blue')
+        elif base == 'Capgmyo_dbc':
+            # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
+            # Network with the Transfer Learning Method" (Yu 2021)
+            TL = [72.25, 91.59, 92.19, 95.07, 96.53, 97.26, 98.03]
+            ax[idx].plot(shotsSet, TL, marker='x', label='Yu (CNN+TL)', color='black')
+            ax[idx].plot(shotsSet, vectOurLDA260, marker='o', label='Our LDA classifier (window 100ms)',
+                         color='tab:orange')
+            ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)',
+                         color='tab:blue')
+        elif base == 'Nina1':
+            # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
+            # Network with the Transfer Learning Method" (Yu 2021)
+            TL = [59.29, 64.33, 70.80, 73.74, 73.68, 74.01, 75.53]
+            ax[idx].plot(shotsSet, TL, marker='x', label='Yu (CNN+TL)', color='black')
+            ax[idx].plot(shotsSet, vectOurLDA260, marker='^', label='Our LDA classifier (window 280ms)',
+                         color='tab:orange')
+            ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)',
+                         color='tab:blue')
+
+
+        # ax[idx].plot(shotsSet, vectOurQDA260, marker='^', label='Our QDA classifier (window 260ms)', color='tab:orange')
+        # ax[idx].plot(shotsSet, vectOurQDA295, marker='^', label='Our QDA classifier (window295ms)', color='tab:blue')
+        ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
+        ax[idx].xaxis.set_ticks(np.arange(1, shots + .2, 1))
+        ax[idx].set_xlabel('repetitions')
+        ax[0].set_ylabel('accuracy [%]')
+        ax[idx].set_title(title)
+        idx += 1
+
+    # ax[2].legend(loc='lower center', bbox_to_anchor=(2, -1.5), ncol=3)
+    fig.tight_layout(pad=0.1)
+    plt.savefig("PaperFigures/YuChenAcc.png", bbox_inches='tight', dpi=600)
+    plt.show()
+
+
+
