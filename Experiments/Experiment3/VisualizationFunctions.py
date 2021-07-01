@@ -378,28 +378,29 @@ def AnalysisYuChen(placeExWindow, placeOur295):
             # Network with Transfer Learning Method" (Chen 2020)
             LSTM_TL = [79, 89, 92, 94, 97, 99, 100, 100, 100]
             TL = [76, 86, 89, 91, 92, 94, 94, 96, 99]
-            ax[idx].plot(shotsSet, TL, marker='x', label='Chen (CNN+TL)', color='tab:red')
-            ax[idx].plot(shotsSet, LSTM_TL, marker='s', label='Chen (CNN+LSTM+TL)', color='tab:red')
-            ax[idx].plot(shotsSet, vectOurLDA260, marker='o', label='Our LDA classifier (window 100ms)',
-                         color='tab:orange')
+            ax[idx].plot(shotsSet, TL, marker='x', label='Chen (CNN+TL) (window 100ms)', color='tab:red')
+            ax[idx].plot(shotsSet, LSTM_TL, marker='s', label='Chen (CNN+LSTM+TL) (window 100ms)', color='tab:red')
+            ax[idx].plot(shotsSet, vectOurLDA260, marker='x', label='Our LDA classifier (window 100ms)',
+                         color='tab:blue')
             ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)',
                          color='tab:blue')
+
         elif base == 'Capgmyo_dbc':
             # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
             # Network with the Transfer Learning Method" (Yu 2021)
             TL = [72.25, 91.59, 92.19, 95.07, 96.53, 97.26, 98.03]
-            ax[idx].plot(shotsSet, TL, marker='x', label='Yu (CNN+TL)', color='black')
-            ax[idx].plot(shotsSet, vectOurLDA260, marker='o', label='Our LDA classifier (window 100ms)',
-                         color='tab:orange')
+            ax[idx].plot(shotsSet, TL, marker='x', label='Yu (CNN+TL) (window 100ms)', color='black')
+            ax[idx].plot(shotsSet, vectOurLDA260, marker='x', label='Our LDA classifier (window 100ms)',
+                         color='tab:blue')
             ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)',
                          color='tab:blue')
         elif base == 'Nina1':
             # Values reported by "Surface EMG-Based Instantaneous Hand Gesture Recognition Using Convolutional Neural
             # Network with the Transfer Learning Method" (Yu 2021)
             TL = [59.29, 64.33, 70.80, 73.74, 73.68, 74.01, 75.53]
-            ax[idx].plot(shotsSet, TL, marker='x', label='Yu (CNN+TL)', color='black')
+            ax[idx].plot(shotsSet, TL, marker='^', label='Yu (CNN+TL) (window 280ms)', color='black')
             ax[idx].plot(shotsSet, vectOurLDA260, marker='^', label='Our LDA classifier (window 280ms)',
-                         color='tab:orange')
+                         color='tab:blue')
             ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)',
                          color='tab:blue')
 
