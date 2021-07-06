@@ -29,6 +29,7 @@ the Hahne feature set, and two windows (295ms and 260ms).
 import Experiments.Experiment3.VisualizationFunctions as VF3
 ```
 
+## Côté-Allard approach
 Legend of the next figure: our QDA classifier 295ms (blue triangle markers),
 our LDA classifier 295ms (blue circle markers),
 our QDA classifier 260ms (orange triangle markers),
@@ -37,11 +38,10 @@ Côté-Allard approach 260ms (orange x markers).
 
 
 ```python
-placeOur260='Experiments/Experiment3/results/'
+placeExtraWindow='Experiments/Experiment3/results/'
 placeOur295='Experiments/Experiment1/results/'
 placeCote='Experiments/Experiment3/'
-featureSet=1
-VF3.AnalysisCote(placeOur260,placeOur295, placeCote,featureSet)
+VF3.AnalysisCote(placeExtraWindow,placeOur295, placeCote)
 ```
 
 
@@ -66,7 +66,7 @@ classification accuracy (see previous figure).
 
 
 ```python
-VF3.AnalysisFriedman(placeOur260,placeOur295,placeCote,featureSet)
+VF3.AnalysisFriedman(placeExtraWindow,placeOur295,placeCote)
 ```
 
     
@@ -77,14 +77,14 @@ VF3.AnalysisFriedman(placeOur260,placeOur295,placeCote,featureSet)
     
     Should we reject H0 (i.e. is there a difference in the means) at the 95.0 % confidence level? True 
     
-    vectOurLDA260: 2.6
-    vectOurQDA260: 1.6
-    vectCote: 1.8
+    vectOurLDA260: 2.5
+    vectOurQDA260: 1.7
+    vectCote: 1.9
     
      The best classifier is:  vectOurQDA260
                                            p   sig
     vectOurQDA260 vs vectOurLDA260  0.000000  True
-    vectOurQDA260 vs vectCote       0.023134  True
+    vectOurQDA260 vs vectCote       0.033111  True
     
     
     ANALYSIS OF WINDOW 295ms
@@ -93,14 +93,14 @@ VF3.AnalysisFriedman(placeOur260,placeOur295,placeCote,featureSet)
     
     Should we reject H0 (i.e. is there a difference in the means) at the 95.0 % confidence level? True 
     
-    vectOurLDA295: 2.5
-    vectOurQDA295: 1.5
-    vectCote: 2.0
+    vectOurLDA295: 2.3
+    vectOurQDA295: 1.6
+    vectCote: 2.1
     
      The best classifier is:  vectOurQDA295
                                                p   sig
-    vectOurQDA295 vs vectOurLDA295  0.000000e+00  True
-    vectOurQDA295 vs vectCote       9.897734e-07  True
+    vectOurQDA295 vs vectOurLDA295  4.884981e-15  True
+    vectOurQDA295 vs vectCote       7.792643e-07  True
     
     
     ANALYSIS BOTH WINDOWS (260ms AND 295ms)
@@ -109,16 +109,40 @@ VF3.AnalysisFriedman(placeOur260,placeOur295,placeCote,featureSet)
     
     Should we reject H0 (i.e. is there a difference in the means) at the 95.0 % confidence level? True 
     
-    vectOurLDA260: 4.4
-    vectOurQDA260: 2.6
-    vectOurLDA295: 3.4
-    vectOurQDA295: 1.9
-    vectCote: 2.8
+    vectOurLDA260: 4.1
+    vectOurQDA260: 2.8
+    vectOurLDA295: 3.2
+    vectOurQDA295: 2.0
+    vectCote: 2.9
     
      The best classifier is:  vectOurQDA295
                                                p   sig
     vectOurQDA295 vs vectOurLDA260  0.000000e+00  True
-    vectOurQDA295 vs vectOurLDA295  0.000000e+00  True
-    vectOurQDA295 vs vectCote       1.202935e-09  True
-    vectOurQDA295 vs vectOurQDA260  1.190208e-06  True
+    vectOurQDA295 vs vectOurLDA295  6.661338e-16  True
+    vectOurQDA295 vs vectCote       1.445701e-10  True
+    vectOurQDA295 vs vectOurQDA260  1.541030e-08  True
     
+
+## Yu and Chen approach
+
+We use three more datasets (NinaPro1, CapgMyo_dba, and CapgMyo_dbc)
+to compare our interface directly with the two inter-user approaches
+proposed by [Yu et al.](https://www.mdpi.com/1424-8220/21/7/2540) and
+[Chen et al.](https://ieeexplore.ieee.org/abstract/document/9141383?casa_token=UQpocsESCKcAAAAA:e6shzcECGbio3MZXwy9VnQ6UIv86WU5WmI2qouDgpzoTBKPTMBbKnjbgTC2XDuHueG2zieRo-g)
+who use these three datasets. The next figure shows the accuracy of
+our LDA classifier and the accuracy reported by [Yu et al.](https://www.mdpi.com/1424-8220/21/7/2540)
+(for NinaPro1 and CapgMyo_dbc) and
+[Chen et al.](https://ieeexplore.ieee.org/abstract/document/9141383?casa_token=UQpocsESCKcAAAAA:e6shzcECGbio3MZXwy9VnQ6UIv86WU5WmI2qouDgpzoTBKPTMBbKnjbgTC2XDuHueG2zieRo-g)
+(for CapgMyo_dba). In NinaPro1,CapgMyo_dba, and CapgMyo_dbc, our LDA classifier
+(with windows of 295ms, 280ms, and 100ms) has higher accuracy than Yu and Chen
+approaches. Our performance improvement is greater (approximately 5\%) than the
+Yu and Chen approaches when the training set has few repetitions (1-4) per class.
+
+
+```python
+VF3.AnalysisYuChen(placeExtraWindow, placeOur295)
+```
+
+
+![png](output_8_0.png)
+

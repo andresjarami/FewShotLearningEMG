@@ -30,7 +30,7 @@ VF2.DataGenerator_TwoCL_TwoFeat_EXAMPLE()
 ```
 
 
-![png](output_5_0.png)
+![png](output_4_0.png)
 
 
 *Adaptation techniques’ Accuracy vs. the Number of samples

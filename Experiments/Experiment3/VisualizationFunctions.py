@@ -320,10 +320,7 @@ def AnalysisFriedman(placeOur260, placeOur295, placeCote):
 def AnalysisYuChen(placeExWindow, placeOur295):
     fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(9, 3))
 
-
-
     idx = 0
-
 
     for base in ['Nina1', 'Capgmyo_dbc', 'Capgmyo_dba']:
 
@@ -346,10 +343,10 @@ def AnalysisYuChen(placeExWindow, placeOur295):
             people = 27
             shots = 7
             title = 'NinaPro1'
-            extraWindow='280'
+            extraWindow = '280'
             bestFeatureSet = [3, 3]
 
-        shotsSet = np.arange(1,shots+1)
+        shotsSet = np.arange(1, shots + 1)
 
         DataFrameExWindow = uploadResults(placeExWindow + base, samples, people, windowSize=extraWindow)
         DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295')
@@ -359,8 +356,6 @@ def AnalysisYuChen(placeExWindow, placeOur295):
         vectOurQDA295 = np.zeros(shots)
         vectOurLDA295 = np.zeros(shots)
         for s in range(1, shots + 1):
-
-
             vectOurLDA260[s - 1] = np.mean(DataFrameExWindow['AccLDAProp'].loc[(DataFrameExWindow['# shots'] == s) & (
                     DataFrameExWindow['Feature Set'] == bestFeatureSet[0])].values) * 100
             vectOurQDA260[s - 1] = np.mean(DataFrameExWindow['AccQDAProp'].loc[(DataFrameExWindow['# shots'] == s) & (
@@ -369,7 +364,6 @@ def AnalysisYuChen(placeExWindow, placeOur295):
                     DataFrame295['Feature Set'] == bestFeatureSet[0])].values) * 100
             vectOurQDA295[s - 1] = np.mean(DataFrame295['AccQDAProp'].loc[(DataFrame295['# shots'] == s) & (
                     DataFrame295['Feature Set'] == bestFeatureSet[1])].values) * 100
-
 
         ax[idx].grid(color='gainsboro', linewidth=1)
         ax[idx].set_axisbelow(True)
@@ -404,7 +398,6 @@ def AnalysisYuChen(placeExWindow, placeOur295):
             ax[idx].plot(shotsSet, vectOurLDA295, marker='o', label='Our LDA classifier (window 295ms)',
                          color='tab:blue')
 
-
         # ax[idx].plot(shotsSet, vectOurQDA260, marker='^', label='Our QDA classifier (window 260ms)', color='tab:orange')
         # ax[idx].plot(shotsSet, vectOurQDA295, marker='^', label='Our QDA classifier (window295ms)', color='tab:blue')
         ax[idx].yaxis.set_major_formatter(mtick.FormatStrFormatter('%d'))
@@ -418,6 +411,3 @@ def AnalysisYuChen(placeExWindow, placeOur295):
     fig.tight_layout(pad=0.1)
     plt.savefig("PaperFigures/YuChenAcc.png", bbox_inches='tight', dpi=600)
     plt.show()
-
-
-

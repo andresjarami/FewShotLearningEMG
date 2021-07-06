@@ -9,7 +9,7 @@
 
 folder="results/"
 database="Nina1"
-windowSize="280"
+windowSize="295"
 for j in {1..3}
 do
 for i in {1..27}

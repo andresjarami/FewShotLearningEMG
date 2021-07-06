@@ -4,12 +4,9 @@ import DA_Classifiers as DA_Classifiers
 import numpy as np
 import pandas as pd
 import time
-import math
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.feature_selection import SelectKBest, chi2
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
 
 
 # %% Upload Databases
