@@ -45,7 +45,7 @@ VF3.AnalysisCote(placeExtraWindow,placeOur295, placeCote)
 ```
 
 
-![png](output_4_0.png)
+![png](output_9_0.png)
 
 
 The Côté-Allard approach's performance is lower than of our
@@ -144,5 +144,5 @@ VF3.AnalysisYuChen(placeExtraWindow, placeOur295)
 ```
 
 
-![png](output_8_0.png)
+![png](output_10_0.png)
 
