@@ -49,7 +49,7 @@ def AnalysisCote(placeOur260, placeOur295, placeCote):
         elif base == 'EPN':
             samples = 25
             people = 30
-            title = base
+            title = 'EMG-EPN-120'
             bestFeatureSet = [3, 1]
         DataFrame260 = uploadResults(placeOur260 + base, samples, people, windowSize='260')
         DataFrame295 = uploadResults(placeOur295 + base, samples, people, windowSize='295')
