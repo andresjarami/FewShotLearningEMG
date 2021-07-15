@@ -1,6 +1,6 @@
 # FewShotLearningEMG
 
-This repository describes the three experiments performed in the paper *A Multi-Source Domain Adaptation for Real-Time Hand Gesture Classification using EMGs*. We implemented the experiments using [python 3.7](https://www.python.org/downloads/release/python-377/).
+This repository describes the three experiments performed in the paper *Improving Accuracy of Lightweight sEMG-based Hand Gesture Recognition via Inter-User Domain Adaptation*. We implemented the experiments using [python 3.7](https://www.python.org/downloads/release/python-377/).
 
 *NOTE:* This [link](https://anonymous.4open.science/r/21aef992-6a78-4b3b-8622-50b56c257659) is an anonymous git version of this repository.
 
