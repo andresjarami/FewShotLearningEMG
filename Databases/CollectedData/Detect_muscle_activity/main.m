@@ -6,10 +6,10 @@ for i=1:1:60
     for dataType=0:1
        
         if dataType==0
-            load(strcat('allUsers_data\data\',user,'\training\userData.mat'));
+            load(strcat('allUsers_data\rawData\',user,'\training\userData.mat'));
             userData=userDataTrain;
         elseif dataType==1
-            load(strcat('allUsers_data\data\',user,'\testing\userData.mat'));
+            load(strcat('allUsers_data\rawData\',user,'\testing\userData.mat'));
             userData=userDataTest;
         end  
         
